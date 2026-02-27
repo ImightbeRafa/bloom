@@ -77,5 +77,18 @@
     <p>Recibirás un correo con los detalles de tu orden y seguimiento de envío.</p>
     <a href="/" class="btn">Volver a la tienda</a>
   </div>
+  <script>
+    (function () {
+      var p = new URLSearchParams(window.location.search);
+      var returnData = p.get('returnData') || p.get('return_data');
+      var transactionId = p.get('tpt') || p.get('transaction_id') || p.get('tilopay-transaction') || p.get('id');
+      if (!returnData) return;
+      fetch('/api/tilopay/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ returnData: returnData, transactionId: transactionId })
+      }).catch(function (e) { console.error('[Success] Confirm error:', e); });
+    })();
+  </script>
 </body>
 </html>

@@ -166,6 +166,41 @@ export function confirmPayment(req, res) {
   res.json({ status: order ? (order.paymentStatus || 'pending') : 'not_found', orderId });
 }
 
+export async function processConfirm(req, res) {
+  const { returnData, transactionId } = req.body;
+  if (!returnData) return res.status(400).json({ error: 'Missing returnData' });
+
+  let order;
+  try {
+    order = JSON.parse(Buffer.from(returnData, 'base64').toString('utf-8'));
+  } catch {
+    return res.status(400).json({ error: 'Invalid returnData' });
+  }
+
+  const { orderId } = order;
+  if (!orderId) return res.status(400).json({ error: 'Invalid order data' });
+
+  order.paymentStatus = 'completed';
+  order.paymentId     = transactionId;
+  order.transactionId = transactionId;
+  order.paymentMethod = 'Tilopay';
+  order.paidAt        = new Date().toISOString();
+
+  global.pendingOrders?.delete(orderId);
+
+  console.log(`[Confirm] Processing order ${orderId}`);
+
+  const results = await Promise.allSettled([
+    sendOrderEmail(order),
+    sendOrderToBetsyWithRetry({ ...order, transactionId })
+  ]);
+
+  if (results[0].status === 'rejected') console.error('[Confirm] Email:', results[0].reason?.message);
+  if (results[1].status === 'rejected') console.error('[Confirm] Betsy:', results[1].reason?.message);
+
+  return res.json({ success: true, orderId });
+}
+
 function verifyWebhookSignature(req) {
   const secret = process.env.TILOPAY_WEBHOOK_SECRET;
   if (!secret) return true;

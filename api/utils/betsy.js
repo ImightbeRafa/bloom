@@ -29,9 +29,9 @@ function buildBetsyPayload(order) {
     total: `₡${Number(order.total).toLocaleString('es-CR')}`,
     payment: {
       method: order.paymentMethod,
-      transactionId: order.transactionId || order.paymentId || null,
-      status: 'PENDIENTE',
-      date: new Date(order.createdAt || Date.now()).toLocaleString('es-CR')
+      transactionId: String(order.transactionId || order.paymentId || 'N/A'),
+      status: order.paymentStatus === 'completed' ? 'PAGADO' : 'PENDIENTE',
+      date: new Date(order.paidAt || order.createdAt || Date.now()).toLocaleString('es-CR')
     },
     source: 'Bloom Website',
     salesChannel: 'Website',
