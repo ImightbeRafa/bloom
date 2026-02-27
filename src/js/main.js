@@ -191,29 +191,66 @@ async function handleSinpe(data) {
     throw new Error(result.error || 'Error al procesar el pedido. Intenta de nuevo.');
   }
 
-  // Show SINPE confirmation in place of form
-  showSinpeConfirmation(result.orderId, result.total);
+  showSinpeConfirmation(result.orderId, result.total, result.sinpePhone, result.sinpeHolder);
 }
 
-function showSinpeConfirmation(orderId, total) {
+function showSinpeConfirmation(orderId, total, sinpePhone, sinpeHolder) {
   const formSection = document.getElementById('order');
   formSection.innerHTML = `
-    <div class="container">
-      <div class="card" style="max-width: 560px; margin: 0 auto; text-align: center; padding: 48px 40px;">
-        <div style="width:64px;height:64px;background:rgba(94,23,235,0.07);border:1px solid rgba(94,23,235,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5e17eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.77 9.8a19.79 19.79 0 01-3.07-8.57A2 2 0 012.68 1h3a2 2 0 012 1.72 12.05 12.05 0 00.64 2.57 2 2 0 01-.45 2.11L6.91 8.4a16 16 0 006.69 6.69l1-1a2 2 0 012.11-.45 12.05 12.05 0 002.57.64A2 2 0 0122 16.92z"/>
+    <div class="container" style="max-width:560px;">
+      <div class="sinpe-confirm">
+
+        <div class="sinpe-confirm-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#612CE6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:12px;color:#1a1030;">Pedido recibido</h2>
-        <p style="color:#6b5b95;margin-bottom:24px;">Revisa tu correo — te enviamos las instrucciones de pago por SINPE Móvil.</p>
-        <div style="background:rgba(94,23,235,0.05);border:1px solid rgba(94,23,235,0.12);border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;">
-          <p style="font-size:0.85rem;color:#6b5b95;margin-bottom:8px;">Número de orden</p>
-          <p style="font-family:'Syne',sans-serif;font-weight:700;color:#1a1030;">${orderId}</p>
-          <p style="font-size:0.85rem;color:#6b5b95;margin-top:12px;margin-bottom:8px;">Total a transferir</p>
-          <p style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,#5e17eb,#b57bee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${formatCRC(total)}</p>
+
+        <h2 class="sinpe-confirm-title">Pedido recibido</h2>
+        <p class="sinpe-confirm-sub">Realizá tu SINPE Móvil con los datos de abajo. También te enviamos las instrucciones por correo.</p>
+
+        <!-- SINPE Payment Box -->
+        <div class="sinpe-pay-box">
+          <p class="sinpe-pay-heading">SINPE Móvil</p>
+
+          <div class="sinpe-pay-row">
+            <span class="sinpe-pay-label">Número</span>
+            <span class="sinpe-pay-value sinpe-pay-phone">${sinpePhone}</span>
+          </div>
+          <div class="sinpe-pay-row">
+            <span class="sinpe-pay-label">A nombre de</span>
+            <span class="sinpe-pay-value">${sinpeHolder}</span>
+          </div>
+          <div class="sinpe-pay-divider"></div>
+          <div class="sinpe-pay-row">
+            <span class="sinpe-pay-label">Monto exacto</span>
+            <span class="sinpe-pay-value sinpe-pay-amount">${formatCRC(total)}</span>
+          </div>
+          <div class="sinpe-pay-row">
+            <span class="sinpe-pay-label">Concepto / Referencia</span>
+            <span class="sinpe-pay-value sinpe-pay-ref">${orderId}</span>
+          </div>
         </div>
-        <p style="font-size:0.85rem;color:#a095c0;">¿Dudas? Escríbenos por WhatsApp.</p>
+
+        <!-- Steps -->
+        <div class="sinpe-steps">
+          <div class="sinpe-step">
+            <span class="sinpe-step-num">1</span>
+            <span>Usá el número de tu orden como concepto del SINPE</span>
+          </div>
+          <div class="sinpe-step">
+            <span class="sinpe-step-num">2</span>
+            <span>Guardá el comprobante de pago</span>
+          </div>
+          <div class="sinpe-step">
+            <span class="sinpe-step-num">3</span>
+            <span>Enviá el comprobante por WhatsApp al <strong>${sinpePhone}</strong></span>
+          </div>
+        </div>
+
+        <p class="sinpe-confirm-note">Tu pedido será procesado dentro de 24 horas hábiles tras confirmar el pago.</p>
+
+        <a href="/" class="btn-primary" style="width:100%;text-align:center;margin-top:8px;">Volver a la tienda</a>
       </div>
     </div>
   `;

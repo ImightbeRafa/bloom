@@ -759,12 +759,20 @@ h3 {
    ───────────────────────────────────────────────────────── */
 .order-container {
   max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .order-flow {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 24px;
+  width: 100%;
+}
+
+.order-flow > * {
+  width: 100%;
 }
 
 /* Product + Quantity row */
@@ -882,6 +890,9 @@ h3 {
   border-radius: var(--radius-lg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .form-section {
@@ -899,6 +910,154 @@ h3 {
   margin-bottom: 16px;
   display: block;
   width: 100%;
+  text-align: center;
+}
+
+/* ── SINPE Confirmation ── */
+.sinpe-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 40px 24px;
+}
+
+.sinpe-confirm-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sinpe-confirm-icon svg {
+  color: #16a34a;
+  stroke: #16a34a;
+}
+
+.sinpe-confirm-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.sinpe-confirm-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.sinpe-pay-box {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.50);
+  border: 1px solid rgba(97, 44, 230, 0.12);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px;
+  text-align: left;
+}
+
+.sinpe-pay-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--purple);
+  margin-bottom: 16px;
+}
+
+.sinpe-pay-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+}
+
+.sinpe-pay-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.sinpe-pay-value {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.sinpe-pay-phone {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-family: 'Syne', sans-serif;
+}
+
+.sinpe-pay-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sinpe-pay-ref {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: var(--purple);
+  word-break: break-all;
+}
+
+.sinpe-pay-divider {
+  height: 1px;
+  background: rgba(97, 44, 230, 0.10);
+  margin: 8px 0;
+}
+
+.sinpe-steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.sinpe-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.sinpe-step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--purple-faint);
+  color: var(--purple);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sinpe-confirm-note {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin-top: 4px;
 }
 
 .optional {

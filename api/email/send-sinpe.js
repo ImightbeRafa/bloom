@@ -90,7 +90,9 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       orderId,
-      total
+      total,
+      sinpePhone: process.env.SINPE_PHONE || '',
+      sinpeHolder: process.env.SINPE_HOLDER || ''
     });
 
   } catch (err) {

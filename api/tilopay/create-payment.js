@@ -118,7 +118,7 @@ export default async function handler(req, res) {
       returnData
     };
 
-    const payRes = await fetch(`${process.env.TILOPAY_BASE_URL}/captures`, {
+    const payRes = await fetch(`${process.env.TILOPAY_BASE_URL}/processPayment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ export default async function handler(req, res) {
     }
 
     const payData = await payRes.json();
-    const paymentUrl   = payData.url || payData.payment_url;
+    const paymentUrl   = payData.urlPaymentForm || payData.url || payData.payment_url;
     const transactionId = payData.transaction_id || payData.id;
 
     if (!paymentUrl) {

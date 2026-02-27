@@ -89,7 +89,7 @@ export async function createPayment(req, res) {
       returnData
     };
 
-    const payRes = await fetch(`${process.env.TILOPAY_BASE_URL}/captures`, {
+    const payRes = await fetch(`${process.env.TILOPAY_BASE_URL}/processPayment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
       body: JSON.stringify(tilopayPayload)
@@ -102,7 +102,7 @@ export async function createPayment(req, res) {
     }
 
     const payData = await payRes.json();
-    const paymentUrl = payData.url || payData.payment_url;
+    const paymentUrl = payData.urlPaymentForm || payData.url || payData.payment_url;
     if (!paymentUrl) return res.status(502).json({ error: 'Tilopay no devolvió URL de pago' });
 
     console.log(`[Tilopay] Payment created: ${orderId}`);

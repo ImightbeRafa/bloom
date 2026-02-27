@@ -56,7 +56,11 @@ export async function sendSinpe(req, res) {
     }
 
     console.log(`[SINPE] Order processed: ${orderId}`);
-    return res.json({ success: true, orderId, total });
+    return res.json({
+      success: true, orderId, total,
+      sinpePhone: process.env.SINPE_PHONE || '',
+      sinpeHolder: process.env.SINPE_HOLDER || ''
+    });
   } catch (err) {
     console.error('[sendSinpe]', err.message);
     return res.status(500).json({ error: 'Error interno' });
