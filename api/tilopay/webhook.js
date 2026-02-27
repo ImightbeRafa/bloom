@@ -2,7 +2,7 @@
 // Vercel serverless function: receives Tilopay payment notifications
 
 import crypto from 'crypto';
-import { sendOrderEmail } from '../utils/email.js';
+import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
 
 const SUCCESS_STATUSES = ['aprobada', 'approved', 'success', 'paid', 'completed'];
@@ -68,20 +68,18 @@ export default async function handler(req, res) {
   // Do ALL async work BEFORE responding (Vercel terminates after res.json)
   const results = await Promise.allSettled([
     sendOrderEmail(order),
+    sendTilopayConfirmationEmail(order),
     sendOrderToBetsyWithRetry({ ...order, transactionId })
   ]);
 
-  if (results[0].status === 'rejected') {
-    console.error(`[Webhook] Email failed for ${orderId}:`, results[0].reason?.message);
-  } else {
-    console.log(`[Webhook] Email sent for ${orderId}`);
-  }
+  if (results[0].status === 'rejected') console.error(`[Webhook] Admin email failed for ${orderId}:`, results[0].reason?.message);
+  else console.log(`[Webhook] Admin email sent for ${orderId}`);
 
-  if (results[1].status === 'rejected') {
-    console.error(`[Webhook] Betsy sync failed for ${orderId}:`, results[1].reason?.message);
-  } else {
-    console.log(`[Webhook] Betsy synced for ${orderId}`);
-  }
+  if (results[1].status === 'rejected') console.error(`[Webhook] Customer email failed for ${orderId}:`, results[1].reason?.message);
+  else console.log(`[Webhook] Customer email sent for ${orderId}`);
+
+  if (results[2].status === 'rejected') console.error(`[Webhook] Betsy sync failed for ${orderId}:`, results[2].reason?.message);
+  else console.log(`[Webhook] Betsy synced for ${orderId}`);
 
   return res.status(200).json({ success: true, orderId, message: 'Payment confirmed' });
 }

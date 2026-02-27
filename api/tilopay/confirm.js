@@ -2,7 +2,7 @@
 // Vercel serverless function: processes order after Tilopay success redirect
 // Called by success.html with the returnData echoed from Tilopay's redirect URL
 
-import { sendOrderEmail } from '../utils/email.js';
+import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
 
 // In-memory dedup — prevents double sends within the same function instance
@@ -47,20 +47,18 @@ export default async function handler(req, res) {
 
   const results = await Promise.allSettled([
     sendOrderEmail(order),
+    sendTilopayConfirmationEmail(order),
     sendOrderToBetsyWithRetry({ ...order, transactionId })
   ]);
 
-  if (results[0].status === 'rejected') {
-    console.error(`[Confirm] Email failed for ${orderId}:`, results[0].reason?.message);
-  } else {
-    console.log(`[Confirm] Email sent for ${orderId}`);
-  }
+  if (results[0].status === 'rejected') console.error(`[Confirm] Admin email failed for ${orderId}:`, results[0].reason?.message);
+  else console.log(`[Confirm] Admin email sent for ${orderId}`);
 
-  if (results[1].status === 'rejected') {
-    console.error(`[Confirm] Betsy failed for ${orderId}:`, results[1].reason?.message);
-  } else {
-    console.log(`[Confirm] Betsy synced for ${orderId}`);
-  }
+  if (results[1].status === 'rejected') console.error(`[Confirm] Customer email failed for ${orderId}:`, results[1].reason?.message);
+  else console.log(`[Confirm] Customer email sent for ${orderId}`);
+
+  if (results[2].status === 'rejected') console.error(`[Confirm] Betsy failed for ${orderId}:`, results[2].reason?.message);
+  else console.log(`[Confirm] Betsy synced for ${orderId}`);
 
   return res.status(200).json({ success: true, orderId });
 }

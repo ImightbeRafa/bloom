@@ -1,7 +1,7 @@
 // ─── Bloom — server/controllers/tilopayController.js ────────────────────────
 
 import crypto from 'crypto';
-import { sendOrderEmail } from '../utils/email.js';
+import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
 
 const UNIT_PRICE              = 8900;
@@ -150,11 +150,13 @@ export async function handleWebhook(req, res) {
   // Do async work before responding
   const results = await Promise.allSettled([
     sendOrderEmail(order),
+    sendTilopayConfirmationEmail(order),
     sendOrderToBetsyWithRetry({ ...order, transactionId })
   ]);
 
-  if (results[0].status === 'rejected') console.error('[Webhook] Email:', results[0].reason?.message);
-  if (results[1].status === 'rejected') console.error('[Webhook] Betsy:', results[1].reason?.message);
+  if (results[0].status === 'rejected') console.error('[Webhook] Admin email:', results[0].reason?.message);
+  if (results[1].status === 'rejected') console.error('[Webhook] Customer email:', results[1].reason?.message);
+  if (results[2].status === 'rejected') console.error('[Webhook] Betsy:', results[2].reason?.message);
 
   return res.json({ success: true, orderId, message: 'Payment confirmed' });
 }
@@ -192,11 +194,13 @@ export async function processConfirm(req, res) {
 
   const results = await Promise.allSettled([
     sendOrderEmail(order),
+    sendTilopayConfirmationEmail(order),
     sendOrderToBetsyWithRetry({ ...order, transactionId })
   ]);
 
-  if (results[0].status === 'rejected') console.error('[Confirm] Email:', results[0].reason?.message);
-  if (results[1].status === 'rejected') console.error('[Confirm] Betsy:', results[1].reason?.message);
+  if (results[0].status === 'rejected') console.error('[Confirm] Admin email:', results[0].reason?.message);
+  if (results[1].status === 'rejected') console.error('[Confirm] Customer email:', results[1].reason?.message);
+  if (results[2].status === 'rejected') console.error('[Confirm] Betsy:', results[2].reason?.message);
 
   return res.json({ success: true, orderId });
 }

@@ -47,6 +47,17 @@ export async function sendSinpeInstructionsEmail(order) {
   });
 }
 
+// ── Tilopay Order Confirmation to Customer ────────────────────────────────────
+export async function sendTilopayConfirmationEmail(order) {
+  const html = buildTilopayConfirmationEmailHtml(order);
+  return sendEmail({
+    from: `${BRAND_NAME} <${FROM_EMAIL}>`,
+    to: order.email,
+    subject: `Pago confirmado — Bloom #${order.orderId}`,
+    html
+  });
+}
+
 // ── Admin notification for SINPE order ───────────────────────────────────────
 export async function sendSinpeAdminEmail(order) {
   const html = buildAdminEmailHtml(order);
@@ -137,6 +148,72 @@ function buildAdminEmailHtml(order) {
         <p style="margin:0;font-size:14px;color:#333;">${order.comentarios}</p>
       </td></tr>
     </table>` : ''}
+
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td style="background:#f8f6ff;padding:20px 40px;text-align:center;border-top:1px solid #ede8ff;">
+    <p style="margin:0;font-size:12px;color:#9585c4;">Bloom · bloomcr.shopping · Costa Rica</p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+function buildTilopayConfirmationEmailHtml(order) {
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f1f1f1;font-family:Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td align="center" style="padding:40px 20px;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+  <!-- Header -->
+  <tr><td style="background:linear-gradient(135deg,#5e17eb,#b57bee);padding:32px 40px;text-align:center;">
+    <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;letter-spacing:2px;">BLOOM</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.75);font-size:13px;">Confirmación de pedido</p>
+  </td></tr>
+
+  <!-- Body -->
+  <tr><td style="padding:32px 40px;">
+
+    <!-- Success badge -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:68px;height:68px;background:rgba(22,163,74,0.08);border:1px solid rgba(22,163,74,0.25);border-radius:50%;margin-bottom:16px;">
+        <span style="font-size:30px;color:#16a34a;">&#10003;</span>
+      </div>
+      <h2 style="margin:0 0 8px;font-size:22px;color:#1a1a1a;font-weight:800;">¡Pago confirmado!</h2>
+      <p style="margin:0;font-size:14px;color:#6b5f8a;">Hola <strong>${order.nombre}</strong>, tu pedido está siendo preparado.</p>
+    </div>
+
+    <!-- Order Summary -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f6ff;border-radius:10px;margin-bottom:20px;">
+      <tr><td style="padding:20px 24px;">
+        <p style="margin:0 0 12px;font-size:13px;color:#6b5f8a;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Tu pedido</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Orden:</strong> #${order.orderId}</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Producto:</strong> Bloom Dermal Micro-Infusion Patch</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Cantidad:</strong> ${order.cantidad}</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Envío:</strong> ${order.shippingCost === 0 ? 'GRATIS' : `&#8353;${Number(order.shippingCost).toLocaleString('es-CR')}`}</p>
+        <hr style="border:none;border-top:1px solid #e8e0ff;margin:12px 0;">
+        <p style="margin:0;font-size:18px;color:#5e17eb;font-weight:700;">Total: &#8353;${Number(order.total).toLocaleString('es-CR')}</p>
+      </td></tr>
+    </table>
+
+    <!-- Shipping Address -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f6ff;border-radius:10px;margin-bottom:24px;">
+      <tr><td style="padding:20px 24px;">
+        <p style="margin:0 0 12px;font-size:13px;color:#6b5f8a;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Dirección de entrega</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;">${order.provincia}, ${order.canton}, ${order.distrito}</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;">${order.direccion}</p>
+      </td></tr>
+    </table>
+
+    <p style="font-size:14px;color:#6b5f8a;margin:0 0 8px;text-align:center;">Tu pedido será despachado en <strong>1–3 días hábiles</strong>.</p>
+    <p style="font-size:13px;color:#9585c4;margin:0;text-align:center;">¿Tienes preguntas? Escríbenos por WhatsApp.</p>
 
   </td></tr>
 
