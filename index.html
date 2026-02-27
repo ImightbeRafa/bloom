@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom — Dermal Micro-Infusion Patch</title>
+  <meta name="description"
+    content="Microneedle acne patch with Hyaluronic Acid. Overnight micro-infusion for calm, clear, radiant skin by morning." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=Nunito:wght@800;900;1000&display=swap"
+    rel="stylesheet" />
+
+  <link rel="preload" as="image" href="/images/bloom-logo.png" />
+  <link rel="preload" as="image" href="/images/product.jpg" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+
+<body>
+
+  <!-- Animated lava-lamp background blobs -->
+  <div class="interactive-bg" id="interactive-bg">
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+    <div class="blob blob-3" aria-hidden="true"></div>
+    <div class="blob blob-4" aria-hidden="true"></div>
+    <div class="blob blob-5" aria-hidden="true"></div>
+    <div class="blob blob-6" aria-hidden="true"></div>
+  </div>
+
+  <!-- ─── HEADER ─── -->
+  <header class="header">
+    <nav class="nav container">
+      <a href="/" class="logo-group" aria-label="Bloom — Dermal Micro-Infusion Patch">
+        <img src="/images/bloom-logo.png" alt="BLOOM" class="bloom-logo-img" />
+      </a>
+      <a href="#order" class="nav-cta">Ordenar — ₡8,900</a>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero hero-split">
+    <div class="container hero-inner">
+      <div class="hero-content reveal">
+        <div class="hero-badge">DISPONIBLE EN COSTA RICA</div>
+        <h1 class="hero-title">
+          Waking up to <br /><span class="gradient-text">Clear Skin</span>
+        </h1>
+        <p class="hero-subtitle">
+          The overnight microneedle acne patch infused with Hyaluronic Acid — painless, discreet, and dissolving while
+          you sleep.
+        </p>
+        <div class="hero-actions">
+          <a href="#order" class="btn-primary">Ordenar Ahora</a>
+          <span class="hero-price">₡8,900 — Envío gratis con 2+</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-visual-container reveal-scale">
+          <img src="/images/product.jpg" alt="Bloom Dermal Micro-Infusion Patch" class="hero-product-image"
+            fetchpriority="high" decoding="async" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BENEFITS ─── -->
+  <section class="section benefits">
+    <div class="container">
+      <h2 class="section-title reveal">Why <span class="gradient-text">Bloom</span> Works</h2>
+      <div class="benefits-grid reveal-stagger">
+
+        <div class="card benefit-card">
+          <div class="benefit-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <h3>Overnight Transformation</h3>
+          <p>Hundreds of dissolving microneedles release active ingredients while you sleep — visibly flattening pimples
+            and reducing inflammation by morning.</p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+          </div>
+          <h3>Deep Hydration</h3>
+          <p>Infused with medical-grade Hyaluronic Acid to hydrate intensely, repair the skin barrier, and calm
+            irritation — all without dryness or stinging.</p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h3>Anti-Acne & Anti-Inflammatory</h3>
+          <p>Fights acne at the source by delivering active ingredients directly through micro-channels — reducing
+            redness, swelling, and promoting clearer skin.</p>
+        </div>
+
+        <div class="card benefit-card">
+          <div class="benefit-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+          </div>
+          <h3>Sensitive Skin Safe</h3>
+          <p>Transparent, fragrance-free, and painless. The 12mm round patches are discreet and biocompatible — designed
+            specifically for sensitive and reactive skin types.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MICRO-AGUJAS SHOWCASE ─── -->
+  <section class="section micro-agujas">
+    <div class="container micro-agujas-inner">
+      <h2 class="section-title reveal">Tecnología de <span class="gradient-text">Micro-agujas</span></h2>
+      <p class="section-subtitle micro-agujas-sub reveal">Cientos de micro-agujas de ácido
+        hialurónico 100% puro que penetran suavemente la piel para una absorción profunda y rápida allí donde más lo
+        necesitas.</p>
+
+      <div class="patch-showcase reveal-scale">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" width="100%" height="auto"
+          class="animated-micro-patch">
+          <defs>
+            <filter id="shadow-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#612ce6" flood-opacity="0.22" />
+            </filter>
+            <linearGradient id="skin-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fde8d0" />
+              <stop offset="100%" stop-color="#f5d0b0" />
+            </linearGradient>
+            <linearGradient id="needle-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#612ce6" />
+              <stop offset="100%" stop-color="#a78bfa" />
+            </linearGradient>
+            <radialGradient id="ripple-grad">
+              <stop offset="0%" stop-color="#612ce6" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#612ce6" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="glow-center" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#a78bfa" stop-opacity="0" />
+            </radialGradient>
+            <style>
+              .mp-float { animation: mpFloat 5s ease-in-out infinite; }
+
+              .needle-anim-1 { animation: needleShrink 3.5s ease-in-out infinite; }
+              .needle-anim-2 { animation: needleShrink 3.5s ease-in-out infinite 0.5s; }
+              .needle-anim-3 { animation: needleShrink 3.5s ease-in-out infinite 1s; }
+              .needle-anim-4 { animation: needleShrink 3.5s ease-in-out infinite 1.5s; }
+              .needle-anim-5 { animation: needleShrink 3.5s ease-in-out infinite 2s; }
+
+              .drop-1 { animation: dropFall 3.5s ease-in infinite 1.8s; }
+              .drop-2 { animation: dropFall 3.5s ease-in infinite 2.2s; }
+              .drop-3 { animation: dropFall 3.5s ease-in infinite 2.6s; }
+
+              .ripple-a { animation: rippleGrow 3.5s ease-out infinite 2s; opacity: 0; }
+              .ripple-b { animation: rippleGrow 3.5s ease-out infinite 2.5s; opacity: 0; }
+
+              .pulse-ring { animation: pulseRing 2.5s ease-in-out infinite; }
+              .label-anim { animation: labelSlide 7s ease-in-out infinite; }
+              .label-anim-b { animation: labelSlide 7s ease-in-out infinite 3.5s; }
+
+              @keyframes mpFloat {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-8px); }
+              }
+              @keyframes needleShrink {
+                0%, 15% { opacity: 1; transform: scaleY(1); }
+                50%, 70% { opacity: 0.3; transform: scaleY(0.2); }
+                100% { opacity: 1; transform: scaleY(1); }
+              }
+              @keyframes dropFall {
+                0% { opacity: 0; transform: translateY(0); }
+                20% { opacity: 0.8; }
+                100% { opacity: 0; transform: translateY(32px); }
+              }
+              @keyframes rippleGrow {
+                0% { r: 10; opacity: 0.45; }
+                100% { r: 55; opacity: 0; }
+              }
+              @keyframes pulseRing {
+                0%, 100% { opacity: 0.15; transform: scale(1); }
+                50% { opacity: 0.35; transform: scale(1.08); }
+              }
+              @keyframes labelSlide {
+                0%, 10% { opacity: 0; transform: translateY(6px); }
+                20%, 45% { opacity: 1; transform: translateY(0); }
+                55%, 100% { opacity: 0; transform: translateY(-6px); }
+              }
+            </style>
+          </defs>
+
+          <!-- Outer patch body -->
+          <g class="mp-float">
+            <!-- Background glow -->
+            <circle cx="210" cy="230" r="120" fill="url(#glow-center)" class="pulse-ring" />
+
+            <!-- Patch circle (the physical patch) -->
+            <circle cx="210" cy="200" r="100" fill="rgba(255,255,255,0.85)" stroke="rgba(97,44,230,0.25)" stroke-width="2" filter="url(#shadow-glow)" />
+            <circle cx="210" cy="200" r="100" fill="none" stroke="rgba(97,44,230,0.08)" stroke-width="1" stroke-dasharray="4,6" />
+
+            <!-- Skin layer beneath -->
+            <rect x="110" y="290" width="200" height="50" rx="12" fill="url(#skin-grad)" opacity="0.7" />
+            <text x="210" y="322" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#b8886a" letter-spacing="0.12em" font-weight="600">SUPERFICIE DE PIEL</text>
+
+            <!-- Microneedle array (5 needles dissolving into skin) -->
+            <g transform="translate(210, 200)">
+              <!-- Needle 1 -->
+              <g class="needle-anim-1" style="transform-origin: -48px 60px">
+                <rect x="-50" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
+              </g>
+              <!-- Needle 2 -->
+              <g class="needle-anim-2" style="transform-origin: -23px 60px">
+                <rect x="-25" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
+              </g>
+              <!-- Needle 3 (center) -->
+              <g class="needle-anim-3" style="transform-origin: 0px 60px">
+                <rect x="-2" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
+              </g>
+              <!-- Needle 4 -->
+              <g class="needle-anim-4" style="transform-origin: 23px 60px">
+                <rect x="21" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
+              </g>
+              <!-- Needle 5 -->
+              <g class="needle-anim-5" style="transform-origin: 48px 60px">
+                <rect x="46" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
+              </g>
+            </g>
+
+            <!-- Ingredient droplets falling from needles into skin -->
+            <circle class="drop-1" cx="160" cy="295" r="3" fill="#612ce6" opacity="0" />
+            <circle class="drop-2" cx="210" cy="295" r="3" fill="#a78bfa" opacity="0" />
+            <circle class="drop-3" cx="260" cy="295" r="3" fill="#612ce6" opacity="0" />
+
+            <!-- Absorption ripples in the skin layer -->
+            <circle class="ripple-a" cx="210" cy="310" r="10" fill="url(#ripple-grad)" />
+            <circle class="ripple-b" cx="210" cy="310" r="10" fill="url(#ripple-grad)" />
+
+            <!-- Dot grid on patch surface (visual microneedle array) -->
+            <g fill="#612ce6" opacity="0.4">
+              <circle cx="170" cy="160" r="2" /><circle cx="190" cy="160" r="2" /><circle cx="210" cy="160" r="2" /><circle cx="230" cy="160" r="2" /><circle cx="250" cy="160" r="2" />
+              <circle cx="170" cy="180" r="2" /><circle cx="190" cy="180" r="2" /><circle cx="210" cy="180" r="2" /><circle cx="230" cy="180" r="2" /><circle cx="250" cy="180" r="2" />
+              <circle cx="170" cy="200" r="2" /><circle cx="190" cy="200" r="2" /><circle cx="210" cy="200" r="2" /><circle cx="230" cy="200" r="2" /><circle cx="250" cy="200" r="2" />
+              <circle cx="170" cy="220" r="2" /><circle cx="190" cy="220" r="2" /><circle cx="210" cy="220" r="2" /><circle cx="230" cy="220" r="2" /><circle cx="250" cy="220" r="2" />
+              <circle cx="170" cy="240" r="2" /><circle cx="190" cy="240" r="2" /><circle cx="210" cy="240" r="2" /><circle cx="230" cy="240" r="2" /><circle cx="250" cy="240" r="2" />
+            </g>
+
+            <!-- Cross-section label lines -->
+            <line x1="320" y1="200" x2="340" y2="200" stroke="#612ce6" stroke-width="1" opacity="0.5" />
+            <text x="345" y="204" font-family="Inter, sans-serif" font-size="9" fill="#612ce6" font-weight="600" opacity="0.7">PARCHE</text>
+
+            <line x1="320" y1="270" x2="340" y2="310" stroke="#612ce6" stroke-width="1" opacity="0.5" />
+            <text x="345" y="314" font-family="Inter, sans-serif" font-size="9" fill="#612ce6" font-weight="600" opacity="0.7">PIEL</text>
+          </g>
+
+          <!-- Bottom animated labels (alternating) -->
+          <text class="label-anim" x="210" y="400" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#612CE6">
+            Micro-agujas se disuelven al contacto
+          </text>
+          <text class="label-anim-b" x="210" y="400" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#612CE6">
+            Ácido hialurónico penetra la piel directamente
+          </text>
+
+          <!-- Step indicators -->
+          <g font-family="Inter, sans-serif" font-size="10" fill="#8e7fb5">
+            <text x="210" y="440" text-anchor="middle" letter-spacing="0.08em">APLICA → DUERME → DESPIERTA RADIANTE</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT'S INSIDE ─── -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">What's <span class="gradient-text">Inside</span></h2>
+      <p class="section-subtitle reveal">Each patch delivers a precise blend of dermatologist-recommended ingredients through
+        painless dissolving microneedles.</p>
+      <div class="ingredients-grid reveal-stagger">
+
+        <div class="card ingredient-card">
+          <div class="ingredient-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v8M8 12h8" />
+            </svg>
+          </div>
+          <h3>Medical Hydrocolloid Base</h3>
+          <p>Provides gentle adhesion and moisture retention while sealing the area, absorbing excess fluids, and
+            protecting from external irritants overnight.</p>
+        </div>
+
+        <div class="card ingredient-card">
+          <div class="ingredient-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+          </div>
+          <h3>Hyaluronic Acid Microneedles</h3>
+          <p>Ultra-fine dissolvable microneedles made from HA derivatives penetrate the outer skin layer to deliver deep
+            hydration and support natural healing.</p>
+        </div>
+
+        <div class="card ingredient-card">
+          <div class="ingredient-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h3>Anti-Inflammatory Agents</h3>
+          <p>Complementary soothing compounds reduce redness and swelling while promoting calm, clear skin — ideal for
+            reactive and acne-prone types.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="section how-it-works">
+    <div class="container">
+      <h2 class="section-title reveal">As <span class="gradient-text">Simple</span> as Sleep</h2>
+      <div class="steps-grid reveal-stagger">
+        <div class="step">
+          <div class="step-number">01</div>
+          <h3>Cleanse & Dry</h3>
+          <p>Wash your face with your usual routine. Pat the affected area completely dry.</p>
+        </div>
+        <div class="step-divider" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-number">02</div>
+          <h3>Apply the Patch</h3>
+          <p>Peel off the protective film. Press gently onto the pimple for 5–10 seconds before bed.</p>
+        </div>
+        <div class="step-divider" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-number">03</div>
+          <h3>Wake Up Radiant</h3>
+          <p>The microneedles dissolve overnight. Peel off in the morning and see the difference.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SPECS STRIP ─── -->
+  <section class="specs-strip">
+    <div class="container">
+      <div class="specs-grid reveal-stagger">
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+          12mm Diameter
+        </div>
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          9 Patches per Pack
+        </div>
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          2-Year Shelf Life
+        </div>
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          Transparent & Discreet
+        </div>
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          Fragrance-Free
+        </div>
+        <div class="spec-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="8.5" cy="7" r="4" />
+            <path d="M20 8v6M23 11h-6" />
+          </svg>
+          All Skin Types
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ORDER FORM ─── -->
+  <section class="section order" id="order">
+    <div class="container order-container">
+      <h2 class="section-title reveal">Ordená tu <span class="gradient-text">Bloom</span></h2>
+
+      <form class="order-flow" id="order-form" novalidate>
+
+        <!-- Product + Quantity row -->
+        <div class="order-product-row reveal">
+          <div class="order-product-info">
+            <span class="order-product-name">Bloom Dermal Micro-Infusion Patch</span>
+            <span class="order-product-price">₡8,900 <span class="order-product-unit">/ unidad</span></span>
+          </div>
+          <div class="qty-control">
+            <button type="button" class="qty-btn" id="qty-minus" aria-label="Reducir cantidad">−</button>
+            <span class="qty-display" id="qty-display">1</span>
+            <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad">+</button>
+            <input type="hidden" id="cantidad" name="cantidad" value="1" />
+          </div>
+        </div>
+
+        <!-- Free shipping banner -->
+        <div class="shipping-banner reveal" id="shipping-note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          Agrega 1 unidad más para envío <strong>gratis</strong>
+        </div>
+
+        <!-- Totals strip -->
+        <div class="order-totals reveal">
+          <div class="order-totals-line">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">₡8,900</span>
+          </div>
+          <div class="order-totals-line">
+            <span>Envío</span>
+            <span id="summary-shipping">₡2,600</span>
+          </div>
+          <div class="order-totals-total">
+            <span>Total</span>
+            <span id="summary-total">₡11,500</span>
+          </div>
+        </div>
+
+        <!-- Hidden summary elements for JS compatibility -->
+        <span id="summary-qty" hidden>× 1</span>
+
+        <!-- Personal Info -->
+        <fieldset class="form-section reveal">
+          <legend class="form-legend">Información personal</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+            </div>
+            <div class="field">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="8888-7777" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required />
+          </div>
+        </fieldset>
+
+        <!-- Shipping Address -->
+        <fieldset class="form-section reveal">
+          <legend class="form-legend">Dirección de envío</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="provincia">Provincia</label>
+              <select id="provincia" name="provincia" required>
+                <option value="">Seleccionar...</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="canton">Cantón</label>
+              <select id="canton" name="canton" required disabled>
+                <option value="">Seleccionar...</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="distrito">Distrito</label>
+            <input type="text" id="distrito" name="distrito" placeholder="Nombre del distrito" required />
+          </div>
+          <div class="field">
+            <label for="direccion">Señas exactas</label>
+            <textarea id="direccion" name="direccion" rows="2"
+              placeholder="Ej: 100m norte de la farmacia, casa azul" required></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Payment Method -->
+        <fieldset class="form-section reveal">
+          <legend class="form-legend">Método de pago</legend>
+          <div class="payment-toggle">
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="Tarjeta" checked />
+              <span class="payment-pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                  <line x1="1" y1="10" x2="23" y2="10" />
+                </svg>
+                Tarjeta
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="SINPE" />
+              <span class="payment-pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                  <line x1="12" y1="18" x2="12.01" y2="18" />
+                </svg>
+                SINPE Móvil
+              </span>
+            </label>
+          </div>
+          <div class="sinpe-info" id="sinpe-info" hidden>
+            <p>Al confirmar tu pedido, recibirás las instrucciones de SINPE Móvil en tu correo.</p>
+          </div>
+        </fieldset>
+
+        <!-- Notes (optional) -->
+        <fieldset class="form-section reveal">
+          <legend class="form-legend">Notas <span class="optional">(opcional)</span></legend>
+          <div class="field">
+            <textarea id="comentarios" name="comentarios" rows="2"
+              placeholder="Alguna indicación especial..."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Error message -->
+        <div class="form-error" id="form-error" hidden></div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-primary btn-submit reveal" id="submit-btn">
+          <span id="btn-text">Confirmar pedido</span>
+          <span id="btn-loading" hidden>
+            <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5">
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+            Procesando...
+          </span>
+        </button>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-logo-group">
+        <img src="/images/bloom-logo.png" alt="BLOOM — Dermal Micro-Infusion Patch" class="bloom-logo-img footer-logo-img" />
+      </div>
+      <p class="footer-text">Microneedle Acne Patch with Hyaluronic Acid · Costa Rica</p>
+      <p class="footer-legal">© 2026 Bloom. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+
+</html>

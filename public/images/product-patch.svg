@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="15" stdDeviation="25" flood-color="#612ce6" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  
+  <rect x="40" y="40" width="320" height="320" rx="30" fill="#ffffff" stroke="rgba(97,44,230,0.08)" stroke-width="2" filter="url(#shadow)" opacity="0.95"/>
+  
+  <g fill="rgba(97,44,230,0.04)" stroke="rgba(97,44,230,0.15)" stroke-width="1.5">
+    <circle cx="100" cy="100" r="36"/>
+    <circle cx="200" cy="100" r="36"/>
+    <circle cx="300" cy="100" r="36"/>
+    
+    <circle cx="100" cy="200" r="36"/>
+    <circle cx="200" cy="200" r="36"/>
+    <circle cx="300" cy="200" r="36"/>
+    
+    <circle cx="100" cy="300" r="36"/>
+    <circle cx="200" cy="300" r="36"/>
+    <circle cx="300" cy="300" r="36"/>
+  </g>
+  
+  <g fill="rgba(97,44,230,0.2)">
+    <circle cx="190" cy="190" r="2"/><circle cx="200" cy="190" r="2"/><circle cx="210" cy="190" r="2"/>
+    <circle cx="190" cy="200" r="2"/><circle cx="200" cy="200" r="2"/><circle cx="210" cy="200" r="2"/>
+    <circle cx="190" cy="210" r="2"/><circle cx="200" cy="210" r="2"/><circle cx="210" cy="210" r="2"/>
+  </g>
+</svg>
