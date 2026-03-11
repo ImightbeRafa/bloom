@@ -60,8 +60,26 @@
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(97, 44, 230, 0.25); }
   </style>
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2410372076145656');
+  fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel -->
 </head>
 <body>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2410372076145656&ev=PageView&noscript=1"
+  /></noscript>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
 
@@ -83,11 +101,32 @@
       var returnData = p.get('returnData') || p.get('return_data');
       var transactionId = p.get('tpt') || p.get('transaction_id') || p.get('tilopay-transaction') || p.get('id');
       if (!returnData) return;
+
+      var order;
+      try { order = JSON.parse(atob(returnData)); } catch (e) { order = null; }
+
       fetch('/api/tilopay/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ returnData: returnData, transactionId: transactionId })
       }).catch(function (e) { console.error('[Success] Confirm error:', e); });
+
+      // Fire browser-side Purchase event with dedup eventID
+      if (order && order.orderId && typeof fbq === 'function') {
+        var metaEventId = 'purchase_' + order.orderId + (transactionId ? '_' + transactionId : '');
+        var storageKey = 'meta_purchase_' + order.orderId;
+        if (!sessionStorage.getItem(storageKey)) {
+          sessionStorage.setItem(storageKey, '1');
+          var totalItems = parseInt(order.cantidad) || 1;
+          fbq('track', 'Purchase', {
+            value: order.total,
+            currency: 'CRC',
+            content_ids: ['bloom-patch'],
+            content_type: 'product',
+            num_items: totalItems
+          }, { eventID: metaEventId });
+        }
+      }
     })();
   </script>
 </body>

@@ -1,6 +1,8 @@
 // ─── Bloom — api/tilopay/create-payment.js ──────────────────────────────────
 // Vercel serverless function: creates a Tilopay payment link
 
+import { generateEventId, sendMetaEvent } from '../utils/meta.js';
+
 const UNIT_PRICE               = 8900;
 const SHIPPING_FREE_THRESHOLD  = 2;
 const SHIPPING_COST            = 2600;
@@ -144,11 +146,21 @@ export default async function handler(req, res) {
 
     console.log(`[Tilopay] Payment created — Order: ${orderId}, URL: ${paymentUrl}`);
 
+    const metaEventId = generateEventId('ic', orderId);
+    sendMetaEvent('InitiateCheckout', metaEventId, order, req, {
+      value: total,
+      currency: 'CRC',
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: qty
+    }, `${appUrl}/#pedido`).catch(() => {});
+
     return res.status(200).json({
       success: true,
       orderId,
       paymentUrl,
-      transactionId
+      transactionId,
+      metaEventId
     });
 
   } catch (err) {

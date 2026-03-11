@@ -4,6 +4,7 @@
 import crypto from 'crypto';
 import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
+import { generateEventId, sendMetaEvent } from '../utils/meta.js';
 
 const SUCCESS_STATUSES = ['aprobada', 'approved', 'success', 'paid', 'completed'];
 const DECLINE_STATUSES = ['rechazada', 'declined', 'failed', 'canceled', 'cancelled', 'rejected'];
@@ -65,11 +66,22 @@ export default async function handler(req, res) {
 
   console.log(`[Webhook] Order ${orderId} confirmed — Total: ₡${order.total}`);
 
+  const appUrl = process.env.APP_URL || 'https://bloomcr.shopping';
+  const metaEventId = generateEventId('purchase', orderId, transactionId);
+  const totalItems = parseInt(order.cantidad) || 1;
+
   // Do ALL async work BEFORE responding (Vercel terminates after res.json)
   const results = await Promise.allSettled([
     sendOrderEmail(order),
     sendTilopayConfirmationEmail(order),
-    sendOrderToBetsyWithRetry({ ...order, transactionId })
+    sendOrderToBetsyWithRetry({ ...order, transactionId }),
+    sendMetaEvent('Purchase', metaEventId, order, req, {
+      value: order.total,
+      currency: 'CRC',
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: totalItems
+    }, `${appUrl}/success.html`)
   ]);
 
   if (results[0].status === 'rejected') console.error(`[Webhook] Admin email failed for ${orderId}:`, results[0].reason?.message);

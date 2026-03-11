@@ -3,6 +3,7 @@
 import crypto from 'crypto';
 import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
+import { generateEventId, sendMetaEvent } from '../utils/meta.js';
 
 const UNIT_PRICE              = 8900;
 const SHIPPING_FREE_THRESHOLD = 2;
@@ -106,7 +107,16 @@ export async function createPayment(req, res) {
     if (!paymentUrl) return res.status(502).json({ error: 'Tilopay no devolvió URL de pago' });
 
     console.log(`[Tilopay] Payment created: ${orderId}`);
-    return res.json({ success: true, orderId, paymentUrl, transactionId: payData.transaction_id || payData.id });
+
+    const metaEventId = generateEventId('ic', orderId);
+    sendMetaEvent('InitiateCheckout', metaEventId, order, req, {
+      value: total, currency: 'CRC',
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: qty
+    }, `${appUrl}/#pedido`).catch(() => {});
+
+    return res.json({ success: true, orderId, paymentUrl, transactionId: payData.transaction_id || payData.id, metaEventId });
   } catch (err) {
     console.error('[createPayment]', err.message);
     return res.status(500).json({ error: 'Error interno' });
@@ -147,11 +157,21 @@ export async function handleWebhook(req, res) {
 
   global.pendingOrders?.delete(orderId);
 
+  const appUrl = process.env.APP_URL || 'http://localhost:5173';
+  const metaEventId = generateEventId('purchase', orderId, transactionId);
+  const totalItems = parseInt(order.cantidad) || 1;
+
   // Do async work before responding
   const results = await Promise.allSettled([
     sendOrderEmail(order),
     sendTilopayConfirmationEmail(order),
-    sendOrderToBetsyWithRetry({ ...order, transactionId })
+    sendOrderToBetsyWithRetry({ ...order, transactionId }),
+    sendMetaEvent('Purchase', metaEventId, order, req, {
+      value: order.total, currency: 'CRC',
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: totalItems
+    }, `${appUrl}/success.html`)
   ]);
 
   if (results[0].status === 'rejected') console.error('[Webhook] Admin email:', results[0].reason?.message);
@@ -192,10 +212,20 @@ export async function processConfirm(req, res) {
 
   console.log(`[Confirm] Processing order ${orderId}`);
 
+  const appUrlConfirm = process.env.APP_URL || 'http://localhost:5173';
+  const metaEventIdConfirm = generateEventId('purchase', orderId, transactionId);
+  const totalItemsConfirm = parseInt(order.cantidad) || 1;
+
   const results = await Promise.allSettled([
     sendOrderEmail(order),
     sendTilopayConfirmationEmail(order),
-    sendOrderToBetsyWithRetry({ ...order, transactionId })
+    sendOrderToBetsyWithRetry({ ...order, transactionId }),
+    sendMetaEvent('Purchase', metaEventIdConfirm, order, req, {
+      value: order.total, currency: 'CRC',
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: totalItemsConfirm
+    }, `${appUrlConfirm}/success.html`)
   ]);
 
   if (results[0].status === 'rejected') console.error('[Confirm] Admin email:', results[0].reason?.message);

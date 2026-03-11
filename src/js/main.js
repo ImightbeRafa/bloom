@@ -1,5 +1,20 @@
 // ─── Bloom — main.js ───────────────────────────────────────────────────────
 
+// ── Meta Pixel Helper ────────────────────────────────────────────────────────
+function metaTrack(eventName, params, options) {
+  try {
+    if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+      if (params && options) {
+        window.fbq('track', eventName, params, options);
+      } else if (params) {
+        window.fbq('track', eventName, params);
+      } else {
+        window.fbq('track', eventName);
+      }
+    }
+  } catch { /* no-op */ }
+}
+
 // ── Pricing ──────────────────────────────────────────────────────────────────
 const UNIT_PRICE = 8900;
 const SHIPPING_FREE_THRESHOLD = 2;  // 2+ units → free shipping
@@ -81,8 +96,23 @@ function updateQty(newQty) {
   updateSummary();
 }
 
+let addToCartFired = false;
+
 qtyMinus.addEventListener('click', () => updateQty(currentQty - 1));
-qtyPlus.addEventListener('click', () => updateQty(currentQty + 1));
+qtyPlus.addEventListener('click', () => {
+  const prevQty = currentQty;
+  updateQty(currentQty + 1);
+  if (!addToCartFired && currentQty > prevQty) {
+    addToCartFired = true;
+    metaTrack('AddToCart', {
+      content_ids: ['bloom-patch'],
+      content_name: 'Bloom Dermal Micro-Infusion Patch',
+      content_type: 'product',
+      value: UNIT_PRICE * currentQty,
+      currency: 'CRC'
+    });
+  }
+});
 
 // ── Order Summary ─────────────────────────────────────────────────────────────
 function formatCRC(amount) {
@@ -172,6 +202,13 @@ async function handleTilopay(data) {
   }
 
   if (result.paymentUrl) {
+    metaTrack('InitiateCheckout', {
+      content_ids: ['bloom-patch'],
+      content_type: 'product',
+      num_items: parseInt(data.cantidad) || 1,
+      value: calculateOrder(parseInt(data.cantidad) || 1).total,
+      currency: 'CRC'
+    }, { eventID: result.metaEventId });
     window.location.href = result.paymentUrl;
   } else {
     throw new Error('No se recibió el enlace de pago. Intenta de nuevo.');
@@ -192,6 +229,12 @@ async function handleSinpe(data) {
   }
 
   showSinpeConfirmation(result.orderId, result.total, result.sinpePhone, result.sinpeHolder);
+
+  metaTrack('Lead', {
+    content_name: 'SINPE Order',
+    value: result.total,
+    currency: 'CRC'
+  });
 }
 
 function showSinpeConfirmation(orderId, total, sinpePhone, sinpeHolder) {
@@ -284,9 +327,32 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────
 initProvinces();
 updateSummary();
+
+// ── Meta Pixel: ViewContent on product section visibility ────────────────────
+(function () {
+  var orderSection = document.getElementById('order');
+  if (!orderSection) return;
+  var viewContentFired = false;
+  var vcObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting && !viewContentFired) {
+        viewContentFired = true;
+        metaTrack('ViewContent', {
+          content_ids: ['bloom-patch'],
+          content_name: 'Bloom Dermal Micro-Infusion Patch',
+          content_type: 'product',
+          value: UNIT_PRICE,
+          currency: 'CRC'
+        });
+        vcObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.55 });
+  vcObserver.observe(orderSection);
+})();
 
 // ── Interactive Background ────────────────────────────────────────────────────
 const rootStyle = document.documentElement.style;
