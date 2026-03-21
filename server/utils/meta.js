@@ -15,9 +15,8 @@ function hashValue(value) {
 }
 
 function buildUserData(order, req) {
-  const nameParts = (order.nombre || '').trim().split(/\s+/);
-  const firstName = nameParts[0] || '';
-  const lastName  = nameParts.slice(1).join(' ') || '';
+  const firstName = (order.nombre || '').trim();
+  const lastName  = (order.apellido || '').trim();
 
   const userData = {};
   if (order.email)    userData.em = [hashValue(order.email)];

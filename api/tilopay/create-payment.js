@@ -44,13 +44,13 @@ export default async function handler(req, res) {
 
   try {
     const {
-      nombre, telefono, email,
+      nombre, apellido, telefono, email,
       provincia, canton, distrito, direccion,
       cantidad, comentarios
     } = req.body;
 
     // Validate required fields
-    const required = { nombre, telefono, email, provincia, canton, distrito, direccion };
+    const required = { nombre, apellido, telefono, email, provincia, canton, distrito, direccion };
     for (const [field, value] of Object.entries(required)) {
       if (!value || !String(value).trim()) {
         return res.status(400).json({ error: `Campo requerido: ${field}` });
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     }
 
     const order = {
-      orderId, nombre: nombre.trim(), telefono: telefono.trim(),
+      orderId, nombre: nombre.trim(), apellido: apellido.trim(), telefono: telefono.trim(),
       email: email.trim().toLowerCase(),
       provincia, canton, distrito, direccion: direccion.trim(),
       cantidad: qty, comentarios: (comentarios || '').trim(),
@@ -86,9 +86,8 @@ export default async function handler(req, res) {
 
     const accessToken = await authenticateTilopay();
 
-    const nameParts = nombre.trim().split(' ');
-    const firstName = nameParts[0];
-    const lastName  = nameParts.slice(1).join(' ') || '-';
+    const firstName = nombre.trim();
+    const lastName  = apellido.trim() || '-';
 
     const provinceStateMap = {
       'San José': 'CR-SJ', 'Alajuela': 'CR-A', 'Cartago': 'CR-C',

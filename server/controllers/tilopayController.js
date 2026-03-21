@@ -37,9 +37,9 @@ async function authenticateTilopay() {
 
 export async function createPayment(req, res) {
   try {
-    const { nombre, telefono, email, provincia, canton, distrito, direccion, cantidad, comentarios } = req.body;
+    const { nombre, apellido, telefono, email, provincia, canton, distrito, direccion, cantidad, comentarios } = req.body;
 
-    const required = { nombre, telefono, email, provincia, canton, distrito, direccion };
+    const required = { nombre, apellido, telefono, email, provincia, canton, distrito, direccion };
     for (const [field, value] of Object.entries(required)) {
       if (!value?.trim()) return res.status(400).json({ error: `Campo requerido: ${field}` });
     }
@@ -59,7 +59,7 @@ export async function createPayment(req, res) {
     const appUrl   = process.env.APP_URL || 'http://localhost:5173';
 
     const order = {
-      orderId, nombre: nombre.trim(), telefono: telefono.trim(),
+      orderId, nombre: nombre.trim(), apellido: apellido.trim(), telefono: telefono.trim(),
       email: email.trim().toLowerCase(),
       provincia, canton, distrito, direccion: direccion.trim(),
       cantidad: qty, comentarios: (comentarios || '').trim(),
@@ -74,14 +74,13 @@ export async function createPayment(req, res) {
 
     const returnData = Buffer.from(JSON.stringify(order)).toString('base64');
     const accessToken = await authenticateTilopay();
-    const nameParts   = nombre.trim().split(' ');
 
     const tilopayPayload = {
       key: process.env.TILOPAY_API_KEY, amount: total, currency: 'CRC',
       description: `Bloom Dermal Micro-Infusion Patch x${qty}`,
       redirect: `${appUrl}/success.html`, errorRedirect: `${appUrl}/error.html`,
       hashVersion: 'V2',
-      billToFirstName: nameParts[0], billToLastName: nameParts.slice(1).join(' ') || '-',
+      billToFirstName: nombre.trim(), billToLastName: apellido.trim() || '-',
       billToAddress: direccion, billToAddress2: `${distrito}, ${canton}`,
       billToCity: canton, billToState: PROVINCE_STATE_MAP[provincia] || 'CR-SJ',
       billToZipPostCode: '10101',

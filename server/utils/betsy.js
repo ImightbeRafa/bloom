@@ -6,7 +6,7 @@ const TIMEOUT_MS = 10000;
 function buildBetsyPayload(order) {
   return {
     orderId: order.orderId,
-    customer: { name: order.nombre, phone: order.telefono, email: order.email },
+    customer: { name: `${order.nombre} ${order.apellido}`.trim(), phone: order.telefono, email: order.email },
     product: {
       name: 'Bloom Dermal Micro-Infusion Patch',
       quantity: order.cantidad,
@@ -35,9 +35,7 @@ function buildBetsyPayload(order) {
     metadata: {
       campaign: 'organic',
       referrer: 'direct',
-      comments: order.paymentMethod === 'Tilopay'
-        ? `Pago: Tarjeta (Tilopay) - Estado: PAGADO - ID Transacción: ${order.transactionId || order.paymentId}`
-        : 'Pago: SINPE Móvil - Estado: PENDIENTE CONFIRMACIÓN',
+      comments: `Pago: Tarjeta (Tilopay) - Estado: PAGADO - ID Transacción: ${order.transactionId || order.paymentId}`,
       createdAt: order.createdAt || new Date().toISOString()
     }
   };

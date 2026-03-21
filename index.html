@@ -502,9 +502,15 @@
           <legend class="form-legend">Información personal</legend>
           <div class="field-row">
             <div class="field">
-              <label for="nombre">Nombre completo</label>
+              <label for="nombre">Nombre</label>
               <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
             </div>
+            <div class="field">
+              <label for="apellido">Apellido</label>
+              <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" required />
+            </div>
+          </div>
+          <div class="field-row">
             <div class="field">
               <label for="telefono">Teléfono</label>
               <input type="tel" id="telefono" name="telefono" placeholder="8888-7777" required />
@@ -541,38 +547,6 @@
             <label for="direccion">Señas exactas</label>
             <textarea id="direccion" name="direccion" rows="2"
               placeholder="Ej: 100m norte de la farmacia, casa azul" required></textarea>
-          </div>
-        </fieldset>
-
-        <!-- Payment Method -->
-        <fieldset class="form-section reveal">
-          <legend class="form-legend">Método de pago</legend>
-          <div class="payment-toggle">
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Tarjeta" checked />
-              <span class="payment-pill">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-                  <line x1="1" y1="10" x2="23" y2="10" />
-                </svg>
-                Tarjeta
-              </span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="SINPE" />
-              <span class="payment-pill">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                  <line x1="12" y1="18" x2="12.01" y2="18" />
-                </svg>
-                SINPE Móvil
-              </span>
-            </label>
-          </div>
-          <div class="sinpe-info" id="sinpe-info" hidden>
-            <p>Al confirmar tu pedido, recibirás las instrucciones de SINPE Móvil en tu correo.</p>
           </div>
         </fieldset>
 

@@ -45,8 +45,6 @@ const qtyMinus = document.getElementById('qty-minus');
 const qtyPlus = document.getElementById('qty-plus');
 const qtyDisplay = document.getElementById('qty-display');
 const cantidadInput = document.getElementById('cantidad');
-const paymentInputs = document.querySelectorAll('input[name="paymentMethod"]');
-const sinpeInfo = document.getElementById('sinpe-info');
 const form = document.getElementById('order-form');
 const submitBtn = document.getElementById('submit-btn');
 const btnText = document.getElementById('btn-text');
@@ -139,14 +137,6 @@ function updateSummary() {
   }
 }
 
-// ── Payment Method Toggle ─────────────────────────────────────────────────────
-paymentInputs.forEach(input => {
-  input.addEventListener('change', () => {
-    const isSinpe = input.value === 'SINPE';
-    sinpeInfo.hidden = !isSinpe;
-  });
-});
-
 // ── Form Utilities ────────────────────────────────────────────────────────────
 function setLoading(loading) {
   submitBtn.disabled = loading;
@@ -172,7 +162,7 @@ function getFormData() {
 }
 
 function validateForm(data) {
-  const required = ['nombre', 'telefono', 'email', 'provincia', 'canton', 'distrito', 'direccion'];
+  const required = ['nombre', 'apellido', 'telefono', 'email', 'provincia', 'canton', 'distrito', 'direccion'];
   for (const field of required) {
     if (!data[field] || !data[field].trim()) {
       const label = form.querySelector(`label[for="${field}"]`);
@@ -215,90 +205,6 @@ async function handleTilopay(data) {
   }
 }
 
-async function handleSinpe(data) {
-  const res = await fetch('/api/email/send-sinpe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-
-  const result = await res.json();
-
-  if (!res.ok || !result.success) {
-    throw new Error(result.error || 'Error al procesar el pedido. Intenta de nuevo.');
-  }
-
-  showSinpeConfirmation(result.orderId, result.total, result.sinpePhone, result.sinpeHolder);
-
-  metaTrack('Lead', {
-    content_name: 'SINPE Order',
-    value: result.total,
-    currency: 'CRC'
-  });
-}
-
-function showSinpeConfirmation(orderId, total, sinpePhone, sinpeHolder) {
-  const formSection = document.getElementById('order');
-  formSection.innerHTML = `
-    <div class="container" style="max-width:560px;">
-      <div class="sinpe-confirm">
-
-        <div class="sinpe-confirm-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#612CE6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-
-        <h2 class="sinpe-confirm-title">Pedido recibido</h2>
-        <p class="sinpe-confirm-sub">Realizá tu SINPE Móvil con los datos de abajo. También te enviamos las instrucciones por correo.</p>
-
-        <!-- SINPE Payment Box -->
-        <div class="sinpe-pay-box">
-          <p class="sinpe-pay-heading">SINPE Móvil</p>
-
-          <div class="sinpe-pay-row">
-            <span class="sinpe-pay-label">Número</span>
-            <span class="sinpe-pay-value sinpe-pay-phone">${sinpePhone}</span>
-          </div>
-          <div class="sinpe-pay-row">
-            <span class="sinpe-pay-label">A nombre de</span>
-            <span class="sinpe-pay-value">${sinpeHolder}</span>
-          </div>
-          <div class="sinpe-pay-divider"></div>
-          <div class="sinpe-pay-row">
-            <span class="sinpe-pay-label">Monto exacto</span>
-            <span class="sinpe-pay-value sinpe-pay-amount">${formatCRC(total)}</span>
-          </div>
-          <div class="sinpe-pay-row">
-            <span class="sinpe-pay-label">Concepto / Referencia</span>
-            <span class="sinpe-pay-value sinpe-pay-ref">${orderId}</span>
-          </div>
-        </div>
-
-        <!-- Steps -->
-        <div class="sinpe-steps">
-          <div class="sinpe-step">
-            <span class="sinpe-step-num">1</span>
-            <span>Usá el número de tu orden como concepto del SINPE</span>
-          </div>
-          <div class="sinpe-step">
-            <span class="sinpe-step-num">2</span>
-            <span>Guardá el comprobante de pago</span>
-          </div>
-          <div class="sinpe-step">
-            <span class="sinpe-step-num">3</span>
-            <span>Enviá el comprobante por WhatsApp al <strong>${sinpePhone}</strong></span>
-          </div>
-        </div>
-
-        <p class="sinpe-confirm-note">Tu pedido será procesado dentro de 24 horas hábiles tras confirmar el pago.</p>
-
-        <a href="/" class="btn-primary" style="width:100%;text-align:center;margin-top:8px;">Volver a la tienda</a>
-      </div>
-    </div>
-  `;
-}
-
 // ── Form Submit ───────────────────────────────────────────────────────────────
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -315,12 +221,7 @@ form.addEventListener('submit', async (e) => {
   setLoading(true);
 
   try {
-    const method = data.paymentMethod;
-    if (method === 'SINPE') {
-      await handleSinpe(data);
-    } else {
-      await handleTilopay(data);
-    }
+    await handleTilopay(data);
   } catch (err) {
     showError(err.message || 'Ocurrió un error inesperado. Por favor intenta de nuevo.');
     setLoading(false);

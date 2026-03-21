@@ -7,7 +7,7 @@ function buildBetsyPayload(order) {
   return {
     orderId: order.orderId,
     customer: {
-      name: order.nombre,
+      name: `${order.nombre} ${order.apellido}`.trim(),
       phone: order.telefono,
       email: order.email
     },
@@ -39,9 +39,7 @@ function buildBetsyPayload(order) {
     metadata: {
       campaign: 'organic',
       referrer: 'direct',
-      comments: order.paymentMethod === 'Tilopay'
-        ? `Pago: Tarjeta (Tilopay) - Estado: PAGADO - ID Transacción: ${order.transactionId || order.paymentId}`
-        : 'Pago: SINPE Móvil - Estado: PENDIENTE CONFIRMACIÓN',
+      comments: `Pago: Tarjeta (Tilopay) - Estado: PAGADO - ID Transacción: ${order.transactionId || order.paymentId}`,
       createdAt: order.createdAt || new Date().toISOString()
     }
   };
