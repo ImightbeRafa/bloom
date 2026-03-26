@@ -98,9 +98,17 @@
   <script>
     (function () {
       var p = new URLSearchParams(window.location.search);
+      var code = p.get('code') || '';
       var returnData = p.get('returnData') || p.get('return_data');
       var transactionId = p.get('tpt') || p.get('transaction_id') || p.get('tilopay-transaction') || p.get('id');
       if (!returnData) return;
+
+      // Tilopay redirects here for ALL outcomes; code '1' = approved
+      if (code && code !== '1') {
+        console.warn('[Success] Payment not approved — code:', code, '— redirecting to error page');
+        window.location.replace('/error.html');
+        return;
+      }
 
       var order;
       try { order = JSON.parse(atob(returnData)); } catch (e) { order = null; }
@@ -108,7 +116,7 @@
       fetch('/api/tilopay/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ returnData: returnData, transactionId: transactionId })
+        body: JSON.stringify({ returnData: returnData, transactionId: transactionId, code: code })
       }).catch(function (e) { console.error('[Success] Confirm error:', e); });
 
       // Fire browser-side Purchase event with dedup eventID

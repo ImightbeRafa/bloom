@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { returnData, transactionId } = req.body;
+  const { returnData, transactionId, code } = req.body;
   if (!returnData) return res.status(400).json({ error: 'Missing returnData' });
 
   let order;
@@ -30,6 +30,12 @@ export default async function handler(req, res) {
 
   const orderId = order.orderId;
   if (!orderId) return res.status(400).json({ error: 'Invalid order data' });
+
+  // Only process if Tilopay response code is '1' (approved)
+  if (code !== '1') {
+    console.warn(`[Confirm] Payment NOT approved for ${orderId} — code: ${code || 'missing'}`);
+    return res.status(200).json({ success: false, orderId, message: 'Payment not approved' });
+  }
 
   // Dedup: prevent double sends if success page fires multiple times
   if (processedOrders.has(orderId)) {
