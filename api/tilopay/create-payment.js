@@ -3,13 +3,15 @@
 
 import { generateEventId, sendMetaEvent } from '../utils/meta.js';
 
-const UNIT_PRICE               = 8900;
-const SHIPPING_FREE_THRESHOLD  = 2;
-const SHIPPING_COST            = 2600;
+const UNIT_PRICE       = 8900;
+const PROMO_PRICE      = 4450;    // 50% off when qty >= 2
+const PROMO_THRESHOLD  = 2;
+const SHIPPING_COST    = 3000;    // flat ₡3,000 shipping
 
 function calculateOrder(qty) {
-  const subtotal = UNIT_PRICE * qty;
-  const shipping = qty >= SHIPPING_FREE_THRESHOLD ? 0 : SHIPPING_COST;
+  const unitPrice = qty >= PROMO_THRESHOLD ? PROMO_PRICE : UNIT_PRICE;
+  const subtotal = unitPrice * qty;
+  const shipping = SHIPPING_COST;
   return { subtotal, shipping, total: subtotal + shipping };
 }
 

@@ -28,14 +28,17 @@ function getMetaCookies() {
 
 // ── Pricing ──────────────────────────────────────────────────────────────────
 const UNIT_PRICE = 8900;
-const SHIPPING_FREE_THRESHOLD = 2;  // 2+ units → free shipping
-const SHIPPING_COST = 2600;
+const PROMO_PRICE = 4450;        // 50% off when qty >= 2
+const PROMO_THRESHOLD = 2;
+const SHIPPING_COST = 3000;      // flat ₡3,000 shipping on all orders
 
 function calculateOrder(qty) {
-  const subtotal = UNIT_PRICE * qty;
-  const shipping = qty >= SHIPPING_FREE_THRESHOLD ? 0 : SHIPPING_COST;
+  const unitPrice = qty >= PROMO_THRESHOLD ? PROMO_PRICE : UNIT_PRICE;
+  const subtotal = unitPrice * qty;
+  const shipping = SHIPPING_COST;
   const total = subtotal + shipping;
-  return { subtotal, shipping, total };
+  const saved = qty >= PROMO_THRESHOLD ? (UNIT_PRICE - PROMO_PRICE) * qty : 0;
+  return { subtotal, shipping, total, unitPrice, saved };
 }
 
 // ── Costa Rica Geographic Data ────────────────────────────────────────────────
@@ -96,7 +99,7 @@ provinciaSelect.addEventListener('change', () => {
 });
 
 // ── Quantity Control ──────────────────────────────────────────────────────────
-let currentQty = 1;
+let currentQty = 2;
 
 function updateQty(newQty) {
   if (newQty < 1 || newQty > 10) return;
@@ -130,23 +133,44 @@ function formatCRC(amount) {
 }
 
 function updateSummary() {
-  const { subtotal, shipping, total } = calculateOrder(currentQty);
+  const { subtotal, shipping, total, unitPrice, saved } = calculateOrder(currentQty);
 
   summaryQty.textContent = `× ${currentQty}`;
   summarySubtotal.textContent = formatCRC(subtotal);
-  summaryShipping.textContent = shipping === 0 ? 'GRATIS' : formatCRC(shipping);
+  summaryShipping.textContent = formatCRC(shipping);
   summaryTotal.textContent = formatCRC(total);
   if (btnTotalEl) btnTotalEl.textContent = formatCRC(total);
 
+  // Update product price display
+  const priceEl = document.getElementById('order-price-display');
+  if (priceEl) {
+    if (currentQty >= PROMO_THRESHOLD) {
+      priceEl.innerHTML = `<span class="price-original">₡8,900</span> ₡4,450 <span class="order-product-unit">/ unidad</span>`;
+    } else {
+      priceEl.innerHTML = `₡8,900 <span class="order-product-unit">/ unidad</span>`;
+    }
+  }
+
   const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>`;
 
-  if (shipping === 0) {
-    shippingNote.innerHTML = `${icon} <strong>Envío gratis</strong> incluido`;
+  if (currentQty >= PROMO_THRESHOLD) {
+    shippingNote.innerHTML = `${icon} <strong>-50% aplicado</strong> — Ahorrás ${formatCRC(saved)} en esta orden`;
     shippingNote.classList.add('free-shipping');
   } else {
-    const unitsNeeded = SHIPPING_FREE_THRESHOLD - currentQty;
-    shippingNote.innerHTML = `${icon} Agrega ${unitsNeeded} unidad${unitsNeeded > 1 ? 'es' : ''} más para envío <strong>gratis</strong>`;
+    shippingNote.innerHTML = `${icon} Agrega 1 unidad más y obtené <strong>50% de descuento</strong>`;
     shippingNote.classList.remove('free-shipping');
+  }
+
+  // Show/hide savings row
+  const savingsRow = document.getElementById('summary-savings-row');
+  const savingsAmount = document.getElementById('summary-savings');
+  if (savingsRow && savingsAmount) {
+    if (saved > 0) {
+      savingsRow.hidden = false;
+      savingsAmount.textContent = `-${formatCRC(saved)}`;
+    } else {
+      savingsRow.hidden = true;
+    }
   }
 }
 
@@ -260,7 +284,44 @@ form.addEventListener('submit', async (e) => {
 
 // ── Init ──────────────────────────────────────────────────────────────────
 initProvinces();
-updateSummary();
+updateQty(2); // default to 2 for promo
+
+// ── Promo Countdown Timer ────────────────────────────────────────────────────
+(function () {
+  const timerEls = document.querySelectorAll('.promo-timer');
+  if (!timerEls.length) return;
+
+  function getNextReset() {
+    // Resets every 24h at midnight Costa Rica time (UTC-6)
+    const now = new Date();
+    const crOffset = -6 * 60;
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const crNow = new Date(utc + crOffset * 60000);
+    const tomorrow = new Date(crNow);
+    tomorrow.setHours(24, 0, 0, 0);
+    const diff = tomorrow.getTime() - crNow.getTime();
+    return Date.now() + diff;
+  }
+
+  let target = getNextReset();
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    let remaining = target - Date.now();
+    if (remaining <= 0) {
+      target = getNextReset();
+      remaining = target - Date.now();
+    }
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    const display = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    timerEls.forEach(el => { el.textContent = display; });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
 
 // ── Meta Pixel: ViewContent on product section visibility ────────────────────
 (function () {

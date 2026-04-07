@@ -57,7 +57,7 @@
       <a href="/" class="logo-group" aria-label="Bloom — Dermal Micro-Infusion Patch">
         <img src="/images/bloom-logo.png" alt="BLOOM" class="bloom-logo-img" />
       </a>
-      <a href="#order" class="nav-cta">Ordenar — ₡8,900</a>
+      <a href="#order" class="nav-cta">50% OFF — Ordenar</a>
     </nav>
   </header>
 
@@ -65,16 +65,27 @@
   <section class="hero hero-split">
     <div class="container hero-inner">
       <div class="hero-content reveal">
-        <div class="hero-badge">DISPONIBLE EN COSTA RICA</div>
+        <div class="hero-badge promo-badge">PROMO POR TIEMPO LIMITADO</div>
         <h1 class="hero-title">
           Despertá con <br /><span class="gradient-text">Piel Radiante</span>
         </h1>
         <p class="hero-subtitle">
           El parche de micro-agujas con Ácido Hialurónico que actúa mientras dormís — indoloro, discreto y se disuelve durante la noche.
         </p>
+        <div class="hero-promo-card">
+          <div class="hero-promo-prices">
+            <span class="hero-price-old">₡8,900</span>
+            <span class="hero-price-new">₡4,450</span>
+            <span class="hero-price-unit">/ unidad</span>
+          </div>
+          <div class="hero-promo-label">50% OFF comprando 2+</div>
+          <div class="hero-promo-timer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Termina en <span class="promo-timer">00:00:00</span>
+          </div>
+        </div>
         <div class="hero-actions">
-          <a href="#order" class="btn-primary">Ordenar Ahora — ₡8,900</a>
-          <span class="hero-price">Env&iacute;o gratis con 2+ unidades</span>
+          <a href="#order" class="btn-primary">Aprovechar Oferta — 50% OFF</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -444,6 +455,18 @@
     <div class="container order-container">
       <h2 class="section-title reveal">Ordená tu <span class="gradient-text">Bloom</span></h2>
 
+      <!-- Promo countdown banner -->
+      <div class="order-promo-banner reveal">
+        <div class="order-promo-top">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <strong>50% de descuento</strong> comprando 2 o más
+        </div>
+        <div class="order-promo-timer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Oferta termina en <span class="promo-timer">00:00:00</span>
+        </div>
+      </div>
+
       <form class="order-flow" id="order-form" novalidate>
 
         <!-- Product + Quantity row -->
@@ -451,42 +474,46 @@
           <img src="/images/product2.jpg" alt="Bloom Patch" class="order-product-thumb" loading="lazy" decoding="async" />
           <div class="order-product-info">
             <span class="order-product-name">Bloom Dermal Micro-Infusion Patch</span>
-            <span class="order-product-price">₡8,900 <span class="order-product-unit">/ unidad</span></span>
+            <span class="order-product-price" id="order-price-display"><span class="price-original">₡8,900</span> ₡4,450 <span class="order-product-unit">/ unidad</span></span>
           </div>
           <div class="qty-control">
             <button type="button" class="qty-btn" id="qty-minus" aria-label="Reducir cantidad">−</button>
-            <span class="qty-display" id="qty-display">1</span>
+            <span class="qty-display" id="qty-display">2</span>
             <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad">+</button>
-            <input type="hidden" id="cantidad" name="cantidad" value="1" />
+            <input type="hidden" id="cantidad" name="cantidad" value="2" />
           </div>
         </div>
 
-        <!-- Free shipping banner -->
+        <!-- Promo shipping banner -->
         <div class="shipping-banner reveal" id="shipping-note">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
-          Agrega 1 unidad más para envío <strong>gratis</strong>
+          <strong>-50% aplicado</strong> — Ahorrás ₡8,900 en esta orden
         </div>
 
         <!-- Totals strip -->
         <div class="order-totals reveal">
+          <div class="order-totals-line order-totals-savings" id="summary-savings-row">
+            <span>Descuento 50%</span>
+            <span class="savings-amount" id="summary-savings">-₡8,900</span>
+          </div>
           <div class="order-totals-line">
             <span>Subtotal</span>
             <span id="summary-subtotal">₡8,900</span>
           </div>
           <div class="order-totals-line">
             <span>Envío</span>
-            <span id="summary-shipping">₡2,600</span>
+            <span id="summary-shipping">₡3,000</span>
           </div>
           <div class="order-totals-total">
             <span>Total</span>
-            <span id="summary-total">₡11,500</span>
+            <span id="summary-total">₡11,900</span>
           </div>
         </div>
 
         <!-- Hidden summary elements for JS compatibility -->
-        <span id="summary-qty" hidden>× 1</span>
+        <span id="summary-qty" hidden>× 2</span>
 
         <!-- Personal Info -->
         <fieldset class="form-section reveal">
@@ -557,7 +584,7 @@
         <button type="submit" class="btn-primary btn-submit reveal" id="submit-btn">
           <span id="btn-text">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:4px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            Pagar <span id="btn-total">₡11,500</span> — Pago Seguro
+            Pagar <span id="btn-total">₡11,900</span> — Pago Seguro
           </span>
           <span id="btn-loading" hidden>
             <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
