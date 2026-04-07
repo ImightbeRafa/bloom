@@ -41,13 +41,13 @@ a {
 
   --bg: #f8f5ff;
   --bg-elevated: #ffffff;
-  --glass-bg: rgba(255, 255, 255, 0.78);
-  --glass-border: rgba(97, 44, 230, 0.14);
-  --glass-hover: rgba(255, 255, 255, 0.92);
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(97, 44, 230, 0.16);
+  --glass-hover: rgba(255, 255, 255, 0.95);
 
-  --text: #1c0f3a;
-  --text-muted: #5a4580;
-  --text-faint: #8e7fb5;
+  --text: #1a0d36;
+  --text-muted: #3d2666;
+  --text-faint: #5e4a82;
 
   --gradient: linear-gradient(135deg, var(--purple), var(--purple-pale));
   --gradient-text: linear-gradient(135deg, #612CE6, #a78bfa);
@@ -108,7 +108,7 @@ body {
 .blob-1 {
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle, rgba(97, 44, 230, 0.50), rgba(120, 60, 240, 0.30));
+  background: radial-gradient(circle, rgba(97, 44, 230, 0.30), rgba(120, 60, 240, 0.16));
   top: -15%;
   left: -15%;
   animation: blobDrift1 26s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 8s ease-in-out infinite;
@@ -117,7 +117,7 @@ body {
 .blob-2 {
   width: 50vw;
   height: 50vw;
-  background: radial-gradient(circle, rgba(140, 82, 255, 0.45), rgba(97, 44, 230, 0.25));
+  background: radial-gradient(circle, rgba(140, 82, 255, 0.25), rgba(97, 44, 230, 0.14));
   top: 30%;
   right: -10%;
   animation: blobDrift2 32s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 10s ease-in-out infinite -3s;
@@ -126,7 +126,7 @@ body {
 .blob-3 {
   width: 55vw;
   height: 55vw;
-  background: radial-gradient(circle, rgba(80, 30, 220, 0.40), rgba(150, 100, 255, 0.22));
+  background: radial-gradient(circle, rgba(80, 30, 220, 0.22), rgba(150, 100, 255, 0.12));
   bottom: -15%;
   left: 10%;
   animation: blobDrift3 22s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 9s ease-in-out infinite -6s;
@@ -135,7 +135,7 @@ body {
 .blob-4 {
   width: 45vw;
   height: 45vw;
-  background: radial-gradient(circle, rgba(110, 50, 235, 0.42), rgba(130, 70, 245, 0.22));
+  background: radial-gradient(circle, rgba(110, 50, 235, 0.22), rgba(130, 70, 245, 0.12));
   top: 10%;
   left: 20%;
   animation: blobDrift4 28s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 11s ease-in-out infinite -2s;
@@ -144,7 +144,7 @@ body {
 .blob-5 {
   width: 40vw;
   height: 40vw;
-  background: radial-gradient(circle, rgba(97, 44, 230, 0.50) 0%, rgba(97, 44, 230, 0.12) 70%);
+  background: radial-gradient(circle, rgba(97, 44, 230, 0.28) 0%, rgba(97, 44, 230, 0.08) 70%);
   bottom: 15%;
   left: 0%;
   animation: blobDrift5 24s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 7s ease-in-out infinite -4s;
@@ -153,7 +153,7 @@ body {
 .blob-6 {
   width: 35vw;
   height: 35vw;
-  background: radial-gradient(circle, rgba(85, 53, 228, 0.38), rgba(167, 139, 250, 0.18));
+  background: radial-gradient(circle, rgba(85, 53, 228, 0.20), rgba(167, 139, 250, 0.10));
   top: 55%;
   right: 10%;
   animation: blobDrift6 30s cubic-bezier(0.4, 0, 0.2, 1) infinite, blobPulse 12s ease-in-out infinite -8s;
@@ -423,20 +423,20 @@ h3 {
 
 .nav-cta {
   font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--purple-dark);
-  border: 1px solid rgba(94, 23, 235, 0.22);
-  padding: 8px 20px;
+  font-weight: 700;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
   border-radius: 50px;
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--gradient);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .nav-cta:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: var(--purple);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--purple-glow);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -793,8 +793,8 @@ h3 {
   justify-content: space-between;
   gap: 16px;
   padding: 20px 24px;
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(97, 44, 230, 0.10);
+  background: rgba(255, 255, 255, 0.60);
+  border: 1px solid rgba(97, 44, 230, 0.12);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -870,11 +870,11 @@ h3 {
 /* Totals strip */
 .order-totals {
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(97, 44, 230, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(97, 44, 230, 0.12);
   border-radius: var(--radius-md);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .order-totals-line {
@@ -909,11 +909,11 @@ h3 {
   display: flex;
   flex-direction: column;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.30);
-  border: 1px solid rgba(97, 44, 230, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(97, 44, 230, 0.12);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   text-align: left;
 }
 
@@ -965,8 +965,8 @@ h3 {
 
 label {
   font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--text);
   padding-left: 4px;
 }
 
@@ -975,9 +975,9 @@ input[type="tel"],
 input[type="email"],
 select,
 textarea {
-  background: rgba(255, 255, 255, 0.50);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--text);
-  border: 1px solid rgba(94, 23, 235, 0.12);
+  border: 1px solid rgba(94, 23, 235, 0.15);
   border-radius: var(--radius-sm);
   padding: 11px 14px;
   font-size: 0.95rem;
@@ -992,7 +992,7 @@ input[type="tel"]:focus,
 input[type="email"]:focus,
 select:focus,
 textarea:focus {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.90);
 }
 
 input::placeholder,
@@ -1066,8 +1066,26 @@ textarea {
 /* Submit Button */
 .btn-submit {
   width: 100%;
-  font-size: 1.05rem;
-  padding: 16px;
+  font-size: 1.15rem;
+  padding: 18px 24px;
+  letter-spacing: 0.01em;
+}
+
+/* Trust badge */
+.trust-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 8px 0 0;
+}
+
+.trust-badge svg {
+  color: #16a34a;
+  flex-shrink: 0;
 }
 
 /* Spinner */

@@ -32,6 +32,15 @@ function buildUserData(order, req) {
   userData.country = [hashValue('cr')];
   userData.zp      = [hashValue('10101')];
 
+  // external_id for cross-event user matching
+  if (order.email) {
+    userData.external_id = [hashValue(order.email)];
+  }
+
+  // fbc / fbp cookies for browser-server event deduplication
+  if (order.fbc) userData.fbc = order.fbc;
+  if (order.fbp) userData.fbp = order.fbp;
+
   if (req) {
     const ip = req.headers?.['x-forwarded-for']?.split(',')[0]?.trim()
       || req.headers?.['x-real-ip']

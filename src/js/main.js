@@ -15,6 +15,17 @@ function metaTrack(eventName, params, options) {
   } catch { /* no-op */ }
 }
 
+function getMetaCookies() {
+  try {
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+      const [k, ...v] = c.trim().split('=');
+      acc[k] = v.join('=');
+      return acc;
+    }, {});
+    return { fbc: cookies._fbc || '', fbp: cookies._fbp || '' };
+  } catch { return { fbc: '', fbp: '' }; }
+}
+
 // ── Pricing ──────────────────────────────────────────────────────────────────
 const UNIT_PRICE = 8900;
 const SHIPPING_FREE_THRESHOLD = 2;  // 2+ units → free shipping
@@ -57,6 +68,7 @@ const summarySubtotal = document.getElementById('summary-subtotal');
 const summaryShipping = document.getElementById('summary-shipping');
 const summaryTotal = document.getElementById('summary-total');
 const shippingNote = document.getElementById('shipping-note');
+const btnTotalEl = document.getElementById('btn-total');
 
 // ── Province / Canton Dropdowns ───────────────────────────────────────────────
 function initProvinces() {
@@ -124,6 +136,7 @@ function updateSummary() {
   summarySubtotal.textContent = formatCRC(subtotal);
   summaryShipping.textContent = shipping === 0 ? 'GRATIS' : formatCRC(shipping);
   summaryTotal.textContent = formatCRC(total);
+  if (btnTotalEl) btnTotalEl.textContent = formatCRC(total);
 
   const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>`;
 
@@ -158,6 +171,10 @@ function clearError() {
 function getFormData() {
   const data = Object.fromEntries(new FormData(form).entries());
   data.cantidad = currentQty;
+  const { fbc, fbp } = getMetaCookies();
+  if (fbc) data.fbc = fbc;
+  if (fbp) data.fbp = fbp;
+  data.source_url = window.location.href;
   return data;
 }
 
@@ -194,6 +211,7 @@ async function handleTilopay(data) {
   if (result.paymentUrl) {
     metaTrack('InitiateCheckout', {
       content_ids: ['bloom-patch'],
+      content_name: 'Bloom Dermal Micro-Infusion Patch',
       content_type: 'product',
       num_items: parseInt(data.cantidad) || 1,
       value: calculateOrder(parseInt(data.cantidad) || 1).total,
@@ -216,6 +234,18 @@ form.addEventListener('submit', async (e) => {
   if (validationError) {
     showError(validationError);
     return;
+  }
+
+  // Fire AddToCart if not already fired (covers qty=1 users who never changed quantity)
+  if (!addToCartFired) {
+    addToCartFired = true;
+    metaTrack('AddToCart', {
+      content_ids: ['bloom-patch'],
+      content_name: 'Bloom Dermal Micro-Infusion Patch',
+      content_type: 'product',
+      value: calculateOrder(currentQty).total,
+      currency: 'CRC'
+    });
   }
 
   setLoading(true);
@@ -251,7 +281,7 @@ updateSummary();
         vcObserver.disconnect();
       }
     });
-  }, { threshold: 0.55 });
+  }, { threshold: 0.25 });
   vcObserver.observe(orderSection);
 })();
 

@@ -146,13 +146,17 @@ export default async function handler(req, res) {
     console.log(`[Tilopay] Payment created — Order: ${orderId}, URL: ${paymentUrl}`);
 
     const metaEventId = generateEventId('ic', orderId);
-    sendMetaEvent('InitiateCheckout', metaEventId, order, req, {
+    const metaOrder = { ...order };
+    if (req.body.fbc) metaOrder.fbc = req.body.fbc;
+    if (req.body.fbp) metaOrder.fbp = req.body.fbp;
+    sendMetaEvent('InitiateCheckout', metaEventId, metaOrder, req, {
       value: total,
       currency: 'CRC',
       content_ids: ['bloom-patch'],
+      content_name: 'Bloom Dermal Micro-Infusion Patch',
       content_type: 'product',
       num_items: qty
-    }, `${appUrl}/#pedido`).catch(() => {});
+    }, req.body.source_url || `${appUrl}/#pedido`).catch(() => {});
 
     return res.status(200).json({
       success: true,

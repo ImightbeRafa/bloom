@@ -64,6 +64,7 @@ export default async function handler(req, res) {
       value: order.total,
       currency: 'CRC',
       content_ids: ['bloom-patch'],
+      content_name: 'Bloom Dermal Micro-Infusion Patch',
       content_type: 'product',
       num_items: totalItems
     }, `${appUrl}/success.html`)
