@@ -396,6 +396,301 @@ document.querySelectorAll('.reveal, .reveal-scale, .reveal-stagger').forEach(el 
   revealObserver.observe(el);
 });
 
+// ── UGC Video Carousel ───────────────────────────────────────────────────────
+// Reels-style vertical videos: lazy-load, autoplay most-visible, tap-to-unmute,
+// fires Meta Pixel engagement events (conversion signals for Meta Ads optimizer).
+(function () {
+  const carousel = document.getElementById('ugc-carousel');
+  if (!carousel) return;
+
+  const cards = Array.from(carousel.querySelectorAll('.ugc-card'));
+  if (!cards.length) return;
+
+  const navPrev = document.querySelector('.ugc-nav-prev');
+  const navNext = document.querySelector('.ugc-nav-next');
+
+  // Engagement tracking thresholds (fire once per video)
+  const engagementFired = new WeakMap();
+
+  function fireVideoEngagement(video, percent) {
+    const key = engagementFired.get(video) || {};
+    if (key[percent]) return;
+    key[percent] = true;
+    engagementFired.set(video, key);
+
+    // Meta Pixel custom event — strong conversion signal for the ad algorithm
+    const src = video.dataset.src || 'ugc-video';
+    try {
+      if (typeof window.fbq === 'function') {
+        if (percent === 25) {
+          window.fbq('trackCustom', 'VideoEngagement_25', {
+            video_source: src,
+            content_name: 'UGC Testimonial',
+            content_category: 'testimonial'
+          });
+        } else if (percent === 50) {
+          // 50% watched → also fire a ViewContent boost for retargeting
+          window.fbq('track', 'ViewContent', {
+            content_ids: ['bloom-patch'],
+            content_name: 'Bloom Dermal Micro-Infusion Patch',
+            content_type: 'product',
+            content_category: 'ugc_testimonial',
+            value: UNIT_PRICE,
+            currency: 'CRC'
+          });
+          window.fbq('trackCustom', 'VideoEngagement_50', {
+            video_source: src,
+            content_name: 'UGC Testimonial'
+          });
+        } else if (percent === 75) {
+          window.fbq('trackCustom', 'VideoEngagement_75', {
+            video_source: src,
+            content_name: 'UGC Testimonial'
+          });
+        } else if (percent === 100) {
+          window.fbq('trackCustom', 'VideoEngagement_Complete', {
+            video_source: src,
+            content_name: 'UGC Testimonial'
+          });
+        }
+      }
+    } catch { /* no-op */ }
+  }
+
+  function attachTimeTracker(video) {
+    if (video._timeTrackerAttached) return;
+    video._timeTrackerAttached = true;
+    video.addEventListener('timeupdate', () => {
+      const d = video.duration;
+      if (!d || !isFinite(d) || d <= 0) return;
+      const pct = (video.currentTime / d) * 100;
+      if (pct >= 25) fireVideoEngagement(video, 25);
+      if (pct >= 50) fireVideoEngagement(video, 50);
+      if (pct >= 75) fireVideoEngagement(video, 75);
+      if (pct >= 95) fireVideoEngagement(video, 100);
+    });
+  }
+
+  // Lazy-load video src when card is near viewport (±400px).
+  // Uses preload=metadata so the first FRAME shows (not just the poster) —
+  // makes the creator's face visible before playback starts.
+  function loadVideoSrc(video) {
+    if (video._srcLoaded) return;
+    const src = video.dataset.src;
+    if (!src) return;
+    video._srcLoaded = true;
+    video.preload = 'metadata';
+    video.src = src;
+    video.load();
+    attachTimeTracker(video);
+  }
+
+  const lazyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        loadVideoSrc(video);
+      }
+    });
+  }, { rootMargin: '400px 0px', threshold: 0.01 });
+
+  cards.forEach(card => {
+    const video = card.querySelector('.ugc-video');
+    if (video) lazyObserver.observe(video);
+  });
+
+  // Eagerly preload the first 2 cards so playback feels instant on scroll-in
+  const firstVideos = cards.slice(0, 2)
+    .map(c => c.querySelector('.ugc-video'))
+    .filter(Boolean);
+  firstVideos.forEach(loadVideoSrc);
+
+  // Autoplay most-visible card, pause others
+  let activeCard = null;
+
+  function setActiveCard(card) {
+    if (activeCard === card) return;
+
+    // Pause previous
+    if (activeCard) {
+      const prevVideo = activeCard.querySelector('.ugc-video');
+      if (prevVideo) {
+        prevVideo.pause();
+        // Reset mute on inactive card so next one starts muted
+        prevVideo.muted = true;
+        updateMuteIcon(activeCard, true);
+      }
+      activeCard.classList.remove('is-playing');
+    }
+
+    activeCard = card;
+
+    if (card) {
+      const video = card.querySelector('.ugc-video');
+      if (video) {
+        loadVideoSrc(video);
+        video.muted = true; // autoplay requires muted
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => { /* autoplay blocked — user can tap play */ });
+        }
+        card.classList.add('is-playing');
+        updateMuteIcon(card, true);
+      }
+    }
+  }
+
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    // Find the entry with highest intersection ratio
+    let best = null;
+    entries.forEach(entry => {
+      if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) {
+        best = entry;
+      }
+    });
+
+    // Check all currently observed cards to find most-visible overall
+    const visibleCards = cards.filter(card => {
+      const rect = card.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return rect.bottom > 0 && rect.top < vh;
+    });
+
+    if (!visibleCards.length) {
+      setActiveCard(null);
+      return;
+    }
+
+    // Pick the card closest to center of viewport
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    const viewportCenterY = vh / 2;
+    const viewportCenterX = vw / 2;
+
+    let closest = null;
+    let closestDist = Infinity;
+    visibleCards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(cx - viewportCenterX, cy - viewportCenterY);
+      if (dist < closestDist) {
+        closestDist = dist;
+        closest = card;
+      }
+    });
+
+    setActiveCard(closest);
+  }, { threshold: [0.3, 0.6, 0.9] });
+
+  cards.forEach(card => visibilityObserver.observe(card));
+
+  // Also update active card on horizontal scroll (carousel swipe)
+  let scrollRaf = null;
+  carousel.addEventListener('scroll', () => {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = null;
+      const rect = carousel.getBoundingClientRect();
+      const carouselCenterX = rect.left + rect.width / 2;
+      let closest = null;
+      let closestDist = Infinity;
+      cards.forEach(card => {
+        const cRect = card.getBoundingClientRect();
+        const cx = cRect.left + cRect.width / 2;
+        const dist = Math.abs(cx - carouselCenterX);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = card;
+        }
+      });
+      if (closest) setActiveCard(closest);
+    });
+  }, { passive: true });
+
+  // ── Click handlers per card ─────────────────────────────────────────────
+  function updateMuteIcon(card, muted) {
+    const iconMuted = card.querySelector('.ugc-icon-muted');
+    const iconSound = card.querySelector('.ugc-icon-sound');
+    if (iconMuted && iconSound) {
+      iconMuted.hidden = !muted;
+      iconSound.hidden = muted;
+    }
+  }
+
+  function updatePlayIcon(card, playing) {
+    const iconPlay = card.querySelector('.ugc-icon-play');
+    const iconPause = card.querySelector('.ugc-icon-pause');
+    if (iconPlay && iconPause) {
+      iconPlay.hidden = playing;
+      iconPause.hidden = !playing;
+    }
+  }
+
+  cards.forEach(card => {
+    const video = card.querySelector('.ugc-video');
+    const playBtn = card.querySelector('.ugc-play-btn');
+    const muteBtn = card.querySelector('.ugc-mute-btn');
+    const media = card.querySelector('.ugc-card-media');
+    if (!video || !media) return;
+
+    // Play/pause toggle (and unmute on user interaction)
+    const togglePlay = (e) => {
+      if (e) e.stopPropagation();
+      loadVideoSrc(video);
+      if (video.paused) {
+        // User gesture: can unmute
+        video.muted = false;
+        updateMuteIcon(card, false);
+        video.play().catch(() => {});
+        setActiveCard(card);
+      } else {
+        video.pause();
+      }
+    };
+
+    if (playBtn) playBtn.addEventListener('click', togglePlay);
+    media.addEventListener('click', (e) => {
+      if (e.target.closest('.ugc-mute-btn')) return;
+      togglePlay(e);
+    });
+
+    // Mute toggle (independent of play)
+    if (muteBtn) {
+      muteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        loadVideoSrc(video);
+        video.muted = !video.muted;
+        updateMuteIcon(card, video.muted);
+        if (video.paused) {
+          video.play().catch(() => {});
+        }
+      });
+    }
+
+    video.addEventListener('play', () => {
+      card.classList.add('is-playing');
+      updatePlayIcon(card, true);
+    });
+    video.addEventListener('pause', () => {
+      card.classList.remove('is-playing');
+      updatePlayIcon(card, false);
+    });
+  });
+
+  // ── Desktop arrow navigation ────────────────────────────────────────────
+  function scrollByCard(direction) {
+    if (!cards.length) return;
+    const card = cards[0];
+    const gap = 18;
+    const amount = (card.offsetWidth + gap) * direction;
+    carousel.scrollBy({ left: amount, behavior: 'smooth' });
+  }
+
+  if (navPrev) navPrev.addEventListener('click', () => scrollByCard(-1));
+  if (navNext) navNext.addEventListener('click', () => scrollByCard(1));
+})();
+
 // ── Hero Product Tilt ────────────────────────────────────────────────────────
 const heroVisual = document.querySelector('.hero-visual-container');
 if (heroVisual) {
