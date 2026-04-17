@@ -199,6 +199,18 @@ function getFormData() {
   if (fbc) data.fbc = fbc;
   if (fbp) data.fbp = fbp;
   data.source_url = window.location.href;
+
+  // Attach UTM params captured from Meta ad URL
+  try {
+    const utm = JSON.parse(sessionStorage.getItem('bloom_utm') || '{}');
+    if (utm.utm_source) data.utm_source = utm.utm_source;
+    if (utm.utm_medium) data.utm_medium = utm.utm_medium;
+    if (utm.utm_campaign) data.utm_campaign = utm.utm_campaign;
+    if (utm.utm_content) data.utm_content = utm.utm_content;
+    if (utm.utm_term) data.utm_term = utm.utm_term;
+    if (utm.fbclid) data.fbclid = utm.fbclid;
+  } catch { /* no-op */ }
+
   return data;
 }
 
@@ -707,3 +719,130 @@ if (heroVisual) {
     heroVisual.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
   });
 }
+
+// ── Scroll Depth Tracking (Meta Pixel signals) ──────────────────────────────
+// Fires custom events at 25%, 50%, 75% scroll depth so Meta's algorithm can
+// identify high-engagement visitors and build better lookalike audiences.
+(function () {
+  const thresholds = [25, 50, 75];
+  const fired = {};
+
+  function getScrollPercent() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return 0;
+    return Math.round((scrollTop / docHeight) * 100);
+  }
+
+  function checkScroll() {
+    const pct = getScrollPercent();
+    thresholds.forEach(t => {
+      if (pct >= t && !fired[t]) {
+        fired[t] = true;
+        metaTrack(null); // no-op to ensure fbq exists check
+        try {
+          if (typeof window.fbq === 'function') {
+            window.fbq('trackCustom', 'ScrollDepth', {
+              percent: t,
+              content_name: 'Bloom Landing Page'
+            });
+          }
+        } catch { /* no-op */ }
+      }
+    });
+  }
+
+  let scrollTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        checkScroll();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
+})();
+
+// ── UTM Parameter Capture ───────────────────────────────────────────────────
+// Captures UTM params and fbclid from Meta ad URLs and forwards them with the
+// order so attribution works properly on the server side.
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
+  const captured = {};
+  utmKeys.forEach(key => {
+    const val = params.get(key);
+    if (val) captured[key] = val;
+  });
+  if (Object.keys(captured).length > 0) {
+    try { sessionStorage.setItem('bloom_utm', JSON.stringify(captured)); } catch { /* no-op */ }
+  }
+})();
+
+// ── Sticky Mobile CTA Bar ───────────────────────────────────────────────────
+// Shows a floating CTA bar after scrolling past the hero, hides when the order
+// form is visible (no need to show it when they're already at checkout).
+(function () {
+  const stickyCta = document.getElementById('sticky-cta');
+  const orderSection = document.getElementById('order');
+  const whatsappFab = document.querySelector('.whatsapp-fab');
+  if (!stickyCta || !orderSection) return;
+
+  stickyCta.hidden = false; // unhide (starts hidden in HTML to prevent flash)
+
+  const heroEl = document.querySelector('.hero');
+  let lastState = null;
+
+  function update() {
+    const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 0;
+    const orderRect = orderSection.getBoundingClientRect();
+    const orderInView = orderRect.top < window.innerHeight && orderRect.bottom > 0;
+
+    // Show after scrolling past hero, hide when order form is visible
+    const shouldShow = heroBottom < 0 && !orderInView;
+
+    if (shouldShow !== lastState) {
+      lastState = shouldShow;
+      if (shouldShow) {
+        stickyCta.classList.add('is-visible');
+        if (whatsappFab) whatsappFab.style.bottom = '80px';
+      } else {
+        stickyCta.classList.remove('is-visible');
+        if (whatsappFab) whatsappFab.style.bottom = '24px';
+      }
+    }
+  }
+
+  let stickyTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!stickyTicking) {
+      requestAnimationFrame(() => {
+        update();
+        stickyTicking = false;
+      });
+      stickyTicking = true;
+    }
+  }, { passive: true });
+
+  update();
+})();
+
+// ── Urgency Counter Animation ───────────────────────────────────────────────
+// Subtly varies the "people viewing" count to feel alive without being jarring.
+(function () {
+  const countEl = document.getElementById('urgency-count');
+  if (!countEl) return;
+
+  // Start with a seeded random number based on current hour (consistent per session)
+  const hour = new Date().getHours();
+  const base = 8 + (hour % 7) + Math.floor(Math.random() * 5);
+  countEl.textContent = base;
+
+  setInterval(() => {
+    const current = parseInt(countEl.textContent) || base;
+    const delta = Math.random() > 0.5 ? 1 : -1;
+    const next = Math.max(6, Math.min(22, current + delta));
+    countEl.textContent = next;
+  }, 12000); // subtle change every 12s
+})();
