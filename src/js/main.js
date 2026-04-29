@@ -28,17 +28,19 @@ function getMetaCookies() {
 
 // ── Pricing ──────────────────────────────────────────────────────────────────
 const UNIT_PRICE = 8900;
-const PROMO_PRICE = 4450;        // 50% off when qty >= 2
+const TWO_PACK_PRICE = 11900;
 const PROMO_THRESHOLD = 2;
 const SHIPPING_COST = 3000;      // flat ₡3,000 shipping on all orders
 
 function calculateOrder(qty) {
-  const unitPrice = qty >= PROMO_THRESHOLD ? PROMO_PRICE : UNIT_PRICE;
-  const subtotal = unitPrice * qty;
+  const subtotal = qty >= PROMO_THRESHOLD
+    ? TWO_PACK_PRICE + Math.max(0, qty - PROMO_THRESHOLD) * UNIT_PRICE
+    : UNIT_PRICE * qty;
   const shipping = SHIPPING_COST;
   const total = subtotal + shipping;
-  const saved = qty >= PROMO_THRESHOLD ? (UNIT_PRICE - PROMO_PRICE) * qty : 0;
-  return { subtotal, shipping, total, unitPrice, saved };
+  const regularSubtotal = UNIT_PRICE * qty;
+  const saved = Math.max(0, regularSubtotal - subtotal);
+  return { subtotal, shipping, total, saved };
 }
 
 // ── Costa Rica Geographic Data ────────────────────────────────────────────────
@@ -58,6 +60,7 @@ const cantonSelect = document.getElementById('canton');
 const qtyMinus = document.getElementById('qty-minus');
 const qtyPlus = document.getElementById('qty-plus');
 const qtyDisplay = document.getElementById('qty-display');
+const qtyDisplays = document.querySelectorAll('[data-qty-display]');
 const cantidadInput = document.getElementById('cantidad');
 const form = document.getElementById('order-form');
 const submitBtn = document.getElementById('submit-btn');
@@ -106,6 +109,7 @@ function updateQty(newQty) {
   currentQty = newQty;
   cantidadInput.value = currentQty;
   qtyDisplay.textContent = currentQty;
+  qtyDisplays.forEach(el => { el.textContent = currentQty; });
   updateSummary();
 }
 
@@ -121,10 +125,28 @@ qtyPlus.addEventListener('click', () => {
       content_ids: ['bloom-patch'],
       content_name: 'Bloom Dermal Micro-Infusion Patch',
       content_type: 'product',
-      value: UNIT_PRICE * currentQty,
+      value: calculateOrder(currentQty).total,
       currency: 'CRC'
     });
   }
+});
+
+document.querySelectorAll('[data-qty-action]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const prevQty = currentQty;
+    const action = btn.dataset.qtyAction;
+    updateQty(action === 'plus' ? currentQty + 1 : currentQty - 1);
+    if (!addToCartFired && action === 'plus' && currentQty > prevQty) {
+      addToCartFired = true;
+      metaTrack('AddToCart', {
+        content_ids: ['bloom-patch'],
+        content_name: 'Bloom Dermal Micro-Infusion Patch',
+        content_type: 'product',
+        value: calculateOrder(currentQty).total,
+        currency: 'CRC'
+      });
+    }
+  });
 });
 
 // ── Order Summary ─────────────────────────────────────────────────────────────
@@ -133,31 +155,44 @@ function formatCRC(amount) {
 }
 
 function updateSummary() {
-  const { subtotal, shipping, total, unitPrice, saved } = calculateOrder(currentQty);
+  const { subtotal, shipping, total, saved } = calculateOrder(currentQty);
 
   summaryQty.textContent = `× ${currentQty}`;
   summarySubtotal.textContent = formatCRC(subtotal);
   summaryShipping.textContent = formatCRC(shipping);
   summaryTotal.textContent = formatCRC(total);
   if (btnTotalEl) btnTotalEl.textContent = formatCRC(total);
+  const stickyPayTotal = document.getElementById('sticky-pay-total');
+  if (stickyPayTotal) stickyPayTotal.textContent = formatCRC(total);
+  const heroSubtotal = document.getElementById('hero-subtotal');
+  const heroShipping = document.getElementById('hero-shipping');
+  const heroSavings = document.getElementById('hero-savings');
+  const heroTotal = document.getElementById('hero-total');
+  if (heroSubtotal) heroSubtotal.textContent = formatCRC(subtotal);
+  if (heroShipping) heroShipping.textContent = formatCRC(shipping);
+  if (heroSavings) heroSavings.textContent = saved > 0 ? `-${formatCRC(saved)}` : formatCRC(0);
+  if (heroTotal) heroTotal.textContent = formatCRC(total);
 
   // Update product price display
   const priceEl = document.getElementById('order-price-display');
   if (priceEl) {
     if (currentQty >= PROMO_THRESHOLD) {
-      priceEl.innerHTML = `<span class="price-original">₡8,900</span> ₡4,450 <span class="order-product-unit">/ unidad</span>`;
+      const regularSubtotal = UNIT_PRICE * currentQty;
+      const patchCount = currentQty * 9;
+      const unitLabel = `/ ${currentQty} paquetes (${patchCount} parches)`;
+      priceEl.innerHTML = `<span class="price-original">${formatCRC(regularSubtotal)}</span> ${formatCRC(subtotal)} <span class="order-product-unit">${unitLabel}</span>`;
     } else {
-      priceEl.innerHTML = `₡8,900 <span class="order-product-unit">/ unidad</span>`;
+      priceEl.innerHTML = `${formatCRC(UNIT_PRICE)} <span class="order-product-unit">/ 1 paquete (9 parches)</span>`;
     }
   }
 
   const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>`;
 
   if (currentQty >= PROMO_THRESHOLD) {
-    shippingNote.innerHTML = `${icon} <strong>-50% aplicado</strong> — Ahorrás ${formatCRC(saved)} en esta orden`;
+    shippingNote.innerHTML = `${icon} <strong>Promo 2x aplicada</strong> — Ahorrás ${formatCRC(saved)} en productos`;
     shippingNote.classList.add('free-shipping');
   } else {
-    shippingNote.innerHTML = `${icon} Agrega 1 unidad más y obtené <strong>50% de descuento</strong>`;
+    shippingNote.innerHTML = `${icon} Agrega 1 paquete más y llevá <strong>2 paquetes (18 parches) por ${formatCRC(TWO_PACK_PRICE)}</strong>`;
     shippingNote.classList.remove('free-shipping');
   }
 
@@ -195,6 +230,16 @@ function clearError() {
 function getFormData() {
   const data = Object.fromEntries(new FormData(form).entries());
   data.cantidad = currentQty;
+
+  // Split "Nombre completo" back into nombre + apellido for backend compatibility.
+  // First token → nombre, remainder → apellido. Single-word entries fall back to "-"
+  // since the server requires apellido to be non-empty (matches existing billToLastName fallback).
+  if (data.nombre_completo) {
+    const parts = data.nombre_completo.trim().split(/\s+/);
+    data.nombre = parts[0] || '';
+    data.apellido = parts.length > 1 ? parts.slice(1).join(' ') : '-';
+  }
+
   const { fbc, fbp } = getMetaCookies();
   if (fbc) data.fbc = fbc;
   if (fbp) data.fbp = fbp;
@@ -215,7 +260,10 @@ function getFormData() {
 }
 
 function validateForm(data) {
-  const required = ['nombre', 'apellido', 'telefono', 'email', 'provincia', 'canton', 'distrito', 'direccion'];
+  if (!data.nombre_completo || !data.nombre_completo.trim()) {
+    return 'Por favor completa el campo: Nombre completo';
+  }
+  const required = ['telefono', 'email', 'provincia', 'canton', 'distrito', 'direccion'];
   for (const field of required) {
     if (!data[field] || !data[field].trim()) {
       const label = form.querySelector(`label[for="${field}"]`);
@@ -292,6 +340,27 @@ form.addEventListener('submit', async (e) => {
     showError(err.message || 'Ocurrió un error inesperado. Por favor intenta de nuevo.');
     setLoading(false);
   }
+});
+
+// ── Mobile Keyboard: Enter advances to next field ────────────────────────────
+// On mobile the "Next" key on the soft keyboard normally submits single-input
+// forms. Intercept Enter on text-like inputs and move focus to the next field
+// so the user flows through the form without dismissing the keyboard.
+form.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const el = e.target;
+  if (!el || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') return;
+  if (el.tagName !== 'INPUT' && el.tagName !== 'SELECT') return;
+
+  const focusable = Array.from(form.querySelectorAll(
+    'input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled])'
+  ));
+  const idx = focusable.indexOf(el);
+  if (idx === -1 || idx === focusable.length - 1) return;
+
+  e.preventDefault();
+  const next = focusable[idx + 1];
+  if (next && typeof next.focus === 'function') next.focus();
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────
@@ -739,7 +808,6 @@ if (heroVisual) {
     thresholds.forEach(t => {
       if (pct >= t && !fired[t]) {
         fired[t] = true;
-        metaTrack(null); // no-op to ensure fbq exists check
         try {
           if (typeof window.fbq === 'function') {
             window.fbq('trackCustom', 'ScrollDepth', {
@@ -781,15 +849,32 @@ if (heroVisual) {
 })();
 
 // ── Sticky Mobile CTA Bar ───────────────────────────────────────────────────
-// Shows a floating CTA bar after scrolling past the hero, hides when the order
-// form is visible (no need to show it when they're already at checkout).
+// Three states:
+//   - hidden: above-the-fold hero, or when the real submit button is already on-screen
+//   - "browse": scrolled past hero but not yet at the order form → "Ordenar Ahora"
+//   - "pay":    inside the order form with the submit button still off-screen →
+//               "Pagar ₡TOTAL" that submits the form directly (no scroll detour)
 (function () {
   const stickyCta = document.getElementById('sticky-cta');
   const orderSection = document.getElementById('order');
   const whatsappFab = document.querySelector('.whatsapp-fab');
-  if (!stickyCta || !orderSection) return;
+  const browseInner = stickyCta ? stickyCta.querySelector('[data-state="browse"]') : null;
+  const payInner = stickyCta ? stickyCta.querySelector('[data-state="pay"]') : null;
+  const payBtn = document.getElementById('sticky-pay-btn');
+  const submitBtnEl = document.getElementById('submit-btn');
+  if (!stickyCta || !orderSection || !browseInner || !payInner) return;
 
-  stickyCta.hidden = false; // unhide (starts hidden in HTML to prevent flash)
+  stickyCta.hidden = false;
+
+  if (payBtn && form) {
+    payBtn.addEventListener('click', () => {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    });
+  }
 
   const heroEl = document.querySelector('.hero');
   let lastState = null;
@@ -797,15 +882,30 @@ if (heroVisual) {
   function update() {
     const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 0;
     const orderRect = orderSection.getBoundingClientRect();
-    const orderInView = orderRect.top < window.innerHeight && orderRect.bottom > 0;
+    const vh = window.innerHeight;
+    const orderEntered = orderRect.top < vh * 0.9 && orderRect.bottom > 0;
+    const pastHero = heroBottom < 0;
 
-    // Show after scrolling past hero, hide when order form is visible
-    const shouldShow = heroBottom < 0 && !orderInView;
+    // Is the real submit button fully visible? If so, no need for sticky pay.
+    let submitVisible = false;
+    if (submitBtnEl) {
+      const r = submitBtnEl.getBoundingClientRect();
+      submitVisible = r.top < vh - 40 && r.bottom > 60;
+    }
 
-    if (shouldShow !== lastState) {
-      lastState = shouldShow;
-      if (shouldShow) {
+    let state = null;
+    if (pastHero && orderEntered && !submitVisible) {
+      state = 'pay';
+    } else if (pastHero && !orderEntered) {
+      state = 'browse';
+    }
+
+    if (state !== lastState) {
+      lastState = state;
+      if (state) {
         stickyCta.classList.add('is-visible');
+        browseInner.hidden = state !== 'browse';
+        payInner.hidden = state !== 'pay';
         if (whatsappFab) whatsappFab.style.bottom = '80px';
       } else {
         stickyCta.classList.remove('is-visible');
@@ -815,7 +915,7 @@ if (heroVisual) {
   }
 
   let stickyTicking = false;
-  window.addEventListener('scroll', () => {
+  function onScroll() {
     if (!stickyTicking) {
       requestAnimationFrame(() => {
         update();
@@ -823,7 +923,9 @@ if (heroVisual) {
       });
       stickyTicking = true;
     }
-  }, { passive: true });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 
   update();
 })();

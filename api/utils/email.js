@@ -109,7 +109,8 @@ function buildAdminEmailHtml(order) {
       <tr><td style="padding:20px 24px;">
         <p style="margin:0 0 12px;font-size:13px;color:#6b5f8a;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Resumen</p>
         <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Producto:</strong> Bloom Dermal Micro-Infusion Patch</p>
-        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Cantidad:</strong> ${order.cantidad}</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Contenido:</strong> cada paquete trae 9 parches individuales</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Paquetes:</strong> ${order.cantidad} (${Number(order.cantidad || 1) * 9} parches en total)</p>
         <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Envío:</strong> ${order.shippingCost === 0 ? 'GRATIS' : `₡${Number(order.shippingCost).toLocaleString('es-CR')}`}</p>
         <hr style="border:none;border-top:1px solid #e8e0ff;margin:12px 0;">
         <p style="margin:0;font-size:18px;color:#5e17eb;font-weight:700;">Total: ₡${Number(order.total).toLocaleString('es-CR')}</p>
@@ -171,7 +172,8 @@ function buildTilopayConfirmationEmailHtml(order) {
         <p style="margin:0 0 12px;font-size:13px;color:#6b5f8a;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Tu pedido</p>
         <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Orden:</strong> #${order.orderId}</p>
         <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Producto:</strong> Bloom Dermal Micro-Infusion Patch</p>
-        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Cantidad:</strong> ${order.cantidad}</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Contenido:</strong> cada paquete trae 9 parches individuales</p>
+        <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Paquetes:</strong> ${order.cantidad} (${Number(order.cantidad || 1) * 9} parches en total)</p>
         <p style="margin:4px 0;font-size:14px;color:#333;"><strong>Envío:</strong> ${order.shippingCost === 0 ? 'GRATIS' : `&#8353;${Number(order.shippingCost).toLocaleString('es-CR')}`}</p>
         <hr style="border:none;border-top:1px solid #e8e0ff;margin:12px 0;">
         <p style="margin:0;font-size:18px;color:#5e17eb;font-weight:700;">Total: &#8353;${Number(order.total).toLocaleString('es-CR')}</p>
@@ -203,4 +205,3 @@ function buildTilopayConfirmationEmailHtml(order) {
 </body>
 </html>`;
 }
-

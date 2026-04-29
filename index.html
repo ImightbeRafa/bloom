@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bloom — Dermal Micro-Infusion Patch</title>
+  <title>Bloom - Dermal Micro-Infusion Patch</title>
   <meta name="description"
-    content="Parche de micro-agujas para acné con Ácido Hialurónico. Micro-infusión nocturna para una piel calmada, clara y radiante al despertar." />
+    content="Parche de micro-agujas para acne con acido hialuronico. Micro-infusion nocturna para una piel calmada, clara y radiante al despertar." />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=Nunito:wght@800;900;1000&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
 
   <link rel="preload" as="image" href="/images/bloom-logo.png" />
-  <link rel="preload" as="image" href="/images/product3.jpg" />
+  <link rel="preload" as="image" href="/images/product2.jpg" />
   <link rel="stylesheet" href="/src/styles/main.css" />
 
   <!-- Meta Pixel -->
@@ -41,821 +41,429 @@
   src="https://www.facebook.com/tr?id=2410372076145656&ev=PageView&noscript=1"
   /></noscript>
 
-  <!-- Animated lava-lamp background blobs -->
-  <div class="interactive-bg" id="interactive-bg">
-    <div class="blob blob-1" aria-hidden="true"></div>
-    <div class="blob blob-2" aria-hidden="true"></div>
-    <div class="blob blob-3" aria-hidden="true"></div>
-    <div class="blob blob-4" aria-hidden="true"></div>
-    <div class="blob blob-5" aria-hidden="true"></div>
-    <div class="blob blob-6" aria-hidden="true"></div>
-  </div>
+  <div class="interactive-bg" id="interactive-bg" aria-hidden="true"></div>
 
-  <!-- ─── HEADER ─── -->
   <header class="header">
-    <nav class="nav container">
-      <a href="/" class="logo-group" aria-label="Bloom — Dermal Micro-Infusion Patch">
+    <nav class="nav container" aria-label="Principal">
+      <a href="/" class="logo-group" aria-label="Bloom - Dermal Micro-Infusion Patch">
         <img src="/images/bloom-logo.png" alt="BLOOM" class="bloom-logo-img" />
       </a>
-      <a href="#order" class="nav-cta">50% OFF — Ordenar</a>
+      <div class="nav-links" aria-label="Secciones">
+        <a href="#ugc">Prueba real</a>
+        <a href="#benefits">Beneficios</a>
+        <a href="#order">Comprar</a>
+      </div>
+      <a href="#order" class="nav-cta">Ordenar 2x</a>
     </nav>
   </header>
 
-  <!-- ─── HERO ─── -->
-  <section class="hero hero-split">
-    <div class="container hero-inner">
-      <div class="hero-content reveal">
-        <div class="hero-badge promo-badge">PROMO POR TIEMPO LIMITADO</div>
-        <h1 class="hero-title">
-          Despertá con <br /><span class="gradient-text">Piel Radiante</span>
-        </h1>
-        <p class="hero-subtitle">
-          El parche de micro-agujas con Ácido Hialurónico que actúa mientras dormís — indoloro, discreto y se disuelve durante la noche.
-        </p>
-        <div class="hero-promo-card">
-          <div class="hero-promo-prices">
-            <span class="hero-price-old">₡8,900</span>
-            <span class="hero-price-new">₡4,450</span>
-            <span class="hero-price-unit">/ unidad</span>
+  <main>
+    <section class="hero hero-split">
+      <div class="container hero-inner">
+        <div class="hero-content reveal">
+          <div class="hero-badge promo-badge">
+            <span class="status-dot"></span>
+            Micro-infusion nocturna
           </div>
-          <div class="hero-promo-label">50% OFF comprando 2+</div>
-          <div class="hero-promo-timer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            Termina en <span class="promo-timer">00:00:00</span>
-          </div>
+          <h1 class="hero-title">Piel clara al despertar.</h1>
+          <p class="hero-subtitle">
+            Parches de micro-agujas con acido hialuronico para tratar granitos mientras dormis. Transparentes,
+            discretos y listos para pedir en menos de un minuto.
+          </p>
         </div>
-        <div class="hero-actions">
-          <a href="#order" class="btn-primary">Aprovechar Oferta — 50% OFF</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-visual-container reveal-scale">
-          <img src="/images/product3.jpg" alt="Bloom Dermal Micro-Infusion Patch — Pack" class="hero-product-image"
-            fetchpriority="high" decoding="async" />
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ─── UGC TESTIMONIALS (Reels-style vertical videos) ─── -->
-  <section class="section ugc-section" id="ugc">
-    <div class="container">
-      <div class="ugc-header reveal">
-        <div class="ugc-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Favorito en Costa Rica
-        </div>
-        <h2 class="section-title ugc-title">Mirá por qué <span class="gradient-text">les encanta</span></h2>
-        <p class="ugc-subtitle">Descubrí lo que dicen quienes ya probaron Bloom — opiniones honestas, sin filtro.</p>
-        <div class="ugc-rating-row">
-          <div class="ugc-stars" aria-label="5 de 5 estrellas">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
-          <span class="ugc-rating-text"><strong>4.9/5</strong> · Más de 500 clientas satisfechas</span>
-        </div>
-      </div>
-
-      <div class="ugc-carousel-wrap reveal">
-        <button type="button" class="ugc-nav ugc-nav-prev" aria-label="Anterior">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-
-        <div class="ugc-carousel" id="ugc-carousel" role="list">
-
-          <article class="ugc-card" role="listitem" data-ugc-index="0">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/pimple-patches-1.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
+        <div class="hero-visual">
+          <div class="hero-visual-stack">
+            <div class="hero-visual-container reveal-scale">
+              <img src="/images/product2.jpg" alt="Bloom Dermal Micro-Infusion Patch" class="hero-product-image"
+                fetchpriority="high" decoding="async" />
             </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <div class="floating-proof reveal">
+              <strong>4.9/5</strong>
+              <span>Mas de 500 clientas satisfechas en Costa Rica</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-buy-card reveal" aria-label="Compra rapida Bloom">
+          <div class="offer-line">
+            <span>Oferta activa</span>
+            <span>2 paquetes por &#8353;11,900</span>
+          </div>
+          <div class="hero-price-block">
+            <span class="hero-price-new">&#8353;11,900</span>
+            <span class="hero-price-side">
+              <span class="hero-price-old">&#8353;17,800</span>
+              <span class="hero-price-unit">2 paquetes (18 parches)</span>
+            </span>
+          </div>
+          <p class="package-note">Cada paquete trae 9 parches individuales de micro-agujas.</p>
+          <div class="card-divider"></div>
+          <div class="qty-row">
+            <div>
+              <span class="qty-label">Paquetes</span>
+              <span class="qty-hint">1 paquete = 9 parches</span>
+            </div>
+            <div class="qty-control hero-qty-control" aria-label="Selector visual de cantidad">
+              <button type="button" class="qty-btn" data-qty-action="minus" aria-label="Reducir cantidad">-</button>
+              <span class="qty-display" data-qty-display>2</span>
+              <button type="button" class="qty-btn" data-qty-action="plus" aria-label="Aumentar cantidad">+</button>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="mini-summary">
+            <div><span>Subtotal</span><strong id="hero-subtotal">&#8353;11,900</strong></div>
+            <div><span>Envio</span><strong id="hero-shipping">&#8353;3,000</strong></div>
+            <div><span>Ahorro</span><strong class="mint-text" id="hero-savings">-&#8353;5,900</strong></div>
+            <div><span>Total</span><strong id="hero-total">&#8353;14,900</strong></div>
+          </div>
+          <a href="#order" class="btn-primary btn-full">Pedir Bloom ahora</a>
+          <a href="https://wa.me/50670524184" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-full">Comprar por WhatsApp</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="trust-row" aria-label="Confianza">
+      <div class="trust-item"><strong>Pago seguro</strong><span>Tilopay protegido</span></div>
+      <div class="trust-item"><strong>Envio a todo CR</strong><span>Directo a tu casa</span></div>
+      <div class="trust-item"><strong>Uso nocturno</strong><span>Actua mientras dormis</span></div>
+      <div class="trust-item"><strong>Sin dolor</strong><span>Micro-agujas disolubles</span></div>
+    </section>
+
+    <section class="section ugc-section" id="ugc">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Prueba social</span>
+            <h2 class="section-title">Parches reales, piel real.</h2>
+          </div>
+          <p class="section-subtitle">Contenido real de Bloom, presentado de forma limpia para que puedas ver el producto sin ruido.</p>
+        </div>
+
+        <div class="ugc-carousel-wrap reveal">
+          <button type="button" class="ugc-nav ugc-nav-prev" aria-label="Anterior">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+
+          <div class="ugc-carousel" id="ugc-carousel" role="list">
+            <article class="ugc-card" role="listitem" data-ugc-index="0">
+              <div class="ugc-card-media">
+                <video class="ugc-video" muted loop playsinline preload="none" data-src="/images/video2.mp4" aria-label="Resena de Bloom"></video>
+                <div class="ugc-gradient-overlay"></div>
+                <span class="ugc-badge">Antes de dormir</span>
+                <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                </button>
+                <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
               </div>
-              <span class="ugc-quote">"Se me fue el granito en una noche"</span>
+            </article>
+
+            <article class="ugc-card ugc-card-featured" role="listitem" data-ugc-index="1">
+              <div class="ugc-card-media">
+                <video class="ugc-video" muted loop playsinline preload="none" data-src="/images/pimple-patches-1.mp4" aria-label="Resena de Bloom"></video>
+                <div class="ugc-gradient-overlay"></div>
+                <span class="ugc-badge">Micro-agujas Bloom</span>
+                <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                </button>
+                <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
+              </div>
+            </article>
+
+            <article class="ugc-card" role="listitem" data-ugc-index="2">
+              <div class="ugc-card-media">
+                <video class="ugc-video" muted loop playsinline preload="none" data-src="/images/video3.mp4" aria-label="Resena de Bloom"></video>
+                <div class="ugc-gradient-overlay"></div>
+                <span class="ugc-badge">Resultado real</span>
+                <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                </button>
+                <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
+              </div>
+            </article>
+
+            <article class="ugc-card" role="listitem" data-ugc-index="3">
+              <div class="ugc-card-media">
+                <video class="ugc-video" muted loop playsinline preload="none" data-src="/images/pimple-patches-3.mp4" aria-label="Resena de Bloom"></video>
+                <div class="ugc-gradient-overlay"></div>
+                <span class="ugc-badge">Textura invisible</span>
+                <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" stroke="none" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                </button>
+                <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <button type="button" class="ugc-nav ugc-nav-next" aria-label="Siguiente">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt benefits" id="benefits">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Tecnologia skincare</span>
+            <h2 class="section-title">Mas potente que un parche comun.</h2>
+          </div>
+          <p class="section-subtitle">Cada bloque responde una objecion antes del checkout: como funciona, cuanto tarda y por que es facil de usar.</p>
+        </div>
+
+        <div class="benefit-bento reveal-stagger">
+          <article class="bento-card bento-large">
+            <div>
+              <span class="tag">Tecnologia</span>
+              <h3>Micro-agujas que se disuelven durante la noche.</h3>
+              <p>Entregan ingredientes activos directamente en la zona del granito para calmar apariencia, rojez e inflamacion.</p>
+            </div>
+            <div class="patch-close">
+              <img src="/images/product2.jpg" alt="Close-up de parche Bloom" loading="lazy" decoding="async" />
             </div>
           </article>
-
-          <article class="ugc-card" role="listitem" data-ugc-index="1">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/pimple-patches-2.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-            </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <span class="ugc-quote">"No sentís nada, y desaparece"</span>
-            </div>
+          <article class="bento-card">
+            <span class="tag">Discreto</span>
+            <h3>Transparente.</h3>
+            <p>Se siente limpio, ligero y facil de usar sin alterar tu rutina.</p>
           </article>
-
-          <article class="ugc-card" role="listitem" data-ugc-index="2">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/pimple-patches-3.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-            </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <span class="ugc-quote">"Mejor que cualquier crema"</span>
-            </div>
+          <article class="bento-card">
+            <span class="tag">Calma</span>
+            <h3>Menos rojez.</h3>
+            <p>Ideal para esos granitos que aparecen justo antes de un plan.</p>
           </article>
-
-          <article class="ugc-card" role="listitem" data-ugc-index="3">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/video1.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-            </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <span class="ugc-quote">"Lo uso toda la semana"</span>
-            </div>
+          <article class="bento-card">
+            <span class="tag">Simple</span>
+            <h3>3 pasos.</h3>
+            <p>Lavar, aplicar y dormir. Sin rutinas complicadas.</p>
           </article>
-
-          <article class="ugc-card" role="listitem" data-ugc-index="4">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/video2.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-            </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <span class="ugc-quote">"Mi rutina nocturna favorita"</span>
-            </div>
+          <article class="bento-card">
+            <span class="tag">Costa Rica</span>
+            <h3>Compra directa.</h3>
+            <p>Oferta, envio y pago en el mismo flujo sin friccion.</p>
           </article>
+        </div>
+      </div>
+    </section>
 
-          <article class="ugc-card" role="listitem" data-ugc-index="5">
-            <div class="ugc-card-media">
-              <video class="ugc-video" muted loop playsinline preload="none"
-                data-src="/images/video3.mp4" aria-label="Reseña de Bloom"></video>
-              <div class="ugc-gradient-overlay"></div>
-              <button type="button" class="ugc-play-btn" aria-label="Reproducir video">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-play"><path d="M8 5v14l11-7z"/></svg>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="#fff" class="ugc-icon-pause" hidden><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-              </button>
-              <button type="button" class="ugc-mute-btn" aria-label="Activar sonido">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ugc-icon-sound" hidden><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#fff"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-            </div>
-            <div class="ugc-card-footer">
-              <div class="ugc-stars-sm" aria-label="5 estrellas">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#f5b301"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
-              <span class="ugc-quote">"100% recomendado"</span>
-            </div>
+    <section class="section how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Rutina nocturna</span>
+            <h2 class="section-title">Tan simple como dormir.</h2>
+          </div>
+          <p class="section-subtitle">La explicacion se mantiene corta para no interrumpir la compra.</p>
+        </div>
+        <div class="steps-grid reveal-stagger">
+          <article class="step">
+            <div class="step-number">01</div>
+            <h3>Limpia</h3>
+            <p>Lava tu cara y seca bien el area antes de aplicar.</p>
           </article>
-
-        </div>
-
-        <button type="button" class="ugc-nav ugc-nav-next" aria-label="Siguiente">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
-
-      <div class="ugc-cta reveal">
-        <a href="#order" class="btn-primary ugc-cta-btn">Probá Bloom Hoy — 50% OFF</a>
-        <span class="ugc-cta-note">Envío a todo Costa Rica · Pago seguro</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── BENEFITS ─── -->
-  <section class="section benefits">
-    <div class="container">
-      <h2 class="section-title reveal">Por qué <span class="gradient-text">Bloom</span> Funciona</h2>
-      <div class="benefits-grid reveal-stagger">
-
-        <div class="card benefit-card">
-          <div class="benefit-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-              <path d="M12 6v6l4 2" />
-            </svg>
-          </div>
-          <h3>Transformaci&oacute;n Nocturna</h3>
-          <p>Cientos de micro-agujas disolubles liberan ingredientes activos mientras dorm&iacute;s &mdash; aplanando visiblemente los granitos y reduciendo la inflamaci&oacute;n para la ma&ntilde;ana.</p>
-        </div>
-
-        <div class="card benefit-card">
-          <div class="benefit-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-            </svg>
-          </div>
-          <h3>Hidrataci&oacute;n Profunda</h3>
-          <p>Infundido con &Aacute;cido Hialur&oacute;nico de grado m&eacute;dico para hidratar intensamente, reparar la barrera cut&aacute;nea y calmar la irritaci&oacute;n &mdash; sin resequedad ni ardor.</p>
-        </div>
-
-        <div class="card benefit-card">
-          <div class="benefit-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-          </div>
-          <h3>Anti-Acn&eacute; y Anti-Inflamatorio</h3>
-          <p>Combate el acn&eacute; desde la ra&iacute;z entregando ingredientes activos directamente a trav&eacute;s de micro-canales &mdash; reduciendo enrojecimiento, hinchaz&oacute;n y promoviendo una piel m&aacute;s clara.</p>
-        </div>
-
-        <div class="card benefit-card">
-          <div class="benefit-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-          </div>
-          <h3>Seguro para Piel Sensible</h3>
-          <p>Transparente, sin fragancia e indoloro. Los parches redondos de 12mm son discretos y biocompatibles &mdash; dise&ntilde;ados espec&iacute;ficamente para pieles sensibles y reactivas.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── MICRO-AGUJAS SHOWCASE ─── -->
-  <section class="section micro-agujas">
-    <div class="container micro-agujas-inner">
-      <h2 class="section-title reveal">Tecnología de <span class="gradient-text">Micro-agujas</span></h2>
-      <p class="section-subtitle micro-agujas-sub reveal">Cientos de micro-agujas de ácido
-        hialurónico 100% puro que penetran suavemente la piel para una absorción profunda y rápida allí donde más lo
-        necesitas.</p>
-
-      <div class="patch-photo reveal-scale">
-        <img src="/images/product2.jpg" alt="Bloom microneedle patch close-up" class="patch-photo-img"
-          loading="lazy" decoding="async" />
-      </div>
-
-      <div class="patch-showcase reveal-scale">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" width="100%" height="auto"
-          class="animated-micro-patch">
-          <defs>
-            <filter id="shadow-glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#612ce6" flood-opacity="0.22" />
-            </filter>
-            <linearGradient id="skin-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#fde8d0" />
-              <stop offset="100%" stop-color="#f5d0b0" />
-            </linearGradient>
-            <linearGradient id="needle-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#612ce6" />
-              <stop offset="100%" stop-color="#a78bfa" />
-            </linearGradient>
-            <radialGradient id="ripple-grad">
-              <stop offset="0%" stop-color="#612ce6" stop-opacity="0.35" />
-              <stop offset="100%" stop-color="#612ce6" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="glow-center" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.25" />
-              <stop offset="100%" stop-color="#a78bfa" stop-opacity="0" />
-            </radialGradient>
-            <style>
-              .mp-float { animation: mpFloat 5s ease-in-out infinite; }
-
-              .needle-anim-1 { animation: needleShrink 3.5s ease-in-out infinite; }
-              .needle-anim-2 { animation: needleShrink 3.5s ease-in-out infinite 0.5s; }
-              .needle-anim-3 { animation: needleShrink 3.5s ease-in-out infinite 1s; }
-              .needle-anim-4 { animation: needleShrink 3.5s ease-in-out infinite 1.5s; }
-              .needle-anim-5 { animation: needleShrink 3.5s ease-in-out infinite 2s; }
-
-              .drop-1 { animation: dropFall 3.5s ease-in infinite 1.8s; }
-              .drop-2 { animation: dropFall 3.5s ease-in infinite 2.2s; }
-              .drop-3 { animation: dropFall 3.5s ease-in infinite 2.6s; }
-
-              .ripple-a { animation: rippleGrow 3.5s ease-out infinite 2s; opacity: 0; }
-              .ripple-b { animation: rippleGrow 3.5s ease-out infinite 2.5s; opacity: 0; }
-
-              .pulse-ring { animation: pulseRing 2.5s ease-in-out infinite; }
-              .label-anim { animation: labelSlide 7s ease-in-out infinite; }
-              .label-anim-b { animation: labelSlide 7s ease-in-out infinite 3.5s; }
-
-              @keyframes mpFloat {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-8px); }
-              }
-              @keyframes needleShrink {
-                0%, 15% { opacity: 1; transform: scaleY(1); }
-                50%, 70% { opacity: 0.3; transform: scaleY(0.2); }
-                100% { opacity: 1; transform: scaleY(1); }
-              }
-              @keyframes dropFall {
-                0% { opacity: 0; transform: translateY(0); }
-                20% { opacity: 0.8; }
-                100% { opacity: 0; transform: translateY(32px); }
-              }
-              @keyframes rippleGrow {
-                0% { r: 10; opacity: 0.45; }
-                100% { r: 55; opacity: 0; }
-              }
-              @keyframes pulseRing {
-                0%, 100% { opacity: 0.15; transform: scale(1); }
-                50% { opacity: 0.35; transform: scale(1.08); }
-              }
-              @keyframes labelSlide {
-                0%, 10% { opacity: 0; transform: translateY(6px); }
-                20%, 45% { opacity: 1; transform: translateY(0); }
-                55%, 100% { opacity: 0; transform: translateY(-6px); }
-              }
-            </style>
-          </defs>
-
-          <!-- Outer patch body -->
-          <g class="mp-float">
-            <!-- Background glow -->
-            <circle cx="210" cy="230" r="120" fill="url(#glow-center)" class="pulse-ring" />
-
-            <!-- Patch circle (the physical patch) -->
-            <circle cx="210" cy="200" r="100" fill="rgba(255,255,255,0.85)" stroke="rgba(97,44,230,0.25)" stroke-width="2" filter="url(#shadow-glow)" />
-            <circle cx="210" cy="200" r="100" fill="none" stroke="rgba(97,44,230,0.08)" stroke-width="1" stroke-dasharray="4,6" />
-
-            <!-- Skin layer beneath -->
-            <rect x="110" y="290" width="200" height="50" rx="12" fill="url(#skin-grad)" opacity="0.7" />
-            <text x="210" y="322" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#b8886a" letter-spacing="0.12em" font-weight="600">SUPERFICIE DE PIEL</text>
-
-            <!-- Microneedle array (5 needles dissolving into skin) -->
-            <g transform="translate(210, 200)">
-              <!-- Needle 1 -->
-              <g class="needle-anim-1" style="transform-origin: -48px 60px">
-                <rect x="-50" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
-              </g>
-              <!-- Needle 2 -->
-              <g class="needle-anim-2" style="transform-origin: -23px 60px">
-                <rect x="-25" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
-              </g>
-              <!-- Needle 3 (center) -->
-              <g class="needle-anim-3" style="transform-origin: 0px 60px">
-                <rect x="-2" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
-              </g>
-              <!-- Needle 4 -->
-              <g class="needle-anim-4" style="transform-origin: 23px 60px">
-                <rect x="21" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
-              </g>
-              <!-- Needle 5 -->
-              <g class="needle-anim-5" style="transform-origin: 48px 60px">
-                <rect x="46" y="30" width="4" height="60" rx="2" fill="url(#needle-grad)" />
-              </g>
-            </g>
-
-            <!-- Ingredient droplets falling from needles into skin -->
-            <circle class="drop-1" cx="160" cy="295" r="3" fill="#612ce6" opacity="0" />
-            <circle class="drop-2" cx="210" cy="295" r="3" fill="#a78bfa" opacity="0" />
-            <circle class="drop-3" cx="260" cy="295" r="3" fill="#612ce6" opacity="0" />
-
-            <!-- Absorption ripples in the skin layer -->
-            <circle class="ripple-a" cx="210" cy="310" r="10" fill="url(#ripple-grad)" />
-            <circle class="ripple-b" cx="210" cy="310" r="10" fill="url(#ripple-grad)" />
-
-            <!-- Dot grid on patch surface (visual microneedle array) -->
-            <g fill="#612ce6" opacity="0.4">
-              <circle cx="170" cy="160" r="2" /><circle cx="190" cy="160" r="2" /><circle cx="210" cy="160" r="2" /><circle cx="230" cy="160" r="2" /><circle cx="250" cy="160" r="2" />
-              <circle cx="170" cy="180" r="2" /><circle cx="190" cy="180" r="2" /><circle cx="210" cy="180" r="2" /><circle cx="230" cy="180" r="2" /><circle cx="250" cy="180" r="2" />
-              <circle cx="170" cy="200" r="2" /><circle cx="190" cy="200" r="2" /><circle cx="210" cy="200" r="2" /><circle cx="230" cy="200" r="2" /><circle cx="250" cy="200" r="2" />
-              <circle cx="170" cy="220" r="2" /><circle cx="190" cy="220" r="2" /><circle cx="210" cy="220" r="2" /><circle cx="230" cy="220" r="2" /><circle cx="250" cy="220" r="2" />
-              <circle cx="170" cy="240" r="2" /><circle cx="190" cy="240" r="2" /><circle cx="210" cy="240" r="2" /><circle cx="230" cy="240" r="2" /><circle cx="250" cy="240" r="2" />
-            </g>
-
-            <!-- Cross-section label lines -->
-            <line x1="320" y1="200" x2="340" y2="200" stroke="#612ce6" stroke-width="1" opacity="0.5" />
-            <text x="345" y="204" font-family="Inter, sans-serif" font-size="9" fill="#612ce6" font-weight="600" opacity="0.7">PARCHE</text>
-
-            <line x1="320" y1="270" x2="340" y2="310" stroke="#612ce6" stroke-width="1" opacity="0.5" />
-            <text x="345" y="314" font-family="Inter, sans-serif" font-size="9" fill="#612ce6" font-weight="600" opacity="0.7">PIEL</text>
-          </g>
-
-          <!-- Bottom animated labels (alternating) -->
-          <text class="label-anim" x="210" y="400" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#612CE6">
-            Micro-agujas se disuelven al contacto
-          </text>
-          <text class="label-anim-b" x="210" y="400" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#612CE6">
-            Ácido hialurónico penetra la piel directamente
-          </text>
-
-          <!-- Step indicators -->
-          <g font-family="Inter, sans-serif" font-size="10" fill="#8e7fb5">
-            <text x="210" y="440" text-anchor="middle" letter-spacing="0.08em">APLICA → DUERME → DESPIERTA RADIANTE</text>
-          </g>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── WHAT'S INSIDE ─── -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title reveal">Qu&eacute; <span class="gradient-text">Contiene</span></h2>
-      <p class="section-subtitle reveal">Cada parche entrega una mezcla precisa de ingredientes recomendados por dermat&oacute;logos a trav&eacute;s de micro-agujas disolubles e indoloras.</p>
-      <div class="ingredients-grid reveal-stagger">
-
-        <div class="card ingredient-card">
-          <div class="ingredient-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v8M8 12h8" />
-            </svg>
-          </div>
-          <h3>Base de Hidrocoloide M&eacute;dico</h3>
-          <p>Proporciona adhesi&oacute;n suave y retenci&oacute;n de humedad mientras sella el &aacute;rea, absorbe l&iacute;quidos y protege de irritantes externos durante la noche.</p>
-        </div>
-
-        <div class="card ingredient-card">
-          <div class="ingredient-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-            </svg>
-          </div>
-          <h3>Micro-agujas de &Aacute;cido Hialur&oacute;nico</h3>
-          <p>Micro-agujas ultrafinas disolubles hechas de derivados de AH penetran la capa exterior de la piel para una hidrataci&oacute;n profunda y apoyo a la sanaci&oacute;n natural.</p>
-        </div>
-
-        <div class="card ingredient-card">
-          <div class="ingredient-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-          </div>
-          <h3>Agentes Anti-Inflamatorios</h3>
-          <p>Compuestos calmantes complementarios reducen el enrojecimiento y la hinchaz&oacute;n mientras promueven una piel tranquila y clara &mdash; ideal para pieles reactivas y propensas al acn&eacute;.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── HOW IT WORKS ─── -->
-  <section class="section how-it-works">
-    <div class="container">
-      <h2 class="section-title reveal">Tan <span class="gradient-text">Simple</span> como Dormir</h2>
-      <div class="steps-grid reveal-stagger">
-        <div class="step">
-          <div class="step-number">01</div>
-          <h3>Limpi&aacute; y Sec&aacute;</h3>
-          <p>Lav&aacute; tu cara con tu rutina habitual. Sec&aacute; bien el &aacute;rea afectada.</p>
-        </div>
-        <div class="step-divider" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-number">02</div>
-          <h3>Aplic&aacute; el Parche</h3>
-          <p>Retir&aacute; la pel&iacute;cula protectora. Presion&aacute; suavemente sobre el granito por 5&ndash;10 segundos antes de dormir.</p>
-        </div>
-        <div class="step-divider" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-number">03</div>
-          <h3>Despert&aacute; Radiante</h3>
-          <p>Las micro-agujas se disuelven durante la noche. Retir&aacute; el parche en la ma&ntilde;ana y not&aacute; la diferencia.</p>
+          <article class="step">
+            <div class="step-number">02</div>
+            <h3>Aplica</h3>
+            <p>Presiona el parche sobre el granito por unos segundos.</p>
+          </article>
+          <article class="step">
+            <div class="step-number">03</div>
+            <h3>Dormi</h3>
+            <p>Las micro-agujas se disuelven mientras descansas.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ─── SPECS STRIP ─── -->
-  <section class="specs-strip">
-    <div class="container">
-      <div class="specs-grid reveal-stagger">
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-          </svg>
-          12mm Di&aacute;metro
-        </div>
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-          9 Parches por Paquete
-        </div>
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
-          2 A&ntilde;os de Vida &Uacute;til
-        </div>
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-          Transparente y Discreto
-        </div>
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path
-              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-          Sin Fragancia
-        </div>
-        <div class="spec-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-            <circle cx="8.5" cy="7" r="4" />
-            <path d="M20 8v6M23 11h-6" />
-          </svg>
-          Todo Tipo de Piel
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── SOCIAL PROOF STRIP (above order form) ─── -->
-  <div class="social-proof-strip reveal">
-    <div class="container social-proof-inner">
-      <div class="social-proof-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#f5b301" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span><strong>4.9/5</strong> — 500+ clientas</span>
-      </div>
-      <div class="social-proof-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span>Pago 100% seguro</span>
-      </div>
-      <div class="social-proof-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        <span>Envío a todo CR</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── ORDER FORM ─── -->
-  <section class="section order" id="order">
-    <div class="container order-container">
-      <h2 class="section-title reveal">Ordená tu <span class="gradient-text">Bloom</span></h2>
-
-      <!-- Promo countdown banner -->
-      <div class="order-promo-banner reveal">
-        <div class="order-promo-top">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          <strong>50% de descuento</strong> comprando 2 o más
-        </div>
-        <div class="order-promo-timer">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          Oferta termina en <span class="promo-timer">00:00:00</span>
-        </div>
-      </div>
-
-      <form class="order-flow" id="order-form" novalidate>
-
-        <!-- Product + Quantity row -->
-        <div class="order-product-row reveal">
-          <img src="/images/product2.jpg" alt="Bloom Patch" class="order-product-thumb" loading="lazy" decoding="async" />
-          <div class="order-product-info">
-            <span class="order-product-name">Bloom Dermal Micro-Infusion Patch</span>
-            <span class="order-product-price" id="order-price-display"><span class="price-original">₡8,900</span> ₡4,450 <span class="order-product-unit">/ unidad</span></span>
+    <section class="section order alt" id="order">
+      <div class="container order-container">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-kicker">Checkout rapido</span>
+            <h2 class="section-title">Pedilo en menos de un minuto.</h2>
           </div>
-          <div class="qty-control">
-            <button type="button" class="qty-btn" id="qty-minus" aria-label="Reducir cantidad">−</button>
-            <span class="qty-display" id="qty-display">2</span>
-            <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad">+</button>
-            <input type="hidden" id="cantidad" name="cantidad" value="2" />
-          </div>
+          <p class="section-subtitle">Pago seguro por Tilopay. Tu pedido se confirma automaticamente y se envia a Bloom para preparacion.</p>
         </div>
 
-        <!-- Stock urgency nudge -->
-        <div class="urgency-nudge reveal" id="urgency-nudge">
-          <span class="urgency-dot"></span>
-          <span><strong>Quedan pocas unidades</strong> a este precio — <span class="urgency-count" id="urgency-count">14</span> personas viendo esta oferta</span>
-        </div>
+        <form class="order-flow" id="order-form" novalidate>
+          <div class="checkout-grid">
+            <div class="form-panel">
+              <fieldset class="form-section reveal">
+                <legend class="form-legend">Informacion personal</legend>
+                <div class="field">
+                  <label for="nombre-completo">Nombre completo</label>
+                  <input type="text" id="nombre-completo" name="nombre_completo" placeholder="Ej: Maria Lopez Rojas" autocomplete="name" enterkeyhint="next" required />
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="telefono">Telefono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="8888-7777" inputmode="tel" autocomplete="tel" enterkeyhint="next" required />
+                  </div>
+                  <div class="field">
+                    <label for="email">Correo electronico</label>
+                    <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" inputmode="email" autocomplete="email" enterkeyhint="next" required />
+                  </div>
+                </div>
+              </fieldset>
 
-        <!-- Promo shipping banner -->
-        <div class="shipping-banner reveal" id="shipping-note">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-          <strong>-50% aplicado</strong> — Ahorrás ₡8,900 en esta orden
-        </div>
+              <fieldset class="form-section reveal">
+                <legend class="form-legend">Direccion de envio</legend>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="provincia">Provincia</label>
+                    <select id="provincia" name="provincia" required>
+                      <option value="">Seleccionar...</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="canton">Canton</label>
+                    <select id="canton" name="canton" required disabled>
+                      <option value="">Seleccionar...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="distrito">Distrito</label>
+                  <input type="text" id="distrito" name="distrito" placeholder="Nombre del distrito" autocomplete="address-level3" enterkeyhint="next" required />
+                </div>
+                <div class="field">
+                  <label for="direccion">Senas exactas</label>
+                  <textarea id="direccion" name="direccion" rows="3" autocomplete="street-address"
+                    placeholder="Ej: 100m norte de la farmacia, casa azul" required></textarea>
+                </div>
+              </fieldset>
 
-        <!-- Totals strip -->
-        <div class="order-totals reveal">
-          <div class="order-totals-line order-totals-savings" id="summary-savings-row">
-            <span>Descuento 50%</span>
-            <span class="savings-amount" id="summary-savings">-₡8,900</span>
-          </div>
-          <div class="order-totals-line">
-            <span>Subtotal</span>
-            <span id="summary-subtotal">₡8,900</span>
-          </div>
-          <div class="order-totals-line">
-            <span>Envío</span>
-            <span id="summary-shipping">₡3,000</span>
-          </div>
-          <div class="order-totals-total">
-            <span>Total</span>
-            <span id="summary-total">₡11,900</span>
-          </div>
-        </div>
+              <fieldset class="form-section reveal">
+                <legend class="form-legend">Notas <span class="optional">(opcional)</span></legend>
+                <div class="field">
+                  <textarea id="comentarios" name="comentarios" rows="2" placeholder="Alguna indicacion especial..."></textarea>
+                </div>
+              </fieldset>
 
-        <!-- Hidden summary elements for JS compatibility -->
-        <span id="summary-qty" hidden>× 2</span>
-
-        <!-- Personal Info -->
-        <fieldset class="form-section reveal">
-          <legend class="form-legend">Información personal</legend>
-          <div class="field-row">
-            <div class="field">
-              <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+              <div class="form-error" id="form-error" hidden></div>
             </div>
-            <div class="field">
-              <label for="apellido">Apellido</label>
-              <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" required />
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="telefono">Teléfono</label>
-              <input type="tel" id="telefono" name="telefono" placeholder="8888-7777" required />
-            </div>
-          </div>
-          <div class="field">
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required />
-          </div>
-        </fieldset>
 
-        <!-- Shipping Address -->
-        <fieldset class="form-section reveal">
-          <legend class="form-legend">Dirección de envío</legend>
-          <div class="field-row">
-            <div class="field">
-              <label for="provincia">Provincia</label>
-              <select id="provincia" name="provincia" required>
-                <option value="">Seleccionar...</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="canton">Cantón</label>
-              <select id="canton" name="canton" required disabled>
-                <option value="">Seleccionar...</option>
-              </select>
-            </div>
-          </div>
-          <div class="field">
-            <label for="distrito">Distrito</label>
-            <input type="text" id="distrito" name="distrito" placeholder="Nombre del distrito" required />
-          </div>
-          <div class="field">
-            <label for="direccion">Señas exactas</label>
-            <textarea id="direccion" name="direccion" rows="2"
-              placeholder="Ej: 100m norte de la farmacia, casa azul" required></textarea>
-          </div>
-        </fieldset>
+            <aside class="checkout-summary reveal">
+              <div class="order-promo-banner">
+                <div class="order-promo-top">
+                  <strong>Promo 2x</strong> por &#8353;11,900
+                </div>
+                <div class="order-promo-timer">
+                  Oferta termina en <span class="promo-timer">00:00:00</span>
+                </div>
+              </div>
 
-        <!-- Notes (optional) -->
-        <fieldset class="form-section reveal">
-          <legend class="form-legend">Notas <span class="optional">(opcional)</span></legend>
-          <div class="field">
-            <textarea id="comentarios" name="comentarios" rows="2"
-              placeholder="Alguna indicación especial..."></textarea>
-          </div>
-        </fieldset>
+              <div class="order-product-row">
+                <img src="/images/product.jpg" alt="Bloom Patch" class="order-product-thumb" loading="lazy" decoding="async" />
+                <div class="order-product-info">
+                  <span class="order-product-name">Bloom Dermal Micro-Infusion Patch</span>
+                  <span class="order-package-note">Cada paquete trae 9 parches individuales.</span>
+                  <span class="order-product-price" id="order-price-display"><span class="price-original">&#8353;17,800</span> &#8353;11,900 <span class="order-product-unit">/ 2 paquetes (18 parches)</span></span>
+                </div>
+              </div>
 
-        <!-- Error message -->
-        <div class="form-error" id="form-error" hidden></div>
+              <div class="qty-row order-qty-row">
+                <div>
+                  <span class="qty-label">Paquetes</span>
+                  <span class="qty-hint">Promo aplicada desde 2 paquetes</span>
+                </div>
+                <div class="qty-control">
+                  <button type="button" class="qty-btn" id="qty-minus" aria-label="Reducir cantidad">-</button>
+                  <span class="qty-display" id="qty-display" data-qty-display>2</span>
+                  <button type="button" class="qty-btn" id="qty-plus" aria-label="Aumentar cantidad">+</button>
+                  <input type="hidden" id="cantidad" name="cantidad" value="2" />
+                </div>
+              </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn-primary btn-submit reveal" id="submit-btn">
-          <span id="btn-text">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:4px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            Pagar <span id="btn-total">₡11,900</span> — Pago Seguro
-          </span>
-          <span id="btn-loading" hidden>
-            <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.5">
-              <path
-                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-            </svg>
-            Procesando pago...
-          </span>
-        </button>
-        <!-- Guarantee + Trust badges -->
-        <div class="checkout-guarantees reveal">
-          <div class="guarantee-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Pago 100% seguro · Datos encriptados</span>
-          </div>
-          <div class="guarantee-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>Garantía de satisfacción o te devolvemos tu dinero</span>
-          </div>
-          <div class="guarantee-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            <span>Envío a todo Costa Rica · Entrega en 2-5 días</span>
-          </div>
-        </div>
+              <div class="urgency-nudge" id="urgency-nudge">
+                <span class="urgency-dot"></span>
+                <span><strong>Quedan pocos paquetes</strong> a este precio - <span class="urgency-count" id="urgency-count">14</span> personas viendo esta oferta</span>
+              </div>
 
-      </form>
-    </div>
-  </section>
+              <div class="shipping-banner" id="shipping-note">
+                <strong>Promo 2x aplicada</strong> - Ahorras &#8353;5,900 en productos
+              </div>
 
-  <!-- ─── FOOTER ─── -->
+              <div class="order-totals">
+                <div class="order-totals-line order-totals-savings" id="summary-savings-row">
+                  <span>Ahorro promo 2x</span>
+                  <span class="savings-amount" id="summary-savings">-&#8353;5,900</span>
+                </div>
+                <div class="order-totals-line">
+                  <span>Subtotal</span>
+                  <span id="summary-subtotal">&#8353;11,900</span>
+                </div>
+                <div class="order-totals-line">
+                  <span>Envio</span>
+                  <span id="summary-shipping">&#8353;3,000</span>
+                </div>
+                <div class="order-totals-total">
+                  <span>Total hoy</span>
+                  <span id="summary-total">&#8353;14,900</span>
+                </div>
+              </div>
+
+              <span id="summary-qty" hidden>x 2</span>
+
+              <button type="submit" class="btn-primary btn-submit" id="submit-btn">
+                <span id="btn-text">
+                  Pagar <span id="btn-total">&#8353;14,900</span> - Pago seguro
+                </span>
+                <span id="btn-loading" hidden>
+                  <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                  </svg>
+                  Procesando pago...
+                </span>
+              </button>
+
+              <div class="checkout-guarantees">
+                <div class="guarantee-item">
+                  <span>Pago 100% seguro con Tilopay</span>
+                </div>
+                <div class="guarantee-item">
+                  <span>Envio a todo Costa Rica</span>
+                </div>
+                <div class="guarantee-item">
+                  <span>Confirmacion automatica por correo</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-logo-group">
-        <img src="/images/bloom-logo.png" alt="BLOOM — Dermal Micro-Infusion Patch" class="bloom-logo-img footer-logo-img" />
+        <img src="/images/bloom-logo.png" alt="BLOOM - Dermal Micro-Infusion Patch" class="bloom-logo-img footer-logo-img" />
       </div>
-      <p class="footer-text">Parche de Micro-agujas para Acn&eacute; con &Aacute;cido Hialur&oacute;nico · Costa Rica</p>
+      <p class="footer-text">Parche de micro-agujas para acne con acido hialuronico - Costa Rica</p>
       <div class="footer-socials">
-        <a href="https://wa.me/50670524184" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="WhatsApp">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp
-        </a>
-        <a href="https://www.instagram.com/bloom_costarica" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          Instagram
-        </a>
+        <a href="https://wa.me/50670524184" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="WhatsApp">WhatsApp</a>
+        <a href="https://www.instagram.com/bloom_costarica" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">Instagram</a>
       </div>
-      <p class="footer-legal">© 2026 Bloom. Todos los derechos reservados.</p>
+      <p class="footer-legal">&copy; 2026 Bloom. Todos los derechos reservados.</p>
     </div>
   </footer>
 
@@ -863,14 +471,20 @@
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
 
-  <!-- ─── STICKY MOBILE CTA ─── -->
   <div class="sticky-cta" id="sticky-cta" hidden>
-    <div class="sticky-cta-inner">
+    <div class="sticky-cta-inner" data-state="browse">
       <div class="sticky-cta-info">
-        <span class="sticky-cta-price"><span class="sticky-cta-old">₡8,900</span> ₡4,450</span>
-        <span class="sticky-cta-label">50% OFF · Envío a todo CR</span>
+        <span class="sticky-cta-price"><span class="sticky-cta-old">&#8353;17,800</span> &#8353;11,900</span>
+        <span class="sticky-cta-label">2 paquetes (18 parches) - Envio &#8353;3,000</span>
       </div>
       <a href="#order" class="sticky-cta-btn">Ordenar Ahora</a>
+    </div>
+    <div class="sticky-cta-inner" data-state="pay" hidden>
+      <div class="sticky-cta-info">
+        <span class="sticky-cta-label">Total a pagar</span>
+        <span class="sticky-cta-price" id="sticky-pay-total">&#8353;14,900</span>
+      </div>
+      <button type="button" class="sticky-cta-btn" id="sticky-pay-btn">Pagar Ahora</button>
     </div>
   </div>
 

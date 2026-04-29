@@ -31,7 +31,9 @@ export async function sendOrderEmail(order) {
   <p><strong>Cliente:</strong> ${order.nombre} ${order.apellido} / ${order.telefono} / ${order.email}</p>
   <p><strong>Dirección:</strong> ${order.provincia}, ${order.canton}, ${order.distrito} — ${order.direccion}</p>
   <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
-  <p><strong>Producto:</strong> Bloom Dermal Micro-Infusion Patch × ${order.cantidad}</p>
+  <p><strong>Producto:</strong> Bloom Dermal Micro-Infusion Patch</p>
+  <p><strong>Contenido:</strong> cada paquete trae 9 parches individuales</p>
+  <p><strong>Paquetes:</strong> ${order.cantidad} (${Number(order.cantidad || 1) * 9} parches en total)</p>
   <p><strong>Envío:</strong> ${order.shippingCost === 0 ? 'GRATIS' : `₡${Number(order.shippingCost).toLocaleString('es-CR')}`}</p>
   <p style="font-size:18px;color:#5e17eb;font-weight:700;">Total: ₡${Number(order.total).toLocaleString('es-CR')}</p>
   ${order.comentarios ? `<p><strong>Notas:</strong> ${order.comentarios}</p>` : ''}
@@ -45,4 +47,3 @@ export async function sendOrderEmail(order) {
     html
   });
 }
-
