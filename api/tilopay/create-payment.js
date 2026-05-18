@@ -58,8 +58,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Correo electrónico inválido' });
     }
 
-    if (qty < 1 || qty > 10) {
-      return res.status(400).json({ error: 'Cantidad debe ser entre 1 y 10' });
+    if (qty < 1 || qty > 5) {
+      return res.status(400).json({ error: 'Cantidad debe ser entre 1 y 5' });
     }
 
     const order = {

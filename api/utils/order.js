@@ -1,12 +1,18 @@
 import crypto from 'crypto';
 
-export const UNIT_PRICE = 8900;
+export const UNIT_PRICE = 5900;
 export const TWO_PACK_PRICE = 11900;
 export const PROMO_THRESHOLD = 2;
 export const SHIPPING_COST = 3000;
 export const PATCHES_PER_PACKAGE = 9;
 
-const MAX_QTY = 10;
+const MAX_QTY = 5;
+const PROMO_TOTALS = {
+  2: 11900,
+  3: 15900,
+  4: 18900,
+  5: 21900
+};
 
 function getOrderSecret() {
   return process.env.ORDER_DATA_SECRET || process.env.TILOPAY_WEBHOOK_SECRET || '';
@@ -14,10 +20,9 @@ function getOrderSecret() {
 
 export function calculateOrder(qty) {
   const quantity = Math.max(1, Math.min(MAX_QTY, parseInt(qty, 10) || 1));
-  const subtotal = quantity >= PROMO_THRESHOLD
-    ? TWO_PACK_PRICE + Math.max(0, quantity - PROMO_THRESHOLD) * UNIT_PRICE
-    : UNIT_PRICE * quantity;
-  const shipping = SHIPPING_COST;
+  const promoTotal = PROMO_TOTALS[quantity];
+  const shipping = promoTotal ? 0 : SHIPPING_COST;
+  const subtotal = promoTotal || UNIT_PRICE * quantity;
   return {
     quantity,
     subtotal,

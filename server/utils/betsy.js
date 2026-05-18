@@ -10,12 +10,14 @@ function buildBetsyPayload(order) {
     product: {
       name: 'Bloom Dermal Micro-Infusion Patch - paquete de 9 parches',
       quantity: order.cantidad,
-      unitPrice: order.cantidad >= 2 ? 'Promo 2 paquetes (18 parches) ₡11,900' : `1 paquete (9 parches) ₡${Number(8900).toLocaleString('es-CR')}`,
+      unitPrice: order.cantidad >= 2
+        ? `${order.cantidad} paquetes (${Number(order.cantidad || 1) * 9} parches) por ₡${Number(order.total).toLocaleString('es-CR')} con envio incluido`
+        : `1 paquete (9 parches) ₡${Number(5900).toLocaleString('es-CR')} + envio`,
       packageContents: '9 parches individuales por paquete',
       subtotal: `₡${Number(order.subtotal || (order.total - order.shippingCost) || 0).toLocaleString('es-CR')}`
     },
     shipping: {
-      cost: order.shippingCost === 0 ? 'GRATIS' : `₡${Number(order.shippingCost).toLocaleString('es-CR')}`,
+      cost: order.shippingCost === 0 ? 'Incluido' : `₡${Number(order.shippingCost).toLocaleString('es-CR')}`,
       courier: 'Correos de Costa Rica',
       address: {
         province: order.provincia,

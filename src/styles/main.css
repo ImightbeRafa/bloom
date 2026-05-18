@@ -247,12 +247,17 @@ h3 {
   width: fit-content;
   display: flex;
   align-items: center;
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 4;
+  transform: rotate(2deg);
 }
 
 .hero-motion-strip {
   position: relative;
-  width: 62px;
-  height: 86px;
+  width: 70px;
+  height: 96px;
   overflow: hidden;
   border-radius: 7px;
   background: #08060d;
@@ -1384,10 +1389,8 @@ textarea:focus {
   }
 
   .hero-motion-pop {
-    position: absolute;
     top: -14px;
     right: 44px;
-    z-index: 4;
     transform: rotate(2deg);
   }
 
@@ -1485,7 +1488,6 @@ textarea:focus {
     margin-top: 10px;
   }
 
-  .trust-row,
   .ugc-carousel,
   .benefit-bento,
   .steps-grid,
@@ -1495,6 +1497,23 @@ textarea:focus {
 
   .trust-row {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trust-item {
+    padding: 9px 8px;
+  }
+
+  .trust-item strong {
+    font-size: 0.78rem;
+    line-height: 1.1;
+  }
+
+  .trust-item span {
+    margin-top: 1px;
+    display: block;
+    font-size: 0.65rem;
+    line-height: 1.15;
   }
 
   .section {

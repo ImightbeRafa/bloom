@@ -27,19 +27,26 @@ function getMetaCookies() {
 }
 
 // ── Pricing ──────────────────────────────────────────────────────────────────
-const UNIT_PRICE = 8900;
+const UNIT_PRICE = 5900;
 const TWO_PACK_PRICE = 11900;
 const PROMO_THRESHOLD = 2;
-const SHIPPING_COST = 3000;      // flat ₡3,000 shipping on all orders
+const SHIPPING_COST = 3000;
+const MAX_QTY = 5;
+const PROMO_TOTALS = {
+  2: 11900,
+  3: 15900,
+  4: 18900,
+  5: 21900
+};
 
 function calculateOrder(qty) {
-  const subtotal = qty >= PROMO_THRESHOLD
-    ? TWO_PACK_PRICE + Math.max(0, qty - PROMO_THRESHOLD) * UNIT_PRICE
-    : UNIT_PRICE * qty;
-  const shipping = SHIPPING_COST;
+  const quantity = Math.max(1, Math.min(MAX_QTY, parseInt(qty, 10) || 1));
+  const promoTotal = PROMO_TOTALS[quantity];
+  const subtotal = promoTotal || UNIT_PRICE * quantity;
+  const shipping = promoTotal ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
-  const regularSubtotal = UNIT_PRICE * qty;
-  const saved = Math.max(0, regularSubtotal - subtotal);
+  const regularTotal = UNIT_PRICE * quantity + SHIPPING_COST;
+  const saved = Math.max(0, regularTotal - total);
   return { subtotal, shipping, total, saved };
 }
 
@@ -105,7 +112,7 @@ provinciaSelect.addEventListener('change', () => {
 let currentQty = 2;
 
 function updateQty(newQty) {
-  if (newQty < 1 || newQty > 10) return;
+  if (newQty < 1 || newQty > MAX_QTY) return;
   currentQty = newQty;
   cantidadInput.value = currentQty;
   qtyDisplay.textContent = currentQty;
@@ -159,7 +166,7 @@ function updateSummary() {
 
   summaryQty.textContent = `× ${currentQty}`;
   summarySubtotal.textContent = formatCRC(subtotal);
-  summaryShipping.textContent = formatCRC(shipping);
+  summaryShipping.textContent = shipping > 0 ? formatCRC(shipping) : 'Incluido';
   summaryTotal.textContent = formatCRC(total);
   if (btnTotalEl) btnTotalEl.textContent = formatCRC(total);
   const stickyPayTotal = document.getElementById('sticky-pay-total');
@@ -169,7 +176,7 @@ function updateSummary() {
   const heroSavings = document.getElementById('hero-savings');
   const heroTotal = document.getElementById('hero-total');
   if (heroSubtotal) heroSubtotal.textContent = formatCRC(subtotal);
-  if (heroShipping) heroShipping.textContent = formatCRC(shipping);
+  if (heroShipping) heroShipping.textContent = shipping > 0 ? formatCRC(shipping) : 'Incluido';
   if (heroSavings) heroSavings.textContent = saved > 0 ? `-${formatCRC(saved)}` : formatCRC(0);
   if (heroTotal) heroTotal.textContent = formatCRC(total);
 
@@ -177,22 +184,22 @@ function updateSummary() {
   const priceEl = document.getElementById('order-price-display');
   if (priceEl) {
     if (currentQty >= PROMO_THRESHOLD) {
-      const regularSubtotal = UNIT_PRICE * currentQty;
+      const regularTotal = UNIT_PRICE * currentQty + SHIPPING_COST;
       const patchCount = currentQty * 9;
-      const unitLabel = `/ ${currentQty} paquetes (${patchCount} parches)`;
-      priceEl.innerHTML = `<span class="price-original">${formatCRC(regularSubtotal)}</span> ${formatCRC(subtotal)} <span class="order-product-unit">${unitLabel}</span>`;
+      const unitLabel = `/ ${currentQty} paquetes (${patchCount} parches) con envio`;
+      priceEl.innerHTML = `<span class="price-original">${formatCRC(regularTotal)}</span> ${formatCRC(total)} <span class="order-product-unit">${unitLabel}</span>`;
     } else {
-      priceEl.innerHTML = `${formatCRC(UNIT_PRICE)} <span class="order-product-unit">/ 1 paquete (9 parches)</span>`;
+      priceEl.innerHTML = `${formatCRC(UNIT_PRICE)} <span class="order-product-unit">/ 1 paquete (9 parches) + envio</span>`;
     }
   }
 
   const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>`;
 
   if (currentQty >= PROMO_THRESHOLD) {
-    shippingNote.innerHTML = `${icon} <strong>Promo 2x aplicada</strong> — Ahorrás ${formatCRC(saved)} en productos`;
+    shippingNote.innerHTML = `${icon} <strong>Promo ${currentQty}x aplicada</strong> — Ahorrás ${formatCRC(saved)} con envio incluido`;
     shippingNote.classList.add('free-shipping');
   } else {
-    shippingNote.innerHTML = `${icon} Agrega 1 paquete más y llevá <strong>2 paquetes (18 parches) por ${formatCRC(TWO_PACK_PRICE)}</strong>`;
+    shippingNote.innerHTML = `${icon} Agrega 1 paquete más y llevá <strong>2 paquetes (18 parches) por ${formatCRC(TWO_PACK_PRICE)} con envio incluido</strong>`;
     shippingNote.classList.remove('free-shipping');
   }
 

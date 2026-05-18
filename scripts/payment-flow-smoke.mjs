@@ -90,7 +90,7 @@ await createPayment({
 
 const payPayload = calls.find((call) => String(call.url).includes('/processPayment'))?.body;
 assert(createRes.statusCode === 200 && createRes.payload.paymentUrl === 'https://pay.test/form', 'create-payment failed');
-assert(payPayload.amount === 14900, `expected amount 14900, got ${payPayload.amount}`);
+assert(payPayload.amount === 11900, `expected amount 11900, got ${payPayload.amount}`);
 assert(payPayload.token_version === 'v2', 'missing token_version');
 assert(payPayload.shipToFirstName && payPayload.shipToEmail, 'missing shipTo fields');
 assert(payPayload.returnData, 'missing signed returnData');
@@ -104,7 +104,7 @@ await confirm({
 }, confirmRes);
 
 assert(confirmRes.statusCode === 200 && confirmRes.payload.success, 'confirm failed');
-assert(confirmRes.payload.order.total === 14900, 'confirm did not use trusted total');
+assert(confirmRes.payload.order.total === 11900, 'confirm did not use trusted total');
 assert(confirmRes.payload.metaEventId === `${confirmRes.payload.orderId ? `purchase_${confirmRes.payload.orderId}_tx-paid` : ''}`, 'bad purchase event id');
 
 const unsignedReturnData = Buffer

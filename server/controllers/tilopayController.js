@@ -5,10 +5,17 @@ import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js'
 import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
 import { generateEventId, sendMetaEvent } from '../utils/meta.js';
 
-const UNIT_PRICE      = 8900;
+const UNIT_PRICE      = 5900;
 const TWO_PACK_PRICE  = 11900;
 const PROMO_THRESHOLD = 2;
-const SHIPPING_COST   = 3000;    // flat ₡3,000 shipping
+const SHIPPING_COST   = 3000;
+const MAX_QTY         = 5;
+const PROMO_TOTALS    = {
+  2: 11900,
+  3: 15900,
+  4: 18900,
+  5: 21900
+};
 
 const PROVINCE_STATE_MAP = {
   'San José': 'CR-SJ', 'Alajuela': 'CR-A', 'Cartago': 'CR-C',
@@ -16,10 +23,10 @@ const PROVINCE_STATE_MAP = {
 };
 
 function calculateOrder(qty) {
-  const subtotal = qty >= PROMO_THRESHOLD
-    ? TWO_PACK_PRICE + Math.max(0, qty - PROMO_THRESHOLD) * UNIT_PRICE
-    : UNIT_PRICE * qty;
-  const shipping = SHIPPING_COST;
+  const quantity = Math.max(1, Math.min(MAX_QTY, parseInt(qty, 10) || 1));
+  const promoTotal = PROMO_TOTALS[quantity];
+  const shipping = promoTotal ? 0 : SHIPPING_COST;
+  const subtotal = promoTotal || UNIT_PRICE * quantity;
   return { subtotal, shipping, total: subtotal + shipping };
 }
 
@@ -53,8 +60,8 @@ export async function createPayment(req, res) {
     }
 
     const qty = parseInt(cantidad) || 1;
-    if (qty < 1 || qty > 10) {
-      return res.status(400).json({ error: 'Cantidad debe ser entre 1 y 10' });
+    if (qty < 1 || qty > MAX_QTY) {
+      return res.status(400).json({ error: `Cantidad debe ser entre 1 y ${MAX_QTY}` });
     }
 
     const { subtotal, shipping, total } = calculateOrder(qty);
