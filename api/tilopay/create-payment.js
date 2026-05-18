@@ -2,19 +2,7 @@
 // Vercel serverless function: creates a Tilopay payment link
 
 import { generateEventId, sendMetaEvent } from '../utils/meta.js';
-
-const UNIT_PRICE       = 8900;
-const TWO_PACK_PRICE   = 11900;
-const PROMO_THRESHOLD  = 2;
-const SHIPPING_COST    = 3000;    // flat ₡3,000 shipping
-
-function calculateOrder(qty) {
-  const subtotal = qty >= PROMO_THRESHOLD
-    ? TWO_PACK_PRICE + Math.max(0, qty - PROMO_THRESHOLD) * UNIT_PRICE
-    : UNIT_PRICE * qty;
-  const shipping = SHIPPING_COST;
-  return { subtotal, shipping, total: subtotal + shipping };
-}
+import { calculateOrder, encodeReturnData } from '../utils/order.js';
 
 function generateOrderId() {
   return `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
@@ -80,12 +68,15 @@ export default async function handler(req, res) {
       provincia, canton, distrito, direccion: direccion.trim(),
       cantidad: qty, comentarios: (comentarios || '').trim(),
       subtotal, shippingCost: shipping, total,
+      fbc: req.body.fbc || '',
+      fbp: req.body.fbp || '',
+      source_url: req.body.source_url || '',
       paymentMethod: 'Tilopay',
       paymentStatus: 'pending',
       createdAt: new Date().toISOString()
     };
 
-    const returnData = Buffer.from(JSON.stringify(order)).toString('base64');
+    const returnData = encodeReturnData(order);
 
     const accessToken = await authenticateTilopay();
 
@@ -101,10 +92,11 @@ export default async function handler(req, res) {
       key:              process.env.TILOPAY_API_KEY,
       amount:           total,
       currency:         'CRC',
-      description:      `Bloom Dermal Micro-Infusion Patch x${qty}`,
+      description:      `Bloom Dermal Micro-Infusion Patch x${qty} paquete${qty > 1 ? 's' : ''}`,
       redirect:         `${appUrl}/success.html`,
       errorRedirect:    `${appUrl}/error.html`,
       hashVersion:      'V2',
+      token_version:    'v2',
       billToFirstName:  firstName,
       billToLastName:   lastName,
       billToAddress:    direccion,
@@ -115,6 +107,16 @@ export default async function handler(req, res) {
       billToCountry:    'CR',
       billToTelephone:  telefono,
       billToEmail:      email,
+      shipToFirstName:  firstName,
+      shipToLastName:   lastName,
+      shipToAddress:    direccion,
+      shipToAddress2:   `${distrito}, ${canton}`,
+      shipToCity:       canton,
+      shipToState:      provinceStateMap[provincia] || 'CR-SJ',
+      shipToZipPostCode:'10101',
+      shipToCountry:    'CR',
+      shipToTelephone:  telefono,
+      shipToEmail:      email,
       orderNumber:      orderId,
       capture:          '1',
       subscription:     '0',

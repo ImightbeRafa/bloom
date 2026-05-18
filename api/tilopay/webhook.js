@@ -1,10 +1,10 @@
-// ─── Bloom — api/tilopay/webhook.js ─────────────────────────────────────────
-// Vercel serverless function: receives Tilopay payment notifications
+// Bloom - api/tilopay/webhook.js
+// Receives Tilopay payment notifications and fulfills approved paid orders.
 
 import crypto from 'crypto';
-import { sendOrderEmail, sendTilopayConfirmationEmail } from '../utils/email.js';
-import { sendOrderToBetsyWithRetry } from '../utils/betsy.js';
-import { generateEventId, sendMetaEvent } from '../utils/meta.js';
+import { sendManualReviewEmail } from '../utils/email.js';
+import { processPaidOrder } from '../utils/fulfillment.js';
+import { decodeReturnData } from '../utils/order.js';
 
 const SUCCESS_STATUSES = ['aprobada', 'approved', 'success', 'paid', 'completed'];
 const DECLINE_STATUSES = ['rechazada', 'declined', 'failed', 'canceled', 'cancelled', 'rejected'];
@@ -12,7 +12,7 @@ const DECLINE_STATUSES = ['rechazada', 'declined', 'failed', 'canceled', 'cancel
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const webhookId = `wh_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
+  const webhookId = `wh_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
   console.log(`[Webhook] Received [${webhookId}]`);
 
   if (!verifyWebhookSignature(req)) {
@@ -20,14 +20,13 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const payload = req.body;
-
+  const payload = req.body || {};
   const orderId = payload.order || payload.order_id || payload.orderNumber || payload.referencia || payload.reference;
   const transactionId = payload['tilopay-transaction'] || payload.tpt || payload.transaction_id || payload.transaccion_id || payload.id;
-  const code   = String(payload.code ?? '');
+  const code = String(payload.code ?? '');
   const status = String(payload.estado || payload.status || '').toLowerCase();
 
-  console.log(`[Webhook] Order: ${orderId} | Code: ${code} | Status: ${status} | TxID: ${transactionId}`);
+  console.log(`[Webhook] Order: ${orderId || 'missing'} | Code: ${code || 'missing'} | Status: ${status || 'missing'} | TxID: ${transactionId || 'missing'}`);
 
   if (!orderId) {
     console.error('[Webhook] No order ID in payload');
@@ -38,70 +37,61 @@ export default async function handler(req, res) {
   const isDeclined = DECLINE_STATUSES.includes(status);
 
   if (!isApproved) {
-    const msg = isDeclined ? 'Payment declined' : `Unknown outcome — code: ${code}, status: ${status}`;
+    const msg = isDeclined ? 'Payment declined' : `Unknown outcome - code: ${code}, status: ${status}`;
     console.log(`[Webhook] ${msg} for order ${orderId}`);
-    return res.status(200).json({ success: false, message: 'Payment not approved' });
+    return res.status(200).json({ success: false, orderId, message: 'Payment not approved' });
   }
 
-  let order = null;
+  let order;
+  try {
+    order = decodeReturnData(payload.returnData);
+  } catch (err) {
+    console.error(`[Webhook] Order ${orderId} requires manual review: ${err.message}`);
+    await sendManualReviewEmail({
+      orderId,
+      transactionId,
+      source: 'webhook',
+      reason: err.message,
+      payload
+    }).catch((emailErr) => {
+      console.error(`[Webhook] Manual-review email failed for ${orderId}:`, emailErr.message);
+    });
 
-  if (payload.returnData) {
-    try {
-      order = JSON.parse(Buffer.from(payload.returnData, 'base64').toString('utf-8'));
-    } catch (e) {
-      console.error('[Webhook] Failed to decode returnData:', e.message);
-    }
+    return res.status(200).json({
+      success: true,
+      orderId,
+      status: 'approved_manual_review',
+      message: 'Payment confirmed, but order data unavailable or invalid'
+    });
   }
-
-  if (!order) {
-    console.error(`[Webhook] Order ${orderId} — no returnData available`);
-    return res.status(200).json({ success: true, message: 'Payment confirmed, but order data unavailable' });
-  }
-
-  order.paymentStatus = 'completed';
-  order.paymentId     = transactionId;
-  order.transactionId = transactionId;
-  order.paymentMethod = 'Tilopay';
-  order.paidAt        = new Date().toISOString();
-
-  console.log(`[Webhook] Order ${orderId} confirmed — Total: ₡${order.total}`);
 
   const appUrl = process.env.APP_URL || 'https://bloomcr.shopping';
-  const metaEventId = generateEventId('purchase', orderId, transactionId);
-  const totalItems = parseInt(order.cantidad) || 1;
+  const result = await processPaidOrder({
+    order,
+    transactionId,
+    source: 'Webhook',
+    req,
+    sourceUrl: `${appUrl}/success.html`
+  });
 
-  // Do ALL async work BEFORE responding (Vercel terminates after res.json)
-  const results = await Promise.allSettled([
-    sendOrderEmail(order),
-    sendTilopayConfirmationEmail(order),
-    sendOrderToBetsyWithRetry({ ...order, transactionId }),
-    sendMetaEvent('Purchase', metaEventId, order, req, {
-      value: order.total,
-      currency: 'CRC',
-      content_ids: ['bloom-patch'],
-      content_name: 'Bloom Dermal Micro-Infusion Patch',
-      content_type: 'product',
-      num_items: totalItems
-    }, `${appUrl}/success.html`)
-  ]);
-
-  if (results[0].status === 'rejected') console.error(`[Webhook] Admin email failed for ${orderId}:`, results[0].reason?.message);
-  else console.log(`[Webhook] Admin email sent for ${orderId}`);
-
-  if (results[1].status === 'rejected') console.error(`[Webhook] Customer email failed for ${orderId}:`, results[1].reason?.message);
-  else console.log(`[Webhook] Customer email sent for ${orderId}`);
-
-  if (results[2].status === 'rejected') console.error(`[Webhook] Betsy sync failed for ${orderId}:`, results[2].reason?.message);
-  else console.log(`[Webhook] Betsy synced for ${orderId}`);
-
-  return res.status(200).json({ success: true, orderId, message: 'Payment confirmed' });
+  return res.status(200).json({
+    success: result.success,
+    orderId,
+    status: result.success ? 'approved_processed' : 'approved_manual_review',
+    channels: result.channels,
+    message: result.success ? 'Payment confirmed' : 'Payment confirmed, fulfillment needs review'
+  });
 }
 
 function verifyWebhookSignature(req) {
   const secret = process.env.TILOPAY_WEBHOOK_SECRET;
   if (!secret) {
-    console.warn('[Webhook] TILOPAY_WEBHOOK_SECRET not set — skipping verification');
-    return true;
+    if (process.env.ALLOW_UNSIGNED_TILOPAY_WEBHOOKS === 'true') {
+      console.warn('[Webhook] Unsigned webhooks allowed by ALLOW_UNSIGNED_TILOPAY_WEBHOOKS=true');
+      return true;
+    }
+    console.error('[Webhook] TILOPAY_WEBHOOK_SECRET is required in production');
+    return false;
   }
 
   if (req.headers['x-tilopay-secret'] === secret) return true;
@@ -116,10 +106,9 @@ function verifyWebhookSignature(req) {
       .update(rawBody)
       .digest('hex');
 
-    return crypto.timingSafeEqual(
-      Buffer.from(providedHash, 'hex'),
-      Buffer.from(computedHash, 'hex')
-    );
+    const provided = Buffer.from(String(providedHash), 'hex');
+    const computed = Buffer.from(computedHash, 'hex');
+    return provided.length === computed.length && crypto.timingSafeEqual(provided, computed);
   } catch {
     return false;
   }

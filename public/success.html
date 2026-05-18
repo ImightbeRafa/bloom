@@ -110,32 +110,33 @@
         return;
       }
 
-      var order;
-      try { order = JSON.parse(atob(returnData)); } catch (e) { order = null; }
-
       fetch('/api/tilopay/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ returnData: returnData, transactionId: transactionId, code: code })
-      }).catch(function (e) { console.error('[Success] Confirm error:', e); });
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (result) {
+          if (!result || !result.success || !result.order || !result.order.orderId) return;
 
-      // Fire browser-side Purchase event with dedup eventID
-      if (order && order.orderId && typeof fbq === 'function') {
-        var metaEventId = 'purchase_' + order.orderId + (transactionId ? '_' + transactionId : '');
-        var storageKey = 'meta_purchase_' + order.orderId;
-        if (!sessionStorage.getItem(storageKey)) {
-          sessionStorage.setItem(storageKey, '1');
-          var totalItems = parseInt(order.cantidad) || 1;
-          fbq('track', 'Purchase', {
-            value: order.total,
-            currency: 'CRC',
-            content_ids: ['bloom-patch'],
-            content_name: 'Bloom Dermal Micro-Infusion Patch',
-            content_type: 'product',
-            num_items: totalItems
-          }, { eventID: metaEventId });
-        }
-      }
+          // Fire browser-side Purchase only after server accepted signed returnData.
+          if (typeof fbq === 'function') {
+            var metaEventId = result.metaEventId || ('purchase_' + result.order.orderId + (transactionId ? '_' + transactionId : ''));
+            var storageKey = 'meta_purchase_' + result.order.orderId;
+            if (!sessionStorage.getItem(storageKey)) {
+              sessionStorage.setItem(storageKey, '1');
+              fbq('track', 'Purchase', {
+                value: result.order.total,
+                currency: 'CRC',
+                content_ids: ['bloom-patch'],
+                content_name: 'Bloom Dermal Micro-Infusion Patch',
+                content_type: 'product',
+                num_items: parseInt(result.order.cantidad) || 1
+              }, { eventID: metaEventId });
+            }
+          }
+        })
+        .catch(function (e) { console.error('[Success] Confirm error:', e); });
     })();
   </script>
 </body>

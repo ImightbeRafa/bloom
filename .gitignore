@@ -4,5 +4,6 @@ dist/
 .env.local
 .env.production
 *.log
+vite.config.js.timestamp-*.mjs
 .DS_Store
 Thumbs.db

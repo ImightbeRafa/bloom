@@ -17,7 +17,7 @@
     rel="stylesheet" />
 
   <link rel="preload" as="image" href="/images/bloom-logo.png" />
-  <link rel="preload" as="image" href="/images/product2.jpg" />
+  <link rel="preload" as="image" href="/images/product-gallery-3.webp" />
   <link rel="stylesheet" href="/src/styles/main.css" />
 
   <!-- Meta Pixel -->
@@ -53,7 +53,7 @@
         <a href="#benefits">Beneficios</a>
         <a href="#order">Comprar</a>
       </div>
-      <a href="#order" class="nav-cta">Ordenar 2x</a>
+      <a href="#order" class="nav-cta">Ordenar</a>
     </nav>
   </header>
 
@@ -75,8 +75,29 @@
         <div class="hero-visual">
           <div class="hero-visual-stack">
             <div class="hero-visual-container reveal-scale">
-              <img src="/images/product2.jpg" alt="Bloom Dermal Micro-Infusion Patch" class="hero-product-image"
+              <img src="/images/product-gallery-3.webp" alt="Parches Bloom en empaque transparente" class="hero-product-image" id="hero-product-image"
                 fetchpriority="high" decoding="async" />
+            </div>
+            <div class="hero-motion-pop reveal" aria-label="Videos reales de Bloom" data-hero-reel>
+              <div class="hero-motion-strip" aria-hidden="true">
+                <video class="hero-motion-video is-active" autoplay muted loop playsinline preload="metadata" src="/images/hero-loop.mp4"></video>
+                <video class="hero-motion-video" autoplay muted loop playsinline preload="metadata" src="/images/hero-loop-2.mp4"></video>
+                <video class="hero-motion-video" autoplay muted loop playsinline preload="metadata" src="/images/hero-loop-3.mp4"></video>
+              </div>
+            </div>
+            <div class="hero-product-gallery reveal" aria-label="Fotos del producto Bloom">
+              <button type="button" class="hero-gallery-btn is-active" aria-label="Ver parches Bloom en empaque transparente"
+                data-hero-image="/images/product-gallery-3.webp" data-hero-alt="Parches Bloom en empaque transparente">
+                <img src="/images/product-gallery-3.webp" alt="" loading="lazy" decoding="async" />
+              </button>
+              <button type="button" class="hero-gallery-btn" aria-label="Ver close-up de parche Bloom"
+                data-hero-image="/images/product-gallery-2.webp" data-hero-alt="Close-up de parche Bloom">
+                <img src="/images/product-gallery-2.webp" alt="" loading="lazy" decoding="async" />
+              </button>
+              <button type="button" class="hero-gallery-btn" aria-label="Ver tira de parches Bloom"
+                data-hero-image="/images/product-gallery-1.webp" data-hero-alt="Tira de parches Bloom">
+                <img src="/images/product-gallery-1.webp" alt="" loading="lazy" decoding="async" />
+              </button>
             </div>
             <div class="floating-proof reveal">
               <strong>4.9/5</strong>
@@ -236,7 +257,7 @@
               <p>Entregan ingredientes activos directamente en la zona del granito para calmar apariencia, rojez e inflamacion.</p>
             </div>
             <div class="patch-close">
-              <img src="/images/product2.jpg" alt="Close-up de parche Bloom" loading="lazy" decoding="async" />
+              <img src="/images/product-gallery-3.webp" alt="Close-up de parche Bloom" loading="lazy" decoding="async" />
             </div>
           </article>
           <article class="bento-card">
@@ -371,7 +392,7 @@
               </div>
 
               <div class="order-product-row">
-                <img src="/images/product.jpg" alt="Bloom Patch" class="order-product-thumb" loading="lazy" decoding="async" />
+                <img src="/images/product-gallery-1.webp" alt="Bloom Patch" class="order-product-thumb" loading="lazy" decoding="async" />
                 <div class="order-product-info">
                   <span class="order-product-name">Bloom Dermal Micro-Infusion Patch</span>
                   <span class="order-package-note">Cada paquete trae 9 parches individuales.</span>

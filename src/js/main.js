@@ -789,6 +789,24 @@ if (heroVisual) {
   });
 }
 
+// ── Hero Product Gallery ─────────────────────────────────────────────────────
+(function () {
+  const heroImage = document.getElementById('hero-product-image');
+  const galleryButtons = Array.from(document.querySelectorAll('.hero-gallery-btn'));
+  if (!heroImage || !galleryButtons.length) return;
+
+  galleryButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nextSrc = btn.dataset.heroImage;
+      if (!nextSrc || heroImage.getAttribute('src') === nextSrc) return;
+
+      heroImage.src = nextSrc;
+      heroImage.alt = btn.dataset.heroAlt || 'Bloom Dermal Micro-Infusion Patch';
+      galleryButtons.forEach(item => item.classList.toggle('is-active', item === btn));
+    });
+  });
+})();
+
 // ── Scroll Depth Tracking (Meta Pixel signals) ──────────────────────────────
 // Fires custom events at 25%, 50%, 75% scroll depth so Meta's algorithm can
 // identify high-engagement visitors and build better lookalike audiences.
@@ -830,6 +848,36 @@ if (heroVisual) {
       scrollTicking = true;
     }
   }, { passive: true });
+})();
+
+// ── Hero Mini Reel ───────────────────────────────────────────────────────────
+// Keeps the first-screen motion small: one silent clip rotates at a time.
+(function () {
+  const reel = document.querySelector('[data-hero-reel]');
+  if (!reel) return;
+
+  const videos = Array.from(reel.querySelectorAll('.hero-motion-video'));
+  if (!videos.length) return;
+
+  let activeIndex = 0;
+
+  function activate(index) {
+    activeIndex = index % videos.length;
+    videos.forEach((video, i) => {
+      const active = i === activeIndex;
+      video.classList.toggle('is-active', active);
+      video.muted = true;
+      if (active) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  activate(0);
+  setInterval(() => activate(activeIndex + 1), 3200);
 })();
 
 // ── UTM Parameter Capture ───────────────────────────────────────────────────

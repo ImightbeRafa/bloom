@@ -44,6 +44,35 @@ export async function sendTilopayConfirmationEmail(order) {
   });
 }
 
+export async function sendManualReviewEmail({ orderId, transactionId, source, reason, payload }) {
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:24px;background:#f8f6ff;font-family:Arial,sans-serif;color:#1a1a1a;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:680px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;">
+    <tr><td style="background:#7f1d1d;color:#fff;padding:22px 28px;">
+      <h1 style="margin:0;font-size:22px;">Bloom - pago requiere revision manual</h1>
+    </td></tr>
+    <tr><td style="padding:24px 28px;">
+      <p><strong>Motivo:</strong> ${reason}</p>
+      <p><strong>Fuente:</strong> ${source || 'N/A'}</p>
+      <p><strong>Orden:</strong> ${orderId || 'N/A'}</p>
+      <p><strong>Transaccion Tilopay:</strong> ${transactionId || 'N/A'}</p>
+      <p style="margin-top:18px;"><strong>Payload recibido:</strong></p>
+      <pre style="white-space:pre-wrap;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;padding:14px;font-size:12px;line-height:1.5;">${JSON.stringify(payload || {}, null, 2)}</pre>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  return sendEmail({
+    from: `${BRAND_NAME} <${FROM_EMAIL}>`,
+    to: process.env.ORDER_NOTIFICATION_EMAIL,
+    subject: `Revision manual Bloom: ${orderId || transactionId || 'pago sin orden'}`,
+    html
+  });
+}
+
 // ── Email Templates ───────────────────────────────────────────────────────────
 
 function buildAdminEmailHtml(order) {
