@@ -36,13 +36,33 @@ function requiredError(order) {
 }
 
 function buildWhatsappUrl({ order, method }) {
-  const whatsappNumber = process.env.WHATSAPP_NUMBER || '50670524184';
+  const whatsappNumber = String(process.env.WHATSAPP_NUMBER || '').trim();
+  if (!whatsappNumber) throw new Error('WHATSAPP_NUMBER must be configured');
+
   const amount = `₡${Number(order.total || 0).toLocaleString('es-CR')}`;
   const message = method === 'cod'
     ? `Hola, quiero confirmar pago contra entrega orden ${order.orderId} por ${amount}`
     : `Hola, comprobante de pago orden ${order.orderId} por ${amount}`;
 
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function getSinpeConfig() {
+  const sinpeNumber = String(process.env.SINPE_NUMBER || '').trim();
+  const sinpeName = String(process.env.SINPE_ACCOUNT_NAME || '').trim();
+
+  if (!sinpeNumber || !sinpeName) {
+    throw new Error('SINPE_NUMBER and SINPE_ACCOUNT_NAME must be configured');
+  }
+
+  return { sinpeNumber, sinpeName };
+}
+
+function isConfigurationError(err) {
+  return [
+    'SINPE_NUMBER and SINPE_ACCOUNT_NAME must be configured',
+    'WHATSAPP_NUMBER must be configured'
+  ].includes(err.message);
 }
 
 function buildManualOrder(rawOrder, method) {
@@ -96,8 +116,9 @@ export default async function handler(req, res) {
     }
 
     const order = buildManualOrder(rawOrder, method);
-    const sinpeNumber = process.env.SINPE_NUMBER || '7052-4184';
-    const sinpeName = process.env.SINPE_ACCOUNT_NAME || 'Sleeping Patches CR';
+    const { sinpeNumber, sinpeName } = method === 'sinpe'
+      ? getSinpeConfig()
+      : { sinpeNumber: '', sinpeName: '' };
     const payment = {
       method,
       status: method === 'cod' ? 'PENDIENTE ENTREGA' : 'PENDIENTE COMPROBANTE',
@@ -140,6 +161,9 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('[manual-order] Error:', err);
+    if (isConfigurationError(err)) {
+      return res.status(500).json({ error: 'Pago manual no esta configurado. Falta SINPE_NUMBER, SINPE_ACCOUNT_NAME o WHATSAPP_NUMBER.' });
+    }
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 }

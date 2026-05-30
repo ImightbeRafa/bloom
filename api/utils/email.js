@@ -148,8 +148,8 @@ export async function sendManualReviewEmail({ orderId, transactionId, source, re
 
 function buildManualCustomerEmailHtml(order, payment = {}) {
   const sinpe = isSinpePayment(payment);
-  const sinpeNumber = escapeHtml(payment.sinpeNumber || process.env.SINPE_NUMBER || '7052-4184');
-  const sinpeName = escapeHtml(payment.sinpeName || process.env.SINPE_ACCOUNT_NAME || 'Sleeping Patches CR');
+  const sinpeNumber = escapeHtml(payment.sinpeNumber || process.env.SINPE_NUMBER || '');
+  const sinpeName = escapeHtml(payment.sinpeName || process.env.SINPE_ACCOUNT_NAME || '');
   const firstName = escapeHtml(order.nombre || '');
 
   const sinpeBlock = sinpe ? `

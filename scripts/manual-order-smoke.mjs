@@ -4,6 +4,9 @@ process.env.BETSY_API_KEY = 'test';
 process.env.BETSY_API_URL = 'https://betsy.test/orders';
 process.env.META_PIXEL_ID = '123';
 process.env.META_CAPI_ACCESS_TOKEN = 'token';
+process.env.SINPE_NUMBER = '8000-0000';
+process.env.SINPE_ACCOUNT_NAME = 'Bloom Test Account';
+process.env.WHATSAPP_NUMBER = '50680000000';
 
 const { default: handler } = await import('../api/orders/manual.js');
 
@@ -76,3 +79,15 @@ await handler({
 }, res);
 
 console.log('cod invalid', res.statusCode, res.body.error);
+
+const originalSinpeNumber = process.env.SINPE_NUMBER;
+delete process.env.SINPE_NUMBER;
+res = mockRes();
+await handler({
+  method: 'POST',
+  body: { order: { ...baseOrder, orderId: 'ORD-SMOKE-MISSING-ENV' }, method: 'sinpe' },
+  headers: {},
+  socket: {}
+}, res);
+console.log('missing sinpe env', res.statusCode, res.body.error);
+process.env.SINPE_NUMBER = originalSinpeNumber;

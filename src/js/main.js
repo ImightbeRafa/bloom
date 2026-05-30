@@ -392,8 +392,8 @@ function renderManualSuccess(result, order, method) {
   }
 
   if (manualSinpeBlock) manualSinpeBlock.hidden = isCod;
-  if (manualSinpeNumber) manualSinpeNumber.textContent = result.sinpeNumber || '7052-4184';
-  if (manualSinpeName) manualSinpeName.textContent = result.sinpeName || 'Sleeping Patches CR';
+  if (manualSinpeNumber) manualSinpeNumber.textContent = result.sinpeNumber || '';
+  if (manualSinpeName) manualSinpeName.textContent = result.sinpeName || '';
   if (manualSinpeTotal) manualSinpeTotal.textContent = total;
   if (manualWhatsappLink) {
     manualWhatsappLink.href = result.whatsappUrl || '#';
