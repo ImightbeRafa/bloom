@@ -74,6 +74,19 @@ const submitBtn = document.getElementById('submit-btn');
 const btnText = document.getElementById('btn-text');
 const btnLoading = document.getElementById('btn-loading');
 const formError = document.getElementById('form-error');
+const paymentMethodInput = document.getElementById('payment-method');
+const paymentCards = document.querySelectorAll('[data-payment-method]');
+const manualSuccessPanel = document.getElementById('manual-success');
+const manualOrderIdEl = document.getElementById('manual-order-id');
+const manualSuccessTitle = document.getElementById('manual-success-title');
+const manualSuccessCopy = document.getElementById('manual-success-copy');
+const manualSinpeBlock = document.getElementById('manual-sinpe-block');
+const manualSinpeNumber = document.getElementById('manual-sinpe-number');
+const manualSinpeName = document.getElementById('manual-sinpe-name');
+const manualSinpeTotal = document.getElementById('manual-sinpe-total');
+const manualWhatsappLink = document.getElementById('manual-whatsapp-link');
+const manualResetBtn = document.getElementById('manual-reset-btn');
+const manualCodSwitch = document.getElementById('manual-cod-switch');
 
 // Summary elements
 const summaryQty = document.getElementById('summary-qty');
@@ -82,6 +95,8 @@ const summaryShipping = document.getElementById('summary-shipping');
 const summaryTotal = document.getElementById('summary-total');
 const shippingNote = document.getElementById('shipping-note');
 const btnTotalEl = document.getElementById('btn-total');
+let selectedPaymentMethod = paymentMethodInput ? paymentMethodInput.value : 'card';
+let lastManualOrder = null;
 
 // ── Province / Canton Dropdowns ───────────────────────────────────────────────
 function initProvinces() {
@@ -234,6 +249,39 @@ function clearError() {
   formError.textContent = '';
 }
 
+function normalizeProvince(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function isGamProvince(province) {
+  const normalized = normalizeProvince(province);
+  if (normalized.startsWith('san jos')) return true;
+  return ['alajuela', 'heredia', 'cartago'].includes(normalized);
+}
+
+function generateManualOrderId() {
+  return `ORD-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+}
+
+function setPayment(method) {
+  selectedPaymentMethod = method === 'sinpe' ? 'sinpe' : 'card';
+  if (paymentMethodInput) paymentMethodInput.value = selectedPaymentMethod;
+
+  paymentCards.forEach(card => {
+    const active = card.dataset.paymentMethod === selectedPaymentMethod;
+    card.classList.toggle('is-active', active);
+    card.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+paymentCards.forEach(card => {
+  card.addEventListener('click', () => setPayment(card.dataset.paymentMethod));
+});
+
 function getFormData() {
   const data = Object.fromEntries(new FormData(form).entries());
   data.cantidad = currentQty;
@@ -315,6 +363,128 @@ async function handleTilopay(data) {
 }
 
 // ── Form Submit ───────────────────────────────────────────────────────────────
+function fireManualLead(order, eventId, method) {
+  metaTrack('Lead', {
+    content_ids: ['bloom-patch'],
+    content_name: 'Bloom Dermal Micro-Infusion Patch',
+    content_type: 'product',
+    num_items: parseInt(order.cantidad) || 1,
+    value: calculateOrder(parseInt(order.cantidad) || 1).total,
+    currency: 'CRC',
+    payment_method: method
+  }, { eventID: eventId });
+}
+
+function renderManualSuccess(result, order, method) {
+  const total = formatCRC(order.total || calculateOrder(order.cantidad).total);
+  const isCod = method === 'cod';
+
+  if (manualOrderIdEl) manualOrderIdEl.textContent = result.orderId || order.orderId;
+  if (manualSuccessTitle) {
+    manualSuccessTitle.textContent = isCod
+      ? 'Orden confirmada - Pago contra entrega'
+      : 'Casi listo! Solo falta el SINPE.';
+  }
+  if (manualSuccessCopy) {
+    manualSuccessCopy.textContent = isCod
+      ? 'Recibimos tu pedido. Te contactaremos por WhatsApp para coordinar la entrega en la GAM.'
+      : 'Recibimos tu pedido. Envia el SINPE y comparte el comprobante por WhatsApp para despacharlo hoy.';
+  }
+
+  if (manualSinpeBlock) manualSinpeBlock.hidden = isCod;
+  if (manualSinpeNumber) manualSinpeNumber.textContent = result.sinpeNumber || '7052-4184';
+  if (manualSinpeName) manualSinpeName.textContent = result.sinpeName || 'Sleeping Patches CR';
+  if (manualSinpeTotal) manualSinpeTotal.textContent = total;
+  if (manualWhatsappLink) {
+    manualWhatsappLink.href = result.whatsappUrl || '#';
+    manualWhatsappLink.textContent = isCod ? 'Confirmar por WhatsApp ->' : 'Enviar comprobante por WhatsApp ->';
+  }
+
+  if (manualCodSwitch) {
+    manualCodSwitch.hidden = isCod || !isGamProvince(order.provincia);
+  }
+
+  if (manualSuccessPanel) manualSuccessPanel.hidden = false;
+  form.hidden = true;
+  manualSuccessPanel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function submitManualOrder(order, method) {
+  if (!order.orderId) order.orderId = generateManualOrderId();
+  const eventId = method === 'cod' ? `lead_${order.orderId}_cod` : `lead_${order.orderId}_sinpe`;
+
+  fireManualLead(order, eventId, method);
+
+  const res = await fetch('/api/orders/manual', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order, eventId, method })
+  });
+
+  const result = await res.json();
+  if (!res.ok || !result.ok) {
+    throw new Error(result.error || 'No pudimos registrar el pedido. Intenta de nuevo.');
+  }
+
+  order.orderId = result.orderId;
+  if (result.order) {
+    order.total = result.order.total;
+    order.subtotal = result.order.subtotal;
+    order.shippingCost = result.order.shippingCost;
+  }
+  lastManualOrder = { ...order };
+  renderManualSuccess(result, order, method);
+}
+
+async function handleManualPayment(data) {
+  const orderTotals = calculateOrder(parseInt(data.cantidad) || 1);
+  const order = {
+    ...data,
+    orderId: data.orderId || generateManualOrderId(),
+    subtotal: orderTotals.subtotal,
+    shippingCost: orderTotals.shipping,
+    total: orderTotals.total,
+    paymentMethod: 'SINPE Movil'
+  };
+
+  await submitManualOrder(order, 'sinpe');
+}
+
+if (manualCodSwitch) {
+  manualCodSwitch.addEventListener('click', async () => {
+    if (!lastManualOrder) return;
+    clearError();
+    if (!isGamProvince(lastManualOrder.provincia)) {
+      showError('Pago contra entrega solo disponible en la GAM.');
+      return;
+    }
+
+    manualCodSwitch.disabled = true;
+    try {
+      await submitManualOrder({ ...lastManualOrder, paymentMethod: 'Pago contra entrega' }, 'cod');
+    } catch (err) {
+      showError(err.message || 'No pudimos cambiar a pago contra entrega.');
+    } finally {
+      manualCodSwitch.disabled = false;
+    }
+  });
+}
+
+if (manualResetBtn) {
+  manualResetBtn.addEventListener('click', () => {
+    lastManualOrder = null;
+    form.reset();
+    cantonSelect.innerHTML = '<option value="">Seleccionar...</option>';
+    cantonSelect.disabled = true;
+    updateQty(2);
+    setPayment('card');
+    clearError();
+    if (manualSuccessPanel) manualSuccessPanel.hidden = true;
+    form.hidden = false;
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   clearError();
@@ -342,7 +512,12 @@ form.addEventListener('submit', async (e) => {
   setLoading(true);
 
   try {
-    await handleTilopay(data);
+    if (selectedPaymentMethod === 'sinpe') {
+      await handleManualPayment(data);
+      setLoading(false);
+    } else {
+      await handleTilopay(data);
+    }
   } catch (err) {
     showError(err.message || 'Ocurrió un error inesperado. Por favor intenta de nuevo.');
     setLoading(false);

@@ -47,3 +47,27 @@ export async function sendOrderEmail(order) {
     html
   });
 }
+
+export async function sendTilopayConfirmationEmail(order) {
+  const html = `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f1f1f1;margin:0;padding:40px 20px;">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#5e17eb,#b57bee);padding:32px 40px;text-align:center;">
+  <h1 style="margin:0;color:#fff;font-size:26px;font-weight:800;letter-spacing:2px;">BLOOM</h1>
+  <p style="margin:4px 0 0;color:rgba(255,255,255,0.75);font-size:13px;">Confirmacion de pedido</p>
+</div>
+<div style="padding:32px 40px;text-align:center;">
+  <h2 style="margin:0 0 8px;color:#1a1a1a;">Pago confirmado</h2>
+  <p>Hola <strong>${order.nombre}</strong>, tu pedido esta siendo preparado.</p>
+  <p><strong>Orden:</strong> #${order.orderId}</p>
+  <p><strong>Paquetes:</strong> ${order.cantidad} (${Number(order.cantidad || 1) * 9} parches en total)</p>
+  <p style="font-size:18px;color:#5e17eb;font-weight:700;">Total: â‚¡${Number(order.total).toLocaleString('es-CR')}</p>
+</div>
+</div></body></html>`;
+
+  return sendEmail({
+    from: process.env.RESEND_FROM || `Bloom <${FROM_EMAIL}>`,
+    to: order.email,
+    subject: `Pago confirmado - Bloom #${order.orderId}`,
+    html
+  });
+}

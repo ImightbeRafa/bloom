@@ -16,8 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 import tilopayRoutes from './routes/tilopay.js';
+import manualOrderHandler from '../api/orders/manual.js';
 
 app.use('/api/tilopay', tilopayRoutes);
+app.all('/api/orders/manual', manualOrderHandler);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', service: 'Bloom API', timestamp: new Date().toISOString() });

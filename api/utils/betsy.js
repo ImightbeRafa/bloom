@@ -1,9 +1,26 @@
-// ─── Bloom — api/utils/betsy.js ─────────────────────────────────────────────
+// Bloom - api/utils/betsy.js
 // Betsy CRM integration with retry logic
 
 const TIMEOUT_MS = 10000;
 
+function moneyString(value) {
+  return String(Math.round(Number(value || 0)));
+}
+
+function paymentStatusLabel(order) {
+  if (order.paymentStatus === 'completed') return 'PAGADO';
+  return String(order.paymentStatus || 'PENDIENTE').toUpperCase();
+}
+
 function buildBetsyPayload(order) {
+  const quantity = Number(order.cantidad || 1);
+  const subtotal = Number(order.subtotal || (Number(order.total || 0) - Number(order.shippingCost || 0)) || 0);
+  const shippingCost = Number(order.shippingCost || 0);
+  const total = Number(order.total || subtotal + shippingCost);
+  const unitPrice = quantity > 0 ? Math.round(subtotal / quantity) : subtotal;
+  const paymentMethod = order.paymentMethod || 'Tilopay';
+  const paymentStatus = paymentStatusLabel(order);
+
   return {
     orderId: order.orderId,
     customer: {
@@ -13,15 +30,14 @@ function buildBetsyPayload(order) {
     },
     product: {
       name: 'Bloom Dermal Micro-Infusion Patch - paquete de 9 parches',
-      quantity: order.cantidad,
-      unitPrice: order.cantidad >= 2
-        ? `${order.cantidad} paquetes (${Number(order.cantidad || 1) * 9} parches) por ₡${Number(order.total).toLocaleString('es-CR')} con envio incluido`
-        : `1 paquete (9 parches) ₡${Number(5900).toLocaleString('es-CR')} + envio`,
+      quantity,
+      unitPrice: moneyString(unitPrice),
+      total: moneyString(subtotal),
       packageContents: '9 parches individuales por paquete',
-      subtotal: `₡${Number(order.subtotal || (order.total - order.shippingCost) || 0).toLocaleString('es-CR')}`
+      subtotal: moneyString(subtotal)
     },
     shipping: {
-      cost: order.shippingCost === 0 ? 'Incluido' : `₡${Number(order.shippingCost).toLocaleString('es-CR')}`,
+      cost: moneyString(shippingCost),
       courier: 'Correos de Costa Rica',
       address: {
         province: order.provincia,
@@ -30,20 +46,21 @@ function buildBetsyPayload(order) {
         fullAddress: order.direccion
       }
     },
-    total: `₡${Number(order.total).toLocaleString('es-CR')}`,
+    subtotal: moneyString(subtotal),
+    total: moneyString(total),
     payment: {
-      method: order.paymentMethod,
+      method: paymentMethod,
       transactionId: String(order.transactionId || order.paymentId || 'N/A'),
-      status: order.paymentStatus === 'completed' ? 'PAGADO' : 'PENDIENTE',
+      status: paymentStatus,
       date: new Date(order.paidAt || order.createdAt || Date.now()).toLocaleString('es-CR')
     },
     source: 'Bloom Website',
     salesChannel: 'Website',
     seller: 'Website',
     metadata: {
-      campaign: 'organic',
-      referrer: 'direct',
-      comments: `Pago: Tarjeta (Tilopay) - Estado: PAGADO - ID Transacción: ${order.transactionId || order.paymentId}`,
+      campaign: order.utm_campaign || 'organic',
+      referrer: order.utm_source || 'direct',
+      comments: `Pago: ${paymentMethod} - Estado: ${paymentStatus} - ID Transaccion: ${order.transactionId || order.paymentId || 'N/A'}`,
       createdAt: order.createdAt || new Date().toISOString()
     }
   };
@@ -51,7 +68,7 @@ function buildBetsyPayload(order) {
 
 async function sendOrderToBetsy(orderData) {
   if (!process.env.BETSY_API_KEY || !process.env.BETSY_API_URL) {
-    console.warn('[Betsy] Not configured — skipping CRM sync');
+    console.warn('[Betsy] Not configured - skipping CRM sync');
     return { success: false, error: 'Not configured' };
   }
 
@@ -80,7 +97,6 @@ async function sendOrderToBetsy(orderData) {
     const data = await response.json();
     console.log(`[Betsy] Order synced: ${data.id || 'ok'}`);
     return { success: true, data };
-
   } catch (error) {
     clearTimeout(timeoutId);
     const msg = error.name === 'AbortError' ? 'Request timed out' : error.message;
